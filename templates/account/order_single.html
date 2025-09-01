@@ -1,0 +1,131 @@
+{% extends "registration/registration_base.html" %} {% load static %} {% block title %}order {% endblock%}{% load i18n %}
+{% block content %}
+
+<!-- row -->
+<div class="row ">
+    <div class="col-xl-12 col-12 mb-5">
+        <!-- card -->
+        <div class="card h-100 card-lg">
+            <div class="card-body p-6">
+                <div class="d-md-flex justify-content-between">
+                    <div class="d-flex align-items-center mb-2 mb-md-0">
+                        <h2 class="mb-0">{% trans "Order ID:" %} #{{order.order_id}}</h2>
+                        <span class="badge bg-light-warning text-dark-warning ms-2">{{order.order_status}}</span>
+                    </div>
+                    <!-- <div class="d-md-flex">
+                        <div class="ms-md-3">
+                          <a href="#" class="btn btn-secondary">Download Invoice</a>
+                        </div>
+                    </div> -->
+                </div>
+                <div class="mt-8 row">
+                    <div class="col-lg-6 col-md-6 col-12 mb-6">
+                        <h6>{% trans "Shipping Address" %}</h6>
+                        <p class="mb-1 lh-lg">{{order.full_name}}<br>
+                        {{order.address_line_1}} <br>
+                        {{order.address_line_2}} <br>
+                        {{order.city}},{{order.district}},{{order.state}} <br>
+                        {% trans "Pin Code :" %} {{order.pin_code}} <br>
+                        {% trans "Contact No." %} {{order.mobile_no}}</p>
+                    </div>
+                    <!-- address -->
+                    <div class="col-lg-6 col-md-6 col-12 mb-6">
+                        <h6>{% trans "Order Details" %}</h6>
+                        <p class="mb-1 lh-lg">{% trans "Order ID:" %} <span class="text-dark">{{order.order_id}}</span><br>
+                            {% trans "Order Date:" %} <span class="text-dark">{{order.created}}</span><br>
+                            {% trans "Order Total:" %} <span class="text-dark">{{order.payable}}</span><br>
+                            {% trans "Order Status:" %} <span class="text-dark">{{order.get_order_status_display}}</span><br>
+                            {% trans "Payment Method:" %} <span class="text-dark">{{order.get_payment_method_display}}</span><br>
+                            {% trans "Payment Status:" %} <span class="text-dark">{{order.get_payment_status_display}}</span><br>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="row"> -->
+                <div class=" table-responsive">
+                    <!-- Table -->
+                    <table class="table mb-0 text-nowrap table-centered">
+                    <!-- Table Head -->
+                        <thead class="bg-light">
+                            <tr>
+                                <th>{% trans "Products" %}</th>
+                                <th>{% trans "Price" %}</th>
+                                <th>{% trans "Quantity" %}</th>
+                                <th>{% trans "Total" %}</th>
+                            </tr>
+                        </thead>
+                        <!-- tbody -->
+                        <tbody>
+                            {% for i in order.get_items %}
+                            <tr>
+                                <td>
+                                    <a href="{{i.product.get_absolute_url}}" class="text-inherit">
+                                        <div class="ms-lg-4 mt-2 mt-lg-0">
+                                            <h5 class="mb-0 h6">
+                                                {{i.product_variant}}
+                                            </h5>
+                                        </div>
+                                    </a>
+                                </td>
+                                <td><span class="text-body">{{i.product_variant.selling_price}}</span></td>
+                                <td>{{i.quantity}}</td>
+                                <td>{{i.subtotal}}</td>
+                            </tr>
+                            {% endfor %}
+                            <tr>
+                                <td class="border-bottom-0 pb-0"></td>
+                                <td class="border-bottom-0 pb-0"></td>
+                                <td colspan="1" class="fw-medium text-dark ">
+                                  <!-- text -->
+                                  {% trans "Sub Total :" %}
+                                </td>
+                                <td class="fw-medium text-dark ">
+                                  <!-- text -->
+                                  {{order.subtotal}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border-bottom-0 pb-0"></td>
+                                <td class="border-bottom-0 pb-0"></td>
+                                <td colspan="1" class="fw-medium text-dark ">
+                                  <!-- text -->
+                                  {% trans "Service Cost :" %}
+                                </td>
+                                <td class="fw-medium text-dark ">
+                                  <!-- text -->
+                                 {{order.service_fee}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border-bottom-0 pb-0"></td>
+                                <td class="border-bottom-0 pb-0"></td>
+                                <td colspan="1" class="fw-medium text-dark ">
+                                  <!-- text -->
+                                  {% trans "Shipping Cost :" %}
+                                </td>
+                                <td class="fw-medium text-dark ">
+                                  <!-- text -->
+                                  {{order.shipping_fee}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border-bottom-0 pb-0"></td>
+                                <td class="border-bottom-0 pb-0"></td>
+                                <td colspan="1" class="fw-medium text-dark ">
+                                  <!-- text -->
+                                  {% trans "Grand Total :" %}
+                                </td>
+                                <td class="fw-medium text-dark ">
+                                  <!-- text -->
+                                 {{order.payable}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            <!-- </div> -->
+        </div>
+    </div>
+</div>
+  
+{% endblock content %}

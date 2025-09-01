@@ -1,0 +1,71 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="row mb-8">
+    <div class="col-md-12">
+        <div class="d-md-flex justify-content-between align-items-center">
+            <div>
+                <h2 class="m-0">{{ title }}</h2>
+            </div>
+            <div class="mt-5 mt-md-0">
+                <a onclick="history.back()" class="btn btn-light">Back to Cities</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12 col-12">
+        <div class="card mb-6 card-lg">
+            <div class="card-body p-6">
+                <form method="POST" enctype="multipart/form-data" class="ajax redirect" data-redirect="{% url 'main:cities' %}">
+                    {% csrf_token %}
+                    <div class="mt-2 row">
+                        <div class="mb-3 col-lg-6">
+                            <label class="form-label">{{ form.name.label }} {% if form.name.field.required %}<span class="text-danger">*</span>{% endif %}</label>
+                            {{ form.name }}
+                        </div>
+                    </div>
+
+                    <h4>Pincode Details</h4>
+                    <div id="pincode-formset">
+                        {{ pincode_formset.management_form }}
+                        {% for form in pincode_formset %}
+                        {{ form.id }}
+                            <div class="row pincode-entry">
+                                <div class="col-lg-6">
+                                    <label class="form-label">{{ form.code.label }}</label>
+                                    {{ form.code }}
+                                </div>
+                                <div class="col-lg-4">
+                                    <label class="form-label">Delete</label>
+                                    {{ form.DELETE }}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-lg-12">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block js_plugins %}
+{% include 'web/includes/form-ajax.html' %}
+<script>
+  $(document).ready(function () {
+    var pincodeFormset = $("#pincode-formset").children().first();
+    pincodeFormset.find("input").each(function () {
+        $(this).addClass("form-control");
+    });
+  });
+</script>
+{% endblock %}

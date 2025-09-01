@@ -1,0 +1,326 @@
+{% load static %}
+<nav class="navbar-vertical-nav d-none d-xl-block">
+  <div class="navbar-vertical">
+    <div class="px-4 py-5">
+      <a href="{% url 'main:index' %}" class="navbar-brand">
+        <img src="{% static 'web/images/logo/logo.png' %}" class="img-logo" height="60" alt="" />
+      </a>
+    </div>
+    <div class="navbar-vertical-content flex-grow-1" data-simplebar="">
+      <ul class="navbar-nav flex-column" id="sideNavbar">
+        <li class="nav-item">
+          <a class="nav-link {% if is_dashbord %} active {% endif %}" href="{% url 'main:index' %}">
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon"> <i class="bi bi-house"></i></span>
+              <span class="nav-link-text">Dashboard</span>
+            </div>
+          </a>
+        </li>
+        <li class="nav-item mt-6 mb-3">
+          <span class="nav-label">Store Managements</span>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if is_order %} active {% endif %}" href="{% url 'main:orders' %}">
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon">
+                <i class="bi bi-bag"></i></span>
+              <span class="nav-link-text">Orders</span>
+            </div>
+          </a>
+        </li>
+        {% comment %} <li class="nav-item">
+          <a class="nav-link {% if is_review %} active {% endif %}" href="{% url 'main:review_list' %}">
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon">
+                <i class="bi bi-star"></i
+              ></span>
+              <span class="nav-link-text">Reviews</span>
+            </div>
+          </a>
+        </li> {% endcomment %}
+        <!-- products -->
+        <li class="nav-item">
+          <a class="nav-link {% if not is_product %} collapsed {% endif %} "href="#"data-bs-toggle="collapse"data-bs-target="#navproducts"aria-expanded="{% if not is_product %} false {% else %}true {% endif %}"aria-controls="navproducts">
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon"> <i class="bi bi-cart"></i></span>
+              <span class="nav-link-text">Product</span>
+            </div>
+          </a>
+          <div id="navproducts" class="collapse {%if is_product %} show {% endif %}" data-bs-parent="#sideNavbar">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link {% if is_product_list %} active {% endif %}" href="{% url 'main:product_list' %}">Product List </a>
+            </li>
+            <!-- Nav item -->
+            <li class="nav-item">
+              <a class="nav-link  {% if is_variant %} active {% endif %}" href="{% url 'main:variants' %}">Product Variants </a>
+            </li>
+          </ul>
+          </div>
+        </li>
+        <!-- category -->
+        <li class="nav-item">
+          <a class="nav-link {% if not is_category %} collapsed {% endif %} "href="#"data-bs-toggle="collapse"data-bs-target="#navcatrgories"aria-expanded="{% if not is_category %} false {% else %}true {% endif %}"aria-controls="navcatrgories">
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon"> <i class="bi bi-list-task"></i></span>
+              <span class="nav-link-text">Categories</span>
+            </div>
+          </a>
+          <div id="navcatrgories" class="collapse {%if is_category %} show {% endif %}" data-bs-parent="#sideNavbar">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link {% if is_category_list %} active {% endif %}" href="{% url 'main:categories' %}">Categories </a>
+            </li>
+            <!-- Nav item -->
+            {% comment %} <li class="nav-item">
+              <a class="nav-link  {% if is_subcategory_list %} active {% endif %}" href="{% url 'main:subcategories' %}"> Sub Categories</a>
+            </li> {% endcomment %}
+            <li class="nav-item">
+              <a class="nav-link  {% if is_categorylist_list %} active {% endif %}" href="{% url 'main:categorylists' %}">Category List</a>
+            </li>
+          </ul>
+          </div>
+        </li>
+        {% comment %} <li class="nav-item">
+          <a class="nav-link {% if is_purchase_list %} active {% endif %}" href="{% url 'main:purchase_list' %}">
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon">
+                <i class="bi bi-cart-check-fill"></i
+              ></span>
+              <span class="nav-link-text">Purchases</span>
+            </div>
+          </a>
+        </li> {% endcomment %}
+        <li class="nav-item">
+          <a class="nav-link {% if is_banner %} active {% endif %}" href="{% url 'main:banners' %}">
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon">
+                <i class="bi bi-images"></i
+              ></span>
+              <span class="nav-link-text">Banners</span>
+            </div>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if is_tag %} active {% endif %}" href="{% url 'main:tags' %}">
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon">
+                <i class="bi bi-tag"></i
+              ></span>
+              <span class="nav-link-text">Tags</span>
+            </div>
+          </a>
+        </li>
+        {% comment %} <li class="nav-item">
+          <a class="nav-link {% if is_feature %} active {% endif %}" href="{% url 'main:features' %}">
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon">
+               <i class="bi bi-flower3"></i>
+              </span>
+              <span class="nav-link-text">Features</span>
+            </div>
+          </a>
+        </li> {% endcomment %}
+        <li class="nav-item">
+          <a class="nav-link {% if is_brand %} active {% endif %}" href="{% url 'main:brands' %}">
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon">
+                <i class="bi bi-bootstrap-fill"></i>
+              </span>
+              <span class="nav-link-text">Brands</span>
+            </div>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link {% if is_gift_card %} active {% endif %}" href="{% url 'main:giftcards' %}">
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon">
+                <i class="bi bi-gift"></i>
+              </span>
+              <span class="nav-link-text">Gift Cards</span>
+            </div>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if is_city %} active {% endif %}" href="{% url 'main:cities' %}">
+              <div class="d-flex align-items-center">
+                  <span class="nav-link-icon">
+                      <i class="bi bi-buildings"></i>  <!-- Bootstrap icon for city -->
+                  </span>
+                  <span class="nav-link-text">Cities</span>
+              </div>
+          </a>
+      </li>
+      
+      <li class="nav-item">
+          <a class="nav-link {% if is_pincode %} active {% endif %}" href="{% url 'main:pincodes' %}">
+              <div class="d-flex align-items-center">
+                  <span class="nav-link-icon">
+                      <i class="bi bi-map"></i>  <!-- Bootstrap icon for location -->
+                  </span>
+                  <span class="nav-link-text">Pincodes</span>
+              </div>
+          </a>
+      </li>
+      
+        
+        {% comment %} <li class="nav-item">
+          <a class="nav-link {% if is_state %} active {% endif %}" href="{% url 'main:states' %}">
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon">
+                <i class="bi bi-pin-map"></i>  
+              </span>
+              <span class="nav-link-text">States</span>
+            </div>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if is_district %} active {% endif %}" href="{% url 'main:districts' %}">
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon">
+                <i class="bi bi-pin-map-fill"></i>  
+              </span>
+              <span class="nav-link-text">Districts</span>
+            </div>
+          </a>
+        </li>
+         {% endcomment %}
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<nav
+  class="navbar-vertical-nav offcanvas offcanvas-start navbar-offcanvac"
+  tabindex="-1"
+  id="offcanvasExample"
+>
+  <div class="navbar-vertical">
+    <div class="px-4 py-5 d-flex justify-content-between align-items-center">
+      <a href="{% url 'web:index' %}" class="navbar-brand">
+        <img src="{% static 'web/images/logo/logo.png' %}" alt="" />
+      </a>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="offcanvas"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div class="navbar-vertical-content flex-grow-1" data-simplebar="">
+      <ul class="navbar-nav flex-column" id="sideNavbar">
+        <li class="nav-item">
+          <a class="nav-link {% if is_dashbord %} active {% endif %}" href="{% url 'main:index' %}">
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon"> <i class="bi bi-house"></i></span>
+              <span class="nav-link-text">Dashboard</span>
+            </div>
+          </a>
+        </li>
+        <li class="nav-item mt-6 mb-3">
+          <span class="nav-label">Store Managements</span>
+        </li>
+        <!-- products -->
+        <li class="nav-item">
+          <a class="nav-link {% if not is_product %} collapsed {% endif %} "href="#"data-bs-toggle="collapse"data-bs-target="#navproducts"aria-expanded="{% if not is_product %} false {% else %}true {% endif %}"aria-controls="navproducts">
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon"> <i class="bi bi-cart"></i></span>
+              <span class="nav-link-text">Product</span>
+            </div>
+          </a>
+          <div id="navproducts" class="collapse {%if is_product %} show {% endif %}" data-bs-parent="#sideNavbar">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link {% if is_product_list %} active {% endif %}" href="{% url 'main:product_list' %}">Products </a>
+            </li>
+            <!-- Nav item -->
+            <li class="nav-item">
+              <a class="nav-link  {% if is_product_variant_list %} active {% endif %}" href="{% url 'main:variants' %}">Product Variants </a>
+            </li>
+          </ul>
+          </div>
+        </li>
+        <!-- category -->
+        <li class="nav-item">
+          <a class="nav-link {% if not is_category %} collapsed {% endif %} "href="#"data-bs-toggle="collapse"data-bs-target="#navcatrgories"aria-expanded="{% if not is_category %} false {% else %}true {% endif %}"aria-controls="navcatrgories">
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon"> <i class="bi bi-list-task"></i></span>
+              <span class="nav-link-text">Categories</span>
+            </div>
+          </a>
+          <div id="navcatrgories" class="collapse {%if is_category %} show {% endif %}" data-bs-parent="#sideNavbar">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link {% if is_category_list %} active {% endif %}" href="{% url 'main:categories' %}">Categories </a>
+              </li>
+              <!-- Nav item -->
+              {% comment %} <li class="nav-item">
+                <a class="nav-link  {% if is_subcategory_list %} active {% endif %}" href="{% url 'main:subcategories' %}"> Sub Categories</a>
+              </li> {% endcomment %}
+            </ul>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if is_tag %} active {% endif %}" href="{% url 'main:tags' %}">
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon">
+                <i class="bi bi-tag"></i
+              ></span>
+              <span class="nav-link-text">Tags</span>
+            </div>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if is_feature %} active {% endif %}" href="{% url 'main:features' %}">
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon">
+               <i class="bi bi-flower3"></i>
+              </span>
+              <span class="nav-link-text">Features</span>
+            </div>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if is_brand %} active {% endif %}" href="{% url 'main:brands' %}">
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon">
+                <i class="bi bi-tag"></i
+              ></span>
+              <span class="nav-link-text">Brands</span>
+            </div>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if is_state %} active {% endif %}" href="{% url 'main:states' %}">
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon">
+                <i class="bi bi-tag"></i
+              ></span>
+              <span class="nav-link-text">States</span>
+            </div>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if is_district %} active {% endif %}" href="{% url 'main:districts' %}">
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon">
+                <i class="bi bi-tag"></i
+              ></span>
+              <span class="nav-link-text">Districts</span>
+            </div>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if is_order %} active {% endif %}" href="{% url 'main:orders' %}">
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon">
+                <i class="bi bi-bag"></i></span>
+              <span class="nav-link-text">Orders</span>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

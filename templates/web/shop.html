@@ -1,0 +1,220 @@
+{% extends 'web/base.html' %} {% load static %} {% block title %}Shop{% endblock%}{% load i18n %}
+
+{% block content %}
+
+    <!-- ========================= Breadcrumb Start =============================== -->
+    <div class="breadcrumb py-26 bg-main-two-50">
+        <div class="container container-lg">
+            <div class="breadcrumb-wrapper flex-between flex-wrap gap-16">
+                <h6 class="mb-0">{% trans "Shop" %}</h6>
+                <ul class="flex-align gap-8 flex-wrap">
+                    <li class="text-sm">
+                        <a href="{% url 'web:index' %}" class   ="text-gray-900 flex-align gap-8 hover-text-main-600">
+                            <i class="ph ph-house"></i>
+                            {% trans "Home" %}
+                        </a>
+                    </li>
+                    <li class="flex-align">
+                        <i class="ph ph-caret-right"></i>
+                    </li>
+                    <li class="text-sm text-main-600"> {% trans "Shop" %} </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- ========================= Breadcrumb End =============================== -->
+    
+        <!-- =============================== Shop Section Start ======================================== -->
+     <section class="shop py-50">
+        <div class="container container-lg">
+            <div class="row">
+    
+                <!-- Sidebar Start -->
+                <div class="col-lg-3">
+                    <div class="shop-sidebar">
+                        <button type="button" class="shop-sidebar__close d-lg-none d-flex w-32 h-32 flex-center border border-gray-100 rounded-circle hover-bg-main-600 position-absolute inset-inline-end-0 me-10 mt-8 hover-text-white hover-border-main-600">
+                            <i class="ph ph-x"></i>
+                        </button>
+                        <div class="shop-sidebar__box border border-gray-100 rounded-8 p-32 mb-32">
+                            <h6 class="text-xl border-bottom border-gray-100 pb-24 mb-24">{% trans "Product Category" %}</h6>
+                            <ul class="max-h-540 overflow-y-auto scroll-sm">
+                                {% for category in categories %}
+                                <li class="mb-24">
+                                    <a href="{% url 'web:shop' %}?product__category={{category.id}}" class="text-gray-900 hover-text-main-600"><span class="main-font">{{ category }}</span> ({{category.get_products.count}})</a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% comment %} <div class="shop-sidebar__box rounded-8">
+                            <img src="{% static 'web/images/thumbs/advertise-img1.png' %}" alt="">
+                        </div> {% endcomment %}
+                    </div>
+                </div>
+                <!-- Sidebar End -->
+    
+                <!-- Content Start -->
+                <div class="col-lg-9">
+                    <!-- Top Start -->
+                    <div class="flex-between gap-16 flex-wrap mb-40 ">
+                        <span class="text-gray-900"><span class="main-font">{% trans "Showing" %}</span> {{ page_obj.start_index }}–{{ page_obj.end_index }} <span class"main-font">{% trans "of" %}</span> {{ page_obj.paginator.count }} <span ="main-font">{% trans "results" %}</span></span>
+                        <div class="position-relative flex-align gap-16 flex-wrap">
+                            <div class="position-relative text-gray-500 flex-align gap-4 text-14 shop-filter">
+                                <label for="sorting" class="text-inherit flex-shrink-0">{% trans "Sort by:" %}</label>
+                                <form method="get" action="">
+                                    <!-- Preserve the selected category in the form -->
+                                    <input type="hidden" name="product__category" value="{{ request.GET.product__category }}">
+                                    <select name="sort_by" class="form-select" onchange="this.form.submit()">
+                                        <option value="all_products" {% if request.GET.sort_by == 'all_products' %}selected{% endif %}>{% trans "Sort by: All Products" %}</option>
+                                        <option value="low_to_high" {% if request.GET.sort_by == 'low_to_high' %}selected{% endif %}>{% trans "Price: Low to High" %}</option>
+                                        <option value="high_to_low" {% if request.GET.sort_by == 'high_to_low' %}selected{% endif %}>{% trans "Price: High to Low" %}</option>
+                                        <option value="rating" {% if request.GET.sort_by == 'rating' %}selected{% endif %}>{% trans "Rate: High to Low" %}</option>
+                                    </select>
+                                </form>
+                            </div>
+                            <button type="button" class="w-44 h-44 d-lg-none d-flex flex-center border border-gray-100 rounded-6 text-2xl sidebar-btn"><i class="ph-bold ph-funnel"></i></button>
+                        </div>
+                    </div>
+                    <!-- Top End -->
+                    <div class="product mt-8">
+                        <div class="container container-lg">
+                            <div class="row gy-4 g-12">
+                                {% for product in products %}
+                                <div class="col-xxl-3 col-lg-3 col-sm-4 col-6">
+                                  {% include 'web/partials/product_card.html' %}
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                
+    
+                    <!-- Pagination Start -->
+                    <ul class="pagination flex-center flex-wrap gap-16">
+                        <!-- Previous Page -->
+                        <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
+                            <a class="page-link h-48 w-48 flex-center text-xxl rounded-8 fw-medium text-neutral-600 border border-gray-100" href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% if request.GET.product__sub_category %}&product__sub_category={{ request.GET.product__sub_category }}{% endif %}{% if selected_brands %}&product__brand={{ selected_brands|join:'&product__brand=' }}{% endif %}{% if request.GET.sort_by %}&sort_by={{request.GET.sort_by}}{% endif %}{% if request.GET.selling_price__range %}&selling_price__range={{request.GET.selling_price__range}}{% endif %}{% else %}#{% endif %}">
+                                <i class="ph-bold ph-arrow-left"></i>
+                            </a>
+                        </li>
+                    
+                        <!-- Pages -->
+                        {% for page_num in page_obj.paginator.page_range %}
+                            {% if page_num == page_obj.number %}
+                            <!-- Active Page -->
+                            <li class="page-item active">
+                                <a class="page-link h-48 w-48 flex-center text-md rounded-8 fw-medium text-neutral-600 border border-gray-100" href="?page={{ page_num }}{% if request.GET.product__sub_category %}&product__sub_category={{ request.GET.product__sub_category }}{% endif %}{% if selected_brands %}&product__brand={{ selected_brands|join:'&product__brand=' }}{% endif %}{% if request.GET.sort_by %}&sort_by={{request.GET.sort_by}}{% endif %}{% if request.GET.selling_price__range %}&selling_price__range={{request.GET.selling_price__range}}{% endif %}">{{ page_num }}</a>
+                            </li>
+                            {% else %}
+                            <!-- Non-active Page -->
+                            <li class="page-item">
+                                <a class="page-link h-48 w-48 flex-center text-md rounded-8 fw-medium text-neutral-600 border border-gray-100" href="?page={{ page_num }}{% if request.GET.product__sub_category %}&product__sub_category={{ request.GET.product__sub_category }}{% endif %}{% if selected_brands %}&product__brand={{ selected_brands|join:'&product__brand=' }}{% endif %}{% if request.GET.sort_by %}&sort_by={{request.GET.sort_by}}{% endif %}{% if request.GET.selling_price__range %}&selling_price__range={{request.GET.selling_price__range}}{% endif %}">{{ page_num }}</a>
+                            </li>
+                            {% endif %}
+                        {% endfor %}
+                    
+                        <!-- Next Page -->
+                        <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+                            <a class="page-link h-48 w-48 flex-center text-xxl rounded-8 fw-medium text-neutral-600 border border-gray-100" href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}{% if request.GET.product__sub_category %}&product__sub_category={{ request.GET.product__sub_category }}{% endif %}{% if selected_brands %}&product__brand={{ selected_brands|join:'&product__brand=' }}{% endif %}{% if request.GET.sort_by %}&sort_by={{request.GET.sort_by}}{% endif %}{% if request.GET.selling_price__range %}&selling_price__range={{request.GET.selling_price__range}}{% endif %}{% else %}#{% endif %}">
+                                <i class="ph-bold ph-arrow-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    
+                    <!-- Pagination End -->
+                </div>
+                <!-- Content End -->
+    
+            </div>
+        </div>
+     </section>
+    <!-- =============================== Shop Section End ======================================== -->
+    
+
+     <!-- Shopping Cart Modal -->
+  <div class="modal fade" id="shoppingCart" tabindex="-1" aria-labelledby="shoppingCartLabel" aria-hidden="true" data-cart-styles="{% static 'web/css/cart.css' %}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h5 class="modal-title" id="shoppingCartLabel">{% trans "Shopping Cart" %}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row gy-4">
+                        {% if cart_items %}
+
+
+                         {% include "web/partials/cart_new_modal.html" %}
+                        {% else %}
+                            <!-- Empty Cart Message -->
+                            <div class="text-center">
+                                <img src="{% static 'app/images/assets/cart.png' %}" alt="" class="img-fluid">
+                                <h3>{% trans "Your cart is empty" %}</h3>
+                                <a href="{% url 'web:shop' %}" class="btn btn-primary">{% trans "Continue Shopping" %}</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+    <!-- ========================== Shipping Section End ============================ -->
+        
+{% endblock content %}
+
+{% block js %}
+{% comment %} <script src="{% static 'web/js/shop.js' %}"></script> {% endcomment %}
+<script>
+    $(document).ready(function() {
+        // Check if 'show_modal' query parameter exists in the URL
+        var urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('show_modal')) {
+            // Show the shopping cart modal if the 'show_modal' parameter exists
+            $('#shoppingCart').modal('show');
+        }
+    
+        // Cart add button click event
+        $('.cart-add-btn').click(function(e) {
+            e.preventDefault();
+            var product_id = $(this).data('product-id');
+            var quantity = 1;  // Modify if you want to dynamically change the quantity
+            
+            // Redirect to the same page with a query parameter to trigger the modal
+            window.location.href = '{% url "web:add_cart" %}?product_id=' + product_id + '&quantity=' + quantity;
+        });
+        $('.cart-minus-btn').click(function(e) {
+            e.preventDefault();
+            var product_id = $(this).data('product-id');
+            window.location.href = '{% url "web:remove_cart" %}?product_id=' + product_id + '&show_modal=true';
+        });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const shoppingCart = document.getElementById('shoppingCart');
+        let styleSheet = null;
+    
+        shoppingCart.addEventListener('show.bs.modal', function () {
+            // Create and append stylesheet when modal opens
+            const styleLink = document.createElement('link');
+            styleLink.rel = 'stylesheet';
+            styleLink.href = this.dataset.cartStyles;
+            styleLink.id = 'cartModalStyles';
+            document.head.appendChild(styleLink);
+            styleSheet = styleLink;
+        });
+    
+        shoppingCart.addEventListener('hidden.bs.modal', function () {
+            // Remove stylesheet when modal closes
+            if (styleSheet) {
+                styleSheet.remove();
+            }
+        });
+    });
+</script>
+{% endblock %}

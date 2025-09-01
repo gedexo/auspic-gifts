@@ -1,0 +1,329 @@
+{% extends 'web/base.html' %} {% load static %} {% block title %}Shop Checkout{% endblock%}
+{% load crispy_forms_tags %}
+{% load i18n %}
+  
+{% block content %}
+ 
+    <!-- ========================= Breadcrumb Start =============================== -->
+    <div class="breadcrumb py-26 bg-main-two-50">
+      <div class="container container-lg">
+          <div class="breadcrumb-wrapper flex-between flex-wrap gap-16">
+              <h6 class="mb-0">{% trans "Checkout" %}</h6>
+              <ul class="flex-align gap-8 flex-wrap">
+                  <li class="text-sm">
+                      <a href="{% url 'web:index' %}" class="text-gray-900 flex-align gap-8 hover-text-main-600">
+                          <i class="ph ph-house"></i>
+                          {% trans "Home" %}
+                      </a>
+                  </li>
+                  <li class="flex-align">
+                      <i class="ph ph-caret-right"></i>
+                  </li>
+                  <li class="text-sm text-main-600">{% trans "Checkout" %} </li>
+              </ul>
+          </div>
+      </div>
+  </div>
+  <!-- ========================= Breadcrumb End =============================== -->
+  
+      <!-- ================================= Checkout Page Start ===================================== -->
+   <section class="checkout py-50">
+      <div class="container container-lg">
+         
+          <div class="row">
+              <div class="col-xl-8 col-lg-7">
+                    <form action="" method="post" enctype="multipart/form-data" class="pe-xl-5">
+                    {% csrf_token %}
+              {{ form.selected_dial_code_mobile }}
+              {{ form.selected_dial_code_alternative }}
+                      <div class="row gy-3">
+                          <div class="col-sm-6 col-xs-6">
+                            {{ form.full_name }}
+                          </div>
+                          <div class="col-sm-6 col-xs-6">
+                            {{ form.email }}
+                          </div>
+                          <div class="col-6">
+                            {{ form.mobile_no }}
+                          </div>
+                          <div class="col-6">
+                            {{ form.alternative_no }}
+                          </div>
+                          <div class="col-6">
+                            {{ form.address_line_1 }}
+                          </div>
+                          <div class="col-6">
+                            {{ form.address_line_2 }}
+                          </div>
+                          <div class="col-6">
+                            {{ form.state }}
+                          </div>
+                          <div class="col-6">
+                            {{ form.district }}
+                          </div>
+                          <div class="col-6">
+                            {{ form.city }}
+                          </div>
+                          <div class="col-6">
+                            {{ form.pin_code }}
+                          </div>
+                        
+  
+                      </div>
+                
+                  <div class="col-xl-12 col-lg-12">
+                <div class="mt-32">
+                    <div class="payment-item">
+                        <div class="form-check common-check common-radio py-16 mb-0">
+                            <input class="form-check-input" type="radio" name="payment_option" value="OP"  id="paypal" >
+                            <label class="form-check-label fw-semibold text-neutral-600" for="paypal">{% trans "Direct Bank transfer" %}</label>
+                        </div>
+                        <div class="payment-item__content px-16 py-24 rounded-8 bg-main-50 position-relative">   
+                            <p class="text-gray-800">{% trans "Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order will not be shipped until the funds have cleared in our account." %}</p>
+                        </div>
+                    </div>
+                   
+                    <div class="payment-item">
+                        <div class="form-check common-check common-radio py-16 mb-0">
+                            <input class="form-check-input" type="radio" name="payment_option" value="COD" id="cashonDelivery">
+                            <label class="form-check-label fw-semibold text-neutral-600" for="cashonDelivery">{% trans "Cash on delivery" %}</label>
+                        </div>
+                        <div class="payment-item__content px-16 py-24 rounded-8 bg-main-50 position-relative">   
+                            <p class="text-gray-800">{% trans "Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order will not be shipped until the funds have cleared in our account." %}</p>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4">
+                      <button type="submit" class="btn btn-main mt-40 py-18 w-100 rounded-8 mt-56 order-btn">{% trans "Place Order" %}</button> 
+                    </div>
+                    
+                </div>
+
+                <div class="mt-32 pt-32 border-top border-gray-100">
+                    <p class="text-gray-500">{% trans "Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our" %} <a href="{% url 'web:privacy_policy' %}" class="text-main-600 text-decoration-underline"> {% trans "privacy policy" %}</a> .</p>
+                </div>
+                
+                
+                </div>
+                  
+              </div>
+              <div class="col-xl-4 col-lg-5">
+                  <div class="checkout-sidebar">
+                      <div class="bg-color-three rounded-8 p-24 text-center">
+                          <span class="text-gray-900 text-xl fw-semibold">{% trans "Your Orders" %}</span>
+                      </div>
+  
+                      <div class="border border-gray-100 rounded-8 px-24 py-40 mt-24">
+                          <div class="mb-32 pb-32 border-bottom border-gray-100 flex-between gap-8">
+                              <span class="text-gray-900 fw-medium text-xl font-heading-two">{% trans "Product" %}</span>
+                              <span class="text-gray-900 fw-medium text-xl font-heading-two">{% trans "Subtotal" %}</span>
+                          </div>
+                          {% for item in cart_items %}
+                          <div class="flex-between gap-24 mb-32">
+                              <div class="flex-align gap-12">
+                                  <span class="text-gray-900 fw-normal text-md font-heading-two w-144">{{item.variant|truncatechars:30}}</span>
+                                  <span class="text-gray-900 fw-normal text-md font-heading-two"><i class="ph-bold ph-x"></i></span>
+                                  <span class="text-gray-900 fw-semibold text-md font-heading-two">{{item.quantity}}</span>
+                              </div>
+                              <span class="text-gray-900 fw-bold text-md font-heading-two">QAR{{item.total_price|floatformat:2}}</span>
+                          </div>
+                          {% endfor %}
+  
+  
+                          <div class="border-top border-gray-100 pt-30  mt-30">
+                              <div class="mb-32 flex-between gap-8">
+                                  <span class="text-gray-900 font-heading-two text-xl fw-semibold">Subtotal</span>
+                                  <span class="text-gray-900 font-heading-two text-md fw-bold" id="cart_total">QAR{{cart_total|floatformat:2}}</span>
+                              </div>
+                              <div class="mb-32 flex-between gap-8">
+                                <span class="text-gray-900 font-heading-two text-xl fw-semibold">Service Fee</span>
+                                <span class="text-gray-900 font-heading-two text-md fw-bold" id="service_fee">QAR0.00</span>
+                            </div>
+                              <div class="mb-0 flex-between gap-8">
+                                <span class="text-gray-900 font-heading-two text-xl fw-semibold">Shipping Fee</span>
+                                <span class="text-gray-900 font-heading-two text-md fw-bold" id="shipping_fee">QAR0.00</span>
+                            </div>
+                              <div class="mb-0 flex-between gap-8">
+                                  <span class="text-gray-900 font-heading-two text-xl fw-semibold">Total</span>
+                                  <span class="text-gray-900 font-heading-two text-md fw-bold" id="sub_total"></span>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="text-danger payment_span mt-4"> please select a payment method</div>
+                    <input type="hidden" id="id_selected_address" name="selected_address" value="">
+                    <input type="hidden" id="id_selected_payment" name="selected_payment" value="">
+                    <input type="hidden" id="id_payable" name="payable" value="">
+                    <input type="hidden" id="id_service_fee" name="service_fee" value="">
+                    <input type="hidden" id="id_shipping_fee" name="shipping_fee" value="">
+                    <input type="hidden" id="id_total_amt" name="total_amt" value="">
+                    
+                    </form>
+                  </div>
+              </div>
+          </div>
+      </div>
+   </section>
+  <!-- ================================= Checkout Page End ===================================== -->
+  
+      <!-- ========================== Shipping Section Start ============================ -->
+      <section class="shipping mb-24" id="shipping">
+        <div class="container container-lg">
+            <div class="row gy-4">
+                <div class="col-xxl-3 col-sm-6">
+                    <div class="shipping-item flex-align gap-16 rounded-16 bg-main-50 hover-bg-main-100 transition-2">
+                        <span class="w-56 h-56 flex-center rounded-circle bg-main-600 text-white text-32 flex-shrink-0"><i class="ph-fill ph-car-profile"></i></span>
+                        <div class="">
+                            <h6 class="mb-0">{% trans "Fast Delivery" %}</h6>
+                            <span class="text-sm text-heading">{% trans "Quick and reliable shipping." %}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-3 col-sm-6">
+                    <div class="shipping-item flex-align gap-16 rounded-16 bg-main-50 hover-bg-main-100 transition-2">
+                        <span class="w-56 h-56 flex-center rounded-circle bg-main-600 text-white text-32 flex-shrink-0"><i class="ph-fill ph-hand-heart"></i></span>
+                        <div class="">
+                            <h6 class="mb-0"> {% trans "100% Satisfaction" %}</h6>
+                            <span class="text-sm text-heading">{% trans "Your satisfaction is guaranteed." %}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-3 col-sm-6">
+                    <div class="shipping-item flex-align gap-16 rounded-16 bg-main-50 hover-bg-main-100 transition-2">
+                        <span class="w-56 h-56 flex-center rounded-circle bg-main-600 text-white text-32 flex-shrink-0"><i class="ph-fill ph-credit-card"></i></span>
+                        <div class="">
+                            <h6 class="mb-0"> {% trans "Secure Payments" %}</h6>
+                            <span class="text-sm text-heading">{% trans "Safe and secure transactions." %}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-3 col-sm-6">
+                    <div class="shipping-item flex-align gap-16 rounded-16 bg-main-50 hover-bg-main-100 transition-2">
+                        <span class="w-56 h-56 flex-center rounded-circle bg-main-600 text-white text-32 flex-shrink-0"><i class="ph-fill ph-chats"></i></span>
+                        <div class="">
+                            <h6 class="mb-0"> {% trans "24/7 Support" %}</h6>
+                            <span class="text-sm text-heading">{% trans "Assistance anytime, every day." %}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+     </section>
+  <!-- ========================== Shipping Section End ============================ -->
+    
+  
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css">
+<style>
+  input[type="radio"]:checked + label {
+    background-color: inherit !important;
+    border-color: #0aad0a !important;
+    color: inherit !important;
+  }
+  .intl-tel-input,
+  .iti{
+      width: 100%;
+      margin-bottom: 15px;
+  }
+</style>
+
+{% endblock %}
+
+{% block js %}
+{% include 'web/includes/form-ajax.html' %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput-jquery.min.js"></script>
+<script>
+  $(document).ready(function() {
+    // Initialize the intlTelInput for the parent_phone_number input field
+    var mobileInput = $("#id_mobile_no");
+    mobileInput.intlTelInput({
+        initialCountry: "qa",
+        separateDialCode: true
+    });
+    mobileInput.on("input", function() {
+        var selectedDialCode = mobileInput.intlTelInput("getSelectedCountryData").dialCode;
+        $("#id_selected_dial_code_mobile").val(selectedDialCode);
+    });
+    var alternativeInput = $("#id_alternative_no");
+    alternativeInput.intlTelInput({
+        initialCountry: "qa",
+        separateDialCode: true
+    });
+    alternativeInput.on("input", function() {
+        var selectedDialCode2 = alternativeInput.intlTelInput("getSelectedCountryData").dialCode;
+        $("#id_selected_dial_code_alternative").val(selectedDialCode2);
+    });
+    document.getElementById("id_mobile_no").addEventListener("keyup", function() {
+      this.value = this.value.replace(/[^0-9]/g, "");
+    });
+    document.getElementById("id_alternative_no").addEventListener("keyup", function() {
+      this.value = this.value.replace(/[^0-9]/g, "");
+    });
+    document.getElementById("id_pin_code").addEventListener("keyup", function() {
+      this.value = this.value.replace(/[^0-9]/g, "");
+    });
+  });
+</script>
+<script>
+  // calculate total
+  var cart_total = $("#cart_total").text();
+  var cart_total = cart_total.replace('QAR', '');
+  var service_fee = $("#service_fee").text();
+  var service_fee = service_fee.replace('QAR', '');
+  var shipping_fee = $("#shipping_fee").text();
+  var shipping_fee = shipping_fee.replace('QAR', '');
+  var sub_total = parseFloat(cart_total) + parseFloat(service_fee) + parseFloat(shipping_fee) + parseFloat(service_fee);
+  $("#sub_total").text("QAR"+sub_total.toFixed(2));
+
+
+  $('.order-btn').hide();
+    $('input[name="payment_option"]').change(function(){
+      selectedpayment = $('input[name="payment_option"]:checked').val();
+      selectedpayment = $('input[name="payment_option"]:checked').val();
+      console.log('=',selectedpayment)
+      if (selectedpayment){
+        $('.order-btn').show();
+        if (selectedpayment == 'COD'){
+          var service_fee1 = $("#service_fee").text('QAR'+25.00.toFixed(2));
+          var cart_total1 = $("#cart_total").text();
+          cart_total1 = cart_total1.replace('QAR', '');
+          console.log('cart_total1=',cart_total1)
+          var shipping_fee1 = $("#shipping_fee").text();
+          var shipping_fee1 = shipping_fee1.replace('QAR', '');
+          var sub_total1 = parseFloat(cart_total1) + parseFloat(25) + parseFloat(shipping_fee1) ;
+          $("#sub_total").text("QAR"+sub_total1.toFixed(2));
+
+        }else{
+          var service_fee1 = $("#service_fee").text('QAR'+0.00.toFixed(2));
+          var cart_total1 = $("#cart_total").text();
+          var cart_total1 = cart_total1.replace('QAR', '');
+          var shipping_fee1 = $("#shipping_fee").text();
+          var shipping_fee1 = shipping_fee1.replace('QAR', '');
+          var sub_total1 = parseFloat(cart_total1) + parseFloat(0.00) + parseFloat(shipping_fee1) ;
+          $("#sub_total").text("QAR"+sub_total1.toFixed(2));
+          console.log(shipping_fee1)
+
+        }
+        $('.payment_span').hide()
+      }
+    })
+    
+  // order checkout
+  $('.order-btn').click(function(e){
+    
+    var shipping_fee = $("#shipping_fee").text();
+    var shipping_fee = shipping_fee.replace('QAR', '');
+    var service_fee = $("#service_fee").text();
+    var service_fee = service_fee.replace('QAR', '');
+    var sub_total = $("#sub_total").text();
+    var sub_total = sub_total.replace('QAR', '');
+    $('#id_selected_payment').val(selectedpayment);
+    $('#id_payable').val(cart_total);
+    $('#id_shipping_fee').val(shipping_fee);
+    $('#id_service_fee').val(service_fee);
+    $('#id_total_amt').val(sub_total);
+
+  });
+</script>
+{% endblock js %}

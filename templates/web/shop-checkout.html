@@ -1,0 +1,909 @@
+{% extends 'web/base.html' %} {% load static %} {% block title %}Shop Checkout{% endblock%}
+{% load crispy_forms_tags %}
+{% load i18n %}
+  {% comment %}
+{% block content %}
+ 
+    <!-- ========================= Breadcrumb Start =============================== -->
+    <div class="breadcrumb py-26 bg-main-two-50">
+      <div class="container container-lg">
+          <div class="breadcrumb-wrapper flex-between flex-wrap gap-16">
+              <h6 class="mb-0">{% trans "Checkout" %}</h6>
+              <ul class="flex-align gap-8 flex-wrap">
+                  <li class="text-sm">
+                      <a href="{% url 'web:index' %}" class="text-gray-900 flex-align gap-8 hover-text-main-600">
+                          <i class="ph ph-house"></i>
+                          {% trans "Home" %}
+                      </a>
+                  </li>
+                  <li class="flex-align">
+                      <i class="ph ph-caret-right"></i>
+                  </li>
+                  <li class="text-sm text-main-600">{% trans "Checkout" %} </li>
+              </ul>
+          </div>
+      </div>
+  </div>
+  <!-- ========================= Breadcrumb End =============================== -->
+  
+      <!-- ================================= Checkout Page Start ===================================== -->
+   <section class="checkout py-50">
+      <div class="container container-lg">
+         
+          <div class="row">
+              <div class="col-xl-8 col-lg-7">
+                    <form action="" method="post" enctype="multipart/form-data" class="pe-xl-5">
+                    {% csrf_token %}
+              {{ form.selected_dial_code_mobile }}
+              {{ form.selected_dial_code_alternative }}
+                      <div class="row gy-3">
+                          <div class="col-sm-6 col-xs-6">
+                            {{ form.full_name }}
+                          </div>
+                          <div class="col-sm-6 col-xs-6">
+                            {{ form.email }}
+                          </div>
+                          <div class="col-6">
+                            {{ form.mobile_no }}
+                          </div>
+                          <div class="col-6">
+                            {{ form.alternative_no }}
+                          </div>
+                          <div class="col-6">
+                            {{ form.address_line_1 }}
+                          </div>
+                          <div class="col-6">
+                            {{ form.address_line_2 }}
+                          </div>
+                          <div class="col-6">
+                            {{ form.state }}
+                          </div>
+                          <div class="col-6">
+                            {{ form.district }}
+                          </div>
+                          <div class="col-6">
+                            {{ form.city }}
+                          </div>
+                          <div class="col-6">
+                            {{ form.pin_code }}
+                          </div>
+                        
+  
+                      </div>
+                
+                  <div class="col-xl-12 col-lg-12">
+                <div class="mt-32 ">
+                   
+                   
+                    <div class="payment-item d-none">
+                        <div class="form-check common-check common-radio py-16 mb-0">
+                            <input class="form-check-input" type="radio" name="payment_option" value="COD" id="cashonDelivery" checked>
+                            <label class="form-check-label fw-semibold text-neutral-600" for="cashonDelivery">{% trans "Cash on delivery" %}</label>
+                        </div>
+                        <div class="payment-item__content px-16 py-24 rounded-8 bg-main-50 position-relative">   
+                            <p class="text-gray-800">{% trans "Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order will not be shipped until the funds have cleared in our account." %}</p>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4">
+                      <button type="submit" class="btn btn-main mt-40 py-18 w-100 rounded-8 mt-56 order-btn">{% trans "Place Order" %}</button> 
+                    </div>
+                    
+                </div>
+
+                <div class="mt-32 pt-32 border-top border-gray-100">
+                    <p class="text-gray-500">{% trans "Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our" %} <a href="{% url 'web:privacy_policy' %}" class="text-main-600 text-decoration-underline"> {% trans "privacy policy" %}</a> .</p>
+                </div>
+                
+                
+                </div>
+                  
+              </div>
+              <div class="col-xl-4 col-lg-5">
+                  <div class="checkout-sidebar">
+                      <div class="bg-color-three rounded-8 p-24 text-center">
+                          <span class="text-gray-900 text-xl fw-semibold">{% trans "Your Orders" %}</span>
+                      </div>
+  
+                      <div class="border border-gray-100 rounded-8 px-24 py-40 mt-24">
+                          <div class="mb-32 pb-32 border-bottom border-gray-100 flex-between gap-8">
+                              <span class="text-gray-900 fw-medium text-xl font-heading-two">{% trans "Product" %}</span>
+                              <span class="text-gray-900 fw-medium text-xl font-heading-two">{% trans "Subtotal" %}</span>
+                          </div>
+                          {% for item in cart_items %}
+                          <div class="flex-between gap-24 mb-32">
+                              <div class="flex-align gap-12">
+                                  <span class="text-gray-900 fw-normal text-md font-heading-two w-144">{{item.variant|truncatechars:30}}</span>
+                                  <span class="text-gray-900 fw-normal text-md font-heading-two"><i class="ph-bold ph-x"></i></span>
+                                  <span class="text-gray-900 fw-semibold text-md font-heading-two">{{item.quantity}}</span>
+                              </div>
+                              <span class="text-gray-900 fw-bold text-md font-heading-two">{{item.total_price|floatformat:2}}</span>
+                          </div>
+                          {% endfor %}
+  
+  
+                          <div class="border-top border-gray-100 pt-30  mt-30">
+                              <div class="mb-32 flex-between gap-8">
+                                  <span class="text-gray-900 font-heading-two text-xl fw-semibold">Subtotal</span>
+                                  <span class="text-gray-900 font-heading-two text-md fw-bold" id="cart_total">{{cart_total|floatformat:2}}</span>
+                              </div>
+                              <div class="mb-32 flex-between gap-8">
+                                <span class="text-gray-900 font-heading-two text-xl fw-semibold">Service Fee</span>
+                                <span class="text-gray-900 font-heading-two text-md fw-bold" id="service_fee">0.00</span>
+                            </div>
+                              <div class="mb-0 flex-between gap-8">
+                                <span class="text-gray-900 font-heading-two text-xl fw-semibold">Shipping Fee</span>
+                                <span class="text-gray-900 font-heading-two text-md fw-bold" id="shipping_fee">0.00</span>
+                            </div>
+                              <div class="mb-0 flex-between gap-8">
+                                  <span class="text-gray-900 font-heading-two text-xl fw-semibold">Total</span>
+                                  <span class="text-gray-900 font-heading-two text-md fw-bold" id="sub_total"></span>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="text-danger payment_span mt-4"> please select a payment method</div>
+                    <input type="hidden" id="id_selected_address" name="selected_address" value="">
+                    <input type="hidden" id="id_selected_payment" name="selected_payment" value="">
+                    <input type="hidden" id="id_payable" name="payable" value="">
+                    <input type="hidden" id="id_service_fee" name="service_fee" value="">
+                    <input type="hidden" id="id_shipping_fee" name="shipping_fee" value="">
+                    <input type="hidden" id="id_total_amt" name="total_amt" value="">
+                    
+                    </form>
+                  </div>
+              </div>
+          </div>
+      </div>
+   </section>
+  <!-- ================================= Checkout Page End ===================================== -->
+  
+      <!-- ========================== Shipping Section Start ============================ -->
+      <section class="shipping mb-24" id="shipping">
+        <div class="container container-lg">
+            <div class="row gy-4">
+                <div class="col-xxl-3 col-sm-6">
+                    <div class="shipping-item flex-align gap-16 rounded-16 bg-main-50 hover-bg-main-100 transition-2">
+                        <span class="w-56 h-56 flex-center rounded-circle bg-main-600 text-white text-32 flex-shrink-0"><i class="ph-fill ph-car-profile"></i></span>
+                        <div class="">
+                            <h6 class="mb-0">{% trans "Fast Delivery" %}</h6>
+                            <span class="text-sm text-heading">{% trans "Quick and reliable shipping." %}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-3 col-sm-6">
+                    <div class="shipping-item flex-align gap-16 rounded-16 bg-main-50 hover-bg-main-100 transition-2">
+                        <span class="w-56 h-56 flex-center rounded-circle bg-main-600 text-white text-32 flex-shrink-0"><i class="ph-fill ph-hand-heart"></i></span>
+                        <div class="">
+                            <h6 class="mb-0"> {% trans "100% Satisfaction" %}</h6>
+                            <span class="text-sm text-heading">{% trans "Your satisfaction is guaranteed." %}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-3 col-sm-6">
+                    <div class="shipping-item flex-align gap-16 rounded-16 bg-main-50 hover-bg-main-100 transition-2">
+                        <span class="w-56 h-56 flex-center rounded-circle bg-main-600 text-white text-32 flex-shrink-0"><i class="ph-fill ph-credit-card"></i></span>
+                        <div class="">
+                            <h6 class="mb-0"> {% trans "Secure Payments" %}</h6>
+                            <span class="text-sm text-heading">{% trans "Safe and secure transactions." %}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-3 col-sm-6">
+                    <div class="shipping-item flex-align gap-16 rounded-16 bg-main-50 hover-bg-main-100 transition-2">
+                        <span class="w-56 h-56 flex-center rounded-circle bg-main-600 text-white text-32 flex-shrink-0"><i class="ph-fill ph-chats"></i></span>
+                        <div class="">
+                            <h6 class="mb-0"> {% trans "24/7 Support" %}</h6>
+                            <span class="text-sm text-heading">{% trans "Assistance anytime, every day." %}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+     </section>
+  <!-- ========================== Shipping Section End ============================ -->
+    
+  
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css">
+<style>
+  input[type="radio"]:checked + label {
+    background-color: inherit !important;
+    border-color: #0aad0a !important;
+    color: inherit !important;
+  }
+  .intl-tel-input,
+  .iti{
+      width: 100%;
+      margin-bottom: 15px;
+  }
+</style>
+
+{% endblock %}
+
+{% block js %}
+{% include 'web/includes/form-ajax.html' %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput-jquery.min.js"></script>
+<script>
+  $(document).ready(function() {
+    // Initialize the intlTelInput for the parent_phone_number input field
+    var mobileInput = $("#id_mobile_no");
+    mobileInput.intlTelInput({
+        initialCountry: "in",
+        separateDialCode: true
+    });
+    mobileInput.on("input", function() {
+        var selectedDialCode = mobileInput.intlTelInput("getSelectedCountryData").dialCode;
+        $("#id_selected_dial_code_mobile").val(selectedDialCode);
+    });
+    var alternativeInput = $("#id_alternative_no");
+    alternativeInput.intlTelInput({
+        initialCountry: "in",
+        separateDialCode: true
+    });
+    alternativeInput.on("input", function() {
+        var selectedDialCode2 = alternativeInput.intlTelInput("getSelectedCountryData").dialCode;
+        $("#id_selected_dial_code_alternative").val(selectedDialCode2);
+    });
+    document.getElementById("id_mobile_no").addEventListener("keyup", function() {
+      this.value = this.value.replace(/[^0-9]/g, "");
+    });
+    document.getElementById("id_alternative_no").addEventListener("keyup", function() {
+      this.value = this.value.replace(/[^0-9]/g, "");
+    });
+    document.getElementById("id_pin_code").addEventListener("keyup", function() {
+      this.value = this.value.replace(/[^0-9]/g, "");
+    });
+  });
+</script>
+<script>
+  // calculate total
+  var cart_total = $("#cart_total").text();
+  var cart_total = cart_total.replace('QAR', '');
+  var service_fee = $("#service_fee").text();
+  var service_fee = service_fee.replace('QAR', '');
+  var shipping_fee = $("#shipping_fee").text();
+  var shipping_fee = shipping_fee.replace('QAR', '');
+  var sub_total = parseFloat(cart_total) + parseFloat(service_fee) + parseFloat(shipping_fee) + parseFloat(service_fee);
+  $("#sub_total").text(sub_total.toFixed(2));
+
+  $('.payment_span').hide()
+  $('.order-btn').show();
+    
+  // order checkout
+  $('.order-btn').click(function(e){
+    
+    var shipping_fee = $("#shipping_fee").text();
+    var shipping_fee = shipping_fee.replace('QAR', '');
+    var service_fee = $("#service_fee").text();
+    var service_fee = service_fee.replace('QAR', '');
+    var sub_total = $("#sub_total").text();
+    var sub_total = sub_total.replace('QAR', '');
+    $('#id_selected_payment').val('COD');
+    $('#id_payable').val(cart_total);
+    $('#id_shipping_fee').val(shipping_fee);
+    $('#id_service_fee').val(service_fee);
+    $('#id_total_amt').val(sub_total);
+
+  });
+</script>
+{% endblock js %} {% endcomment %}
+
+
+
+
+
+  
+{% block content %}
+ 
+    <!-- ========================= Breadcrumb Start =============================== -->
+    <div class="breadcrumb py-26 bg-main-two-50">
+      <div class="container container-lg">
+          <div class="breadcrumb-wrapper flex-between flex-wrap gap-16">
+              <h6 class="mb-0">{% trans "Checkout" %}</h6>
+              <ul class="flex-align gap-8 flex-wrap">
+                  <li class="text-sm">
+                      <a href="{% url 'web:index' %}" class="text-gray-900 flex-align gap-8 hover-text-main-600">
+                          <i class="ph ph-house"></i>
+                          {% trans "Home" %}
+                      </a>
+                  </li>
+                  <li class="flex-align">
+                      <i class="ph ph-caret-right"></i>
+                  </li>
+                  <li class="text-sm text-main-600">{% trans "Checkout" %} </li>
+              </ul>
+          </div>
+      </div>
+  </div>
+  <!-- ========================= Breadcrumb End =============================== -->
+  
+      <!-- ================================= Checkout Page Start ===================================== -->
+   <section class="checkout py-50">
+      <div class="container container-lg">
+        <div class="details-container">
+          <div class="icon-section">
+              <i class="fas fa-id-card"></i>
+              <div>
+                  <div class="icon-text">Login Details</div>
+              </div>
+          </div>
+          <div class="info-section">
+              <div class="info-box">
+                  <h4>Full Name</h4>
+                  <p>{{ user_details.full_name }}</p>
+              </div>
+              <div class="info-box">
+                  <h4>Phone Number</h4>
+                  <p>{{ user_details.phone_number }}</p>
+              </div>
+              <div class="info-box">
+                  <h4>E-Mail ID</h4>
+                  <p>{{ user_details.email }}</p>
+              </div>
+          </div>
+      </div>
+          <div class="row">
+              <div class="col-xl-8 col-lg-7  order-2 order-lg-1 mt-3">
+                    <form action="" method="post" enctype="multipart/form-data" class="pe-xl-5">
+                    {% csrf_token %}
+                      {{ form.selected_dial_code_mobile }}
+                      {{ form.selected_dial_code_alternative }}
+                      <div class="row gy-3">
+                          <div class="col-sm-6 col-xs-6">
+                            {{ form.full_name }}
+                          </div>
+                          <div class="col-sm-6 col-xs-6">
+                            {{ form.email }}
+                          </div>
+                          <div class="col-6">
+                            {{ form.mobile_no }}
+                          </div>
+                       
+                          <div class="col-6">
+                            {{ form.address_line_1 }}
+                          </div>
+                          <div class="col-6">
+                            {{ form.address_line_2 }}
+                          </div>
+                          <div class="col-6">
+                            {{ form.state }}
+                          </div>
+                          <div class="col-6">
+                            {{ form.district }}
+                          </div>
+                          <div class="col-6">
+                            {{ form.city }}
+                          </div>
+                          <div class="col-6">
+                            {{ form.pin_code }}
+                          </div>
+                        <p>Select a Delivery Date</p>
+                        <div class="time-slot-box">
+                          <input type="radio" id="today" name="delivery_date_choice" value="today">
+                          <label for="today">Today</label>
+                      
+                          <input type="radio" id="tomorrow" name="delivery_date_choice" value="tomorrow">
+                          <label for="tomorrow">Tomorrow</label>
+                      
+                          <input type="radio" id="select_date" name="delivery_date_choice" value="select_date">
+                          <label for="select_date">Select a Date</label>
+                      </div>
+                    
+                      <input type="text" id="datepicker" name="selected_date" class="form-control" placeholder="Select a date">
+                        
+                        <p>Select Delivery Time Slot</p>
+                        <div class="time-slot-box">
+                          <input type="radio" id="slot1" name="time_slot" value="9-12" required>
+                          <label for="slot1">9:00 AM - 12:00 PM</label>
+                      
+                          <input type="radio" id="slot2" name="time_slot" value="12-6">
+                          <label for="slot2">12:00 PM - 6:00 PM</label>
+                      </div>
+
+                      </div>
+                
+                <div class="col-xl-12 col-lg-12">
+                <div class="mt-32">
+                    <div class="payment-item">
+                        <div class="form-check common-check common-radio py-16 mb-0">
+                            <input class="form-check-input" type="radio" name="payment_option" value="OP"  id="paypal" >
+                            <label class="form-check-label fw-semibold text-neutral-600" for="paypal">{% trans "Pay Online" %}</label>
+                        </div>
+                        <div class="payment-item__content px-16 py-24 rounded-8 bg-main-50 position-relative">   
+                            <p class="text-gray-800">{% trans "Make your payment online using our secure payment gateway. Please use your Order ID as the payment reference. Your order will be processed once the payment is successfully completed" %}</p>
+                        </div>
+                    </div>
+                   
+                    <div class="payment-item">
+                        <div class="form-check common-check common-radio py-16 mb-0">
+                            <input class="form-check-input" type="radio" name="payment_option" value="COD" id="cashonDelivery">
+                            <label class="form-check-label fw-semibold text-neutral-600" for="cashonDelivery">{% trans "Cash on delivery" %}</label>
+                        </div>
+                        <div class="payment-item__content px-16 py-24 rounded-8 bg-main-50 position-relative">   
+                            <p class="text-gray-800">{% trans "Make your payment in cash upon delivery. Please have the exact amount ready, as our delivery personnel may have limited change. Your order will be processed and shipped accordingly." %}</p>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4">
+                      <button type="submit" class="btn btn-main mt-40 py-18 w-100 rounded-8 mt-56 order-btn">{% trans "Place Order" %}</button> 
+                    </div>
+                    
+                </div>
+
+                <div class="mt-32 pt-32 border-top border-gray-100">
+                    <p class="text-gray-500">{% trans "Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our" %} <a href="{% url 'web:privacy_policy' %}" class="text-main-600 text-decoration-underline"> {% trans "privacy policy" %}</a> .</p>
+                </div>
+                
+                
+                </div>
+                  
+              </div>
+              {% comment %} <div class="col-xl-4 col-lg-5  order-1 order-lg-2 sticky-column" >
+                  <div class="checkout-sidebar">
+                      <div class="bg-color-three rounded-8 p-24 text-center">
+                          <span class="text-gray-900 text-xl fw-semibold">{% trans "Your Orders" %}</span>
+                      </div>
+  
+                      <div class="border border-gray-100 rounded-8 px-24 py-40 mt-24">
+                          <div class="mb-32 pb-32 border-bottom border-gray-100 flex-between gap-8">
+                              <span class="text-gray-900 fw-medium text-xl font-heading-two">{% trans "Product" %}</span>
+                              <span class="text-gray-900 fw-medium text-xl font-heading-two">{% trans "Subtotal" %}</span>
+                          </div>
+                          {% for item in cart_items %}
+                          <div class="flex-between gap-24 mb-32">
+                              <div class="flex-align gap-12">
+                                  <span class="text-gray-900 fw-normal text-md font-heading-two w-144">{{item.variant|truncatechars:30}}</span>
+                                  <span class="text-gray-900 fw-normal text-md font-heading-two"><i class="ph-bold ph-x"></i></span>
+                                  <span class="text-gray-900 fw-semibold text-md font-heading-two">{{item.quantity}}</span>
+                              </div>
+                              <span class="text-gray-900 fw-bold text-md font-heading-two">{{item.total_price|floatformat:2}}</span>
+                          </div>
+                          {% endfor %}
+  
+  
+                          <div class="border-top border-gray-100 pt-30  mt-30">
+                              <div class="mb-32 flex-between gap-8">
+                                  <span class="text-gray-900 font-heading-two text-xl fw-semibold">Subtotal</span>
+                                  <span class="text-gray-900 font-heading-two text-md fw-bold" id="cart_total">{% trans "₹" %}{{cart_total|floatformat:2}}</span>
+                              </div>
+                              <div class="mb-32 flex-between gap-8">
+                                <span class="text-gray-900 font-heading-two text-xl fw-semibold">Service Fee</span>
+                                <span class="text-gray-900 font-heading-two text-md fw-bold" id="service_fee">0.00</span>
+                            </div>
+                              <div class="mb-0 flex-between gap-8">
+                                <span class="text-gray-900 font-heading-two text-xl fw-semibold">Shipping Fee</span>
+                                <span class="text-gray-900 font-heading-two text-md fw-bold" id="shipping_fee"> 0.00</span>
+                            </div>
+                              <div class="mb-0 flex-between gap-8">
+                                  <span class="text-gray-900 font-heading-two text-xl fw-semibold">Total</span>
+                                  <span class="text-gray-900 font-heading-two text-md fw-bold" id="sub_total"></span>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="text-danger payment_span mt-4"> please select a payment method</div>
+                    <input type="hidden" id="id_selected_address" name="selected_address" value="">
+                    <input type="hidden" id="id_selected_payment" name="selected_payment" value="">
+                    <input type="hidden" id="id_payable" name="payable" value="">
+                    <input type="hidden" id="id_service_fee" name="service_fee" value="">
+                    <input type="hidden" id="id_shipping_fee" name="shipping_fee" value="">
+                    <input type="hidden" id="id_total_amt" name="total_amt" value="">
+                    
+                    </form>
+                  </div>
+              </div> {% endcomment %}
+
+              <div class="col-xl-4 col-lg-5 order-1 order-lg-2 sticky-column">
+                <div class="checkout-sidebar">
+                    <!-- Dropdown Toggle -->
+                    <button class="btn  w-100 text-start d-flex justify-content-between align-items-center" 
+                            type="button" data-bs-toggle="collapse" data-bs-target="#checkoutDropdown"
+                            aria-expanded="false" aria-controls="checkoutDropdown" style='background:#0C5A67'>
+                        {% trans "Your Orders" %}
+                        <i class="ph-bold ph-caret-down"></i>
+                    </button>
+            
+                    <!-- Collapsible Content -->
+                    <div class="collapse mt-3" id="checkoutDropdown">
+                        <div class="border border-gray-100 rounded-8 px-24 py-40">
+                            <div class="mb-32 pb-32 border-bottom border-gray-100 flex-between gap-8">
+                                <span class="text-gray-900 fw-medium text-xl font-heading-two">{% trans "Product" %}</span>
+                                <span class="text-gray-900 fw-medium text-xl font-heading-two">{% trans "Subtotal" %}</span>
+                            </div>
+            
+                            {% for item in cart_items %}
+                            <div class="flex-between gap-24">
+                                <div class="flex-align gap-12">
+                                    <span class="text-gray-900 fw-normal font-heading-two w-144">
+                                        {{ item.variant|truncatechars:30 }}
+                                    </span>
+                                    <span class="text-gray-900 fw-normal  font-heading-two">
+                                        <i class="ph-bold ph-x"></i>
+                                    </span>
+                                    <span class="text-gray-900 fw-semibold  font-heading-two">
+                                        {{ item.quantity }}
+                                    </span>
+                                </div>
+                                <span class="text-gray-900 fw-bold text-md font-heading-two">
+                                    {{ item.total_price|floatformat:2 }}
+                                </span>
+                              
+                            </div>
+                            {% endfor %}
+            
+                            {% comment %} <div class="border-top border-gray-100 pt-30 mt-30">
+                                <div class=" flex-between">
+                                    <span class="text-gray-900 font-heading-two  fw-semibold">Subtotal</span>
+                                    <span class="text-gray-900 font-heading-two  fw-bold" id="cart_total">
+                                        {% trans "₹" %}{{ cart_total|floatformat:2 }}
+                                    </span>
+                                </div>
+                                <div class=" flex-between">
+                                    <span class="text-gray-900 font-heading-two  fw-semibold">Service Fee</span>
+                                    <span class="text-gray-900 font-heading-two  fw-bold" id="service_fee">0.00</span>
+                                </div>
+                                <div class="mb-0 flex-between">
+                                    <span class="text-gray-900 font-heading-two fw-semibold">Shipping Fee</span>
+                                    <span class="text-gray-900 font-heading-two  fw-bold" id="shipping_fee">0.00</span>
+                                </div>
+                                <div class="mb-0 flex-between">
+                                    <span class="text-gray-900 font-heading-two fw-semibold">Total</span>
+                                    <span class="text-gray-900 font-heading-two  fw-bold" id="sub_total"></span>
+                                </div>
+                            </div> {% endcomment %}
+                            <div class="discount-code-container mt-30">
+                              <input type="text" id="gift_card_code" class="discount-input" placeholder="Discount code">
+                              <button type="button" id="apply_gift_card" class="discount-btn">Apply</button>
+                          </div>
+                          <div id="gift_card_message" class="message-box"></div>
+                          
+                          
+                          <div class="border-top border-gray-100 pt-30 mt-30">
+                              <div class="flex-between">
+                                  <span class="text-gray-900 font-heading-two fw-semibold">Subtotal</span>
+                                  <span class="text-gray-900 font-heading-two fw-bold" id="cart_total">₹{{ cart_total|floatformat:2 }}</span>
+                              </div>
+                              <div class="flex-between">
+                                  <span class="text-gray-900 font-heading-two fw-semibold">Service Fee</span>
+                                  <span class="text-gray-900 font-heading-two fw-bold" id="service_fee">₹0.00</span>
+                              </div>
+                              <div class="flex-between">
+                                  <span class="text-gray-900 font-heading-two fw-semibold">Shipping Fee</span>
+                                  <span class="text-gray-900 font-heading-two fw-bold" id="shipping_fee">₹0.00</span>
+                              </div>
+                              <div class="flex-between">
+                                  <span class="text-gray-900 font-heading-two fw-semibold">Gift Discount</span>
+                                  <span class="text-danger font-heading-two fw-bold" id="gift_discount">₹0.00</span>
+                              </div>
+                              <div class="flex-between">
+                                  <span class="text-gray-900 font-heading-two fw-semibold">Total</span>
+                                  <span class="text-gray-900 font-heading-two fw-bold" id="total_amount">₹{{ cart_total|floatformat:2 }}</span>
+                              </div>
+                          </div>
+                          
+                          <input type="hidden" id="id_gift_code" name="gift_code" value="">
+                          <input type="hidden" id="id_gift_discount" name="gift_discount" value="0">
+                          <input type="hidden" id="id_total_amt" name="total_amt" value="{{ cart_total|floatformat:2 }}">
+                          
+                        </div>
+            
+                        <div class="text-danger payment_span mt-4">Please select a payment method</div>
+                        <input type="hidden" id="id_selected_address" name="selected_address" value="">
+                        <input type="hidden" id="id_selected_payment" name="selected_payment" value="">
+                        <input type="hidden" id="id_payable" name="payable" value="">
+                        <input type="hidden" id="id_service_fee" name="service_fee" value="">
+                        <input type="hidden" id="id_shipping_fee" name="shipping_fee" value="">
+                        <input type="hidden" id="id_total_amt" name="total_amt" value="">
+                    </div>
+                </div>
+            </div>
+
+          </div>
+      </div>
+   </section>
+  <!-- ================================= Checkout Page End ===================================== -->
+  
+      <!-- ========================== Shipping Section Start ============================ -->
+    
+  <!-- ========================== Shipping Section End ============================ -->
+    
+  
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css">
+<style>
+  .details-container {
+      display: flex;
+      align-items: center;
+      background: white;
+      padding: 15px 25px;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      max-width: 1100px;
+      margin: auto;
+      border-left: 4px solid #007bff !important;
+      border: 1px solid var(--bs-blue);
+      margin-bottom: 25px !important;
+  }
+  .icon-section {
+      display: flex;
+      align-items: center;
+      margin-right: 30px;
+  }
+  .icon-section i {
+      font-size: 22px;
+      color: #007bff;
+      margin-right: 10px;
+  }
+  .icon-text {
+      font-size: 16px;
+      font-weight: 600;
+      color: #333;
+  }
+  .step-info {
+      font-size: 13px;
+      color: #aaa;
+  }
+  .info-section {
+      display: flex;
+      flex: 1;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+  }
+  .info-box {
+      flex: 1;
+      min-width: 220px;
+      text-align: left;
+      position: relative;
+  }
+  .info-box:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1px;
+      height: 50%;
+      background: #ccc;
+  }
+  .info-box h4 {
+      font-size: 13px;
+      color: #bbb;
+      margin: 0;
+      font-weight: 500;
+  }
+  .info-box p {
+      font-size: 15px;
+      font-weight: bold;
+      color: #333;
+      margin: 5px 0 0;
+  }
+  @media (max-width: 768px) {
+      .details-container {
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 15px;
+      }
+      .icon-section {
+          margin-bottom: 10px;
+      }
+      .info-section {
+          flex-direction: column;
+          width: 100%;
+      }
+      .info-box {
+          width: 100%;
+          text-align: left;
+          padding: 10px 0;
+          border-bottom: 1px solid #ddd;
+      }
+      .info-box:last-child {
+          border-bottom: none;
+      }
+      .info-box::after {
+          display: none;
+      }
+  }
+</style>
+<style>
+  .time-slot-box { display: flex; gap: 10px; margin-bottom: 15px; }
+  .time-slot-box label { padding: 10px 15px; border: 1px solid #ddd; cursor: pointer; border-radius: 5px; }
+  .time-slot-box input[type="radio"] { display: none; }
+  .time-slot-box input[type="radio"]:checked + label { background: #007bff; color: white; }
+  #datepicker { display: none; margin-top: 10px; }
+
+  .time-slot-box { display: flex; gap: 10px; margin-bottom: 15px; }
+  .time-slot-box label { padding: 15px 20px; border: 1px solid #ddd; cursor: pointer; border-radius: 5px; }
+  .time-slot-box input[type="radio"] { display: none; }
+  .time-slot-box input[type="radio"]:checked + label { background: #007bff; color: white; font-weight: bold; }
+
+  @media (max-width: 768px) {
+    
+  .time-slot-box label {
+    padding: 15px 13px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    border-radius: 5px;
+}
+  }
+</style>
+<style>
+  input[type="radio"]:checked + label {
+    background-color: inherit !important;
+    border-color: #0aad0a !important;
+    color: inherit !important;
+  }
+  .intl-tel-input,
+  .iti{
+      width: 100%;
+      margin-bottom: 15px;
+  }
+</style>
+
+{% endblock %}
+
+{% block js %}
+{% include 'web/includes/form-ajax.html' %}
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput-jquery.min.js"></script>
+<script>
+  $(document).ready(function() {
+    // Initialize the intlTelInput for the parent_phone_number input field
+    var mobileInput = $("#id_mobile_no");
+    mobileInput.intlTelInput({
+        initialCountry: "in",
+        separateDialCode: true
+    });
+    mobileInput.on("input", function() {
+        var selectedDialCode = mobileInput.intlTelInput("getSelectedCountryData").dialCode;
+        $("#id_selected_dial_code_mobile").val(selectedDialCode);
+    });
+  
+   
+    document.getElementById("id_mobile_no").addEventListener("keyup", function() {
+      this.value = this.value.replace(/[^0-9]/g, "");
+    });
+    
+    document.getElementById("id_pin_code").addEventListener("keyup", function() {
+      this.value = this.value.replace(/[^0-9]/g, "");
+    });
+  });
+</script>
+<script>
+  document.getElementById("apply_gift_card").addEventListener("click", function () {
+      let giftCode = document.getElementById("gift_card_code").value.trim();
+      let messageBox = document.getElementById("gift_card_message");
+  
+      if (!giftCode) {
+          messageBox.innerText = "Please enter a discount code.";
+          return;
+      }
+  
+      fetch("{% url 'web:apply_gift_card' %}", {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+              "X-CSRFToken": "{{ csrf_token }}",
+          },
+          body: JSON.stringify({ gift_code: giftCode }),
+      })
+      .then(response => response.json())
+      .then(data => {
+          if (data.success) {
+              let cartTotal = parseFloat(document.getElementById("cart_total").innerText.replace('₹', '')) || 0;
+              let serviceFee = parseFloat(document.getElementById("service_fee").innerText.replace('₹', '')) || 0;
+              let shippingFee = parseFloat(document.getElementById("shipping_fee").innerText.replace('₹', '')) || 0;
+              let discount = parseFloat(data.discount) || 0;
+  
+              let newTotal = cartTotal + serviceFee + shippingFee - discount;
+  
+              document.getElementById("gift_discount").innerText = `₹${discount.toFixed(2)}`;
+              document.getElementById("total_amount").innerText = `₹${newTotal.toFixed(2)}`;
+  
+              document.getElementById("id_gift_code").value = giftCode;
+              document.getElementById("id_gift_discount").value = discount;
+              document.getElementById("id_total_amt").value = newTotal.toFixed(2);
+  
+              messageBox.innerText = "Discount applied successfully!";
+              messageBox.style.color = "green";
+          } else {
+              messageBox.innerText = data.message;
+              messageBox.style.color = "red";
+          }
+      })
+      .catch(error => console.log(error));
+  });
+  </script>
+  <script>
+  // calculate total
+  var cart_total = $("#cart_total").text();
+  var cart_total = cart_total.replace('₹', '');
+  var service_fee = $("#service_fee").text();
+  var service_fee = service_fee.replace('₹', '');
+  var shipping_fee = $("#shipping_fee").text();
+  var shipping_fee = shipping_fee.replace('₹','');
+  var sub_total = parseFloat(cart_total) + parseFloat(service_fee) + parseFloat(shipping_fee) + parseFloat(service_fee);
+  $("#sub_total").text(sub_total.toFixed(2));
+
+
+  $('.order-btn').hide();
+    $('input[name="payment_option"]').change(function(){
+      selectedpayment = $('input[name="payment_option"]:checked').val();
+      selectedpayment = $('input[name="payment_option"]:checked').val();
+      console.log('=',selectedpayment)
+      if (selectedpayment){
+        $('.order-btn').show();
+        if (selectedpayment == 'COD'){
+          var service_fee1 = $("#service_fee")
+          var cart_total1 = $("#cart_total").text();
+          cart_total1 = cart_total1.replace('₹','');
+          console.log('cart_total1=',cart_total1)
+          var shipping_fee1 = $("#shipping_fee").text();
+          var shipping_fee1 = shipping_fee1.replace('₹','');
+          var sub_total1 = parseFloat(cart_total1)  + parseFloat(shipping_fee1) ;
+          $("#sub_total").text(sub_total1.toFixed(2));
+
+        }else{
+          var service_fee1 = $("#service_fee").text('₹'+0.00.toFixed(2));
+          var cart_total1 = $("#cart_total").text();
+          var cart_total1 = cart_total1.replace('₹', '');
+          var shipping_fee1 = $("#shipping_fee").text();
+          var shipping_fee1 = shipping_fee1.replace('₹', '');
+          var sub_total1 = parseFloat(cart_total1) + parseFloat(0.00) + parseFloat(shipping_fee1) ;
+          $("#sub_total").text('₹'+sub_total1.toFixed(2));
+          console.log(shipping_fee1)
+
+        }
+        $('.payment_span').hide()
+      }
+    })
+    
+  // order checkout
+  $('.order-btn').click(function(e){
+    
+    var shipping_fee = $("#shipping_fee").text();
+    var shipping_fee = shipping_fee.replace('₹', '');
+    var service_fee = $("#service_fee").text();
+    var service_fee = service_fee.replace('₹', '');
+    var sub_total = $("#sub_total").text();
+    var sub_total = sub_total.replace('₹', '');
+    $('#id_selected_payment').val(selectedpayment);
+    $('#id_payable').val(cart_total);
+    $('#id_shipping_fee').val(shipping_fee);
+    $('#id_service_fee').val(service_fee);
+    $('#id_total_amt').val(sub_total);
+
+  });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+      const datepicker = document.getElementById("datepicker");
+
+      // Initialize Flatpickr
+      flatpickr(datepicker, {
+          enableTime: false,
+          dateFormat: "Y-m-d",
+          minDate: "today",
+      });
+
+      document.querySelectorAll('input[name="delivery_date_choice"]').forEach(radio => {
+          radio.addEventListener('change', function () {
+              if (this.value === 'select_date') {
+                  datepicker.style.display = "block";
+              } else {
+                  datepicker.style.display = "none";
+                  datepicker.value = ""; // Clear previous selection
+              }
+          });
+      });
+  });
+</script>
+
+{% endblock js %}

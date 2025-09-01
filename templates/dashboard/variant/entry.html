@@ -1,0 +1,336 @@
+{% extends 'dashboard/base.html' %} 
+{% load static %}
+{% block title %}{{title}}{% endblock%} 
+
+{% block content %}
+<div class="row mb-8">
+  <div class="col-md-12">
+    <div class="d-md-flex justify-content-between align-items-center">
+      <div>
+        <h2>{{title}}</h2>
+      </div>
+      <div class="mt-5 mt-md-0">
+        <a onclick="history.back()" class="btn btn-light">Back to Product Variant</a>
+      </div>
+    </div>
+  </div>
+</div>
+<form method="POST" enctype="multipart/form-data" class="ajax redirect skip_empty_row" data-redirect="{% url 'main:variants' %}">
+  {% csrf_token %}
+  {% if form.form.non_field_errors %}
+  <p>{{ form.form.non_field_errors }}</p>
+  {% endif %}
+  <div class="row">
+    <div class="col-md-8 col-12">
+      <div class="card mb-6 card-lg">
+        <div class="card-body p-6 ">
+          <h4 class="mb-5 h5">Product Variant Image </h4>
+          <div class="mb-4 d-flex">
+            <div class="position-relative" >
+              {% if is_edit %}
+              <img class="image  icon-shape icon-xxxl bg-light rounded-4" src="{{ form.instance.thumbnail_image.url }}" alt="Image">
+              {% else %}
+              <img class="image  icon-shape icon-xxxl bg-light rounded-4" src="{% static 'app/images/assets/upload.png' %}" alt="Image">
+              {% endif %}
+              <div class="file-upload position-absolute end-0 top-0 mt-n2 me-n1">
+                <input type="file" class="file-input " name="thumbnail_image">
+                <span class="icon-shape icon-sm rounded-circle bg-white">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-pencil-fill text-muted" viewBox="0 0 16 16">
+                    <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                  </svg>
+                </span>
+              </div>
+            </div>
+          </div>
+          {% if form.thumbnail_image.help_text %}
+            <span class="text-danger">{{form.thumbnail_image.help_text}}</span>
+          {% endif %}
+          <div class=" mt-2 row">
+            <div class="mb-3 col-md-12">
+              <label class="form-label">{{form.product.label}} {% if form.product.field.required %}<span class="text-danger">*</span>{% endif %}</label>
+              {{form.product}}
+            </div>
+            <div class="mb-3 col-md-12">
+              <label class="form-label">{{form.varient_name.label}} {% if form.varient_name.field.required %}<span class="text-danger">*</span>{% endif %} </label>
+              {{ form.varient_name }}
+            </div>
+            <div class="mb-3 col-md-12">
+              <label class="form-label">{{form.slug.label}} {% if form.slug.field.required %}<span class="text-danger">*</span>{% endif %}</label>
+              {{form.slug}}
+            </div>
+            <div class="mb-3 col-md-6">
+              <label class="form-label">{{form.selling_price.label}} {% if form.selling_price.field.required %}<span class="text-danger">*</span>{% endif %} </label>
+              {{ form.selling_price }}
+            </div>
+            <div class="mb-3 col-md-6">
+              <label class="form-label">{{form.actual_price.label}} {% if form.actual_price.field.required %}<span class="text-danger">*</span>{% endif %}</label>
+              {{form.actual_price}}
+            </div>
+            <div class="mb-3 col-md-6">
+              <div class="form-check form-switch mb-4">
+                <input class="form-check-input" type="checkbox" role="switch" id="id_is_popular" {% if form.instance.is_popular %} checked {% endif %} name="is_popular">
+                <label class="form-check-label" for="id_is_popular">Is Popular Product</label>
+              </div>
+            </div>
+            <div class="mb-3 col-md-6">
+              <div class="form-check form-switch mb-4">
+                <input class="form-check-input" type="checkbox" role="switch" id="id_is_new_arrival" {% if form.instance.id_is_new_arrival %} checked {% endif %} name="is_new_arrival">
+                <label class="form-check-label" for="id_is_new_arrival">Is New Arrival Product</label>
+              </div>
+            </div>
+            <div class="mb-3 col-md-6">
+              <div class="form-check form-switch mb-4">
+                <input class="form-check-input" type="checkbox" role="switch" id="id_is_best_seller" {% if form.instance.is_best_seller %} checked {% endif %} name="is_best_seller">
+                <label class="form-check-label" for="id_is_best_seller">Is Best Selling Product</label>
+              </div>
+            </div>
+            <div class="mb-3 col-md-6">
+              <div class="form-check form-switch mb-4">
+                <input class="form-check-input" type="checkbox" role="switch" id="id_is_offer" {% if form.instance.is_offer %} checked {% endif %} name="is_offer">
+                <label class="form-check-label" for="id_is_offer">Is Offer Product</label>
+              </div>
+            </div>
+            <div class="mb-3 col-md-6">
+              <div class="form-check form-switch mb-4">
+                <input class="form-check-input" type="checkbox" role="switch" id="id_is_trend" {% if form.instance.is_trend %} checked {% endif %} name="is_trend">
+                <label class="form-check-label" for="id_is_trend">Is Trendy</label>
+              </div>
+            </div>
+            <div class="mb-3 col-lg-12 mt-5">
+              <h4 class="mb-3 h5">Product Descriptions</h4>
+              {{ form.details }}
+             
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card mb-6 card-lg">
+        <div class="card-body p-6 ">
+          <h4 class="mb-4 h5">Meta Data</h4>
+          <!-- input -->
+          <div class="mb-3">
+            <label class="form-label">Meta Title</label>
+            {{form.meta_title}}
+          </div>
+
+          <!-- input -->
+          <div class="mb-3">
+            <label class="form-label">Meta Description</label>
+            {{form.meta_description}}
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card mb-6 card-lg">
+        <div class="card-body p-6 ">
+          <div class="mb-3 ">
+            <label class="form-label">{{form.stock.label}} {% if form.stock.field.required %}<span class="text-danger">*</span>{% endif %}</label>
+            {{form.stock}}
+          </div>
+          <div class="mb-3 ">
+            <label class="form-label">{{form.generic_name.label}} {% if form.generic_name.field.required %}<span class="text-danger">*</span>{% endif %}</label>
+            {{form.generic_name}}
+          </div>
+          <div class="mb-3 ">
+            <label class="form-label">{{form.tag.label}} {% if form.tag.field.required %}<span class="text-danger">*</span>{% endif %}</label>
+            {{form.tag}}
+          </div>
+          <div class="mb-3 ">
+            <label class="form-label">{{form.first_available_date.label}} {% if form.first_available_date.field.required %}<span class="text-danger">*</span>{% endif %}</label>
+            {{form.first_available_date}}
+          </div>
+          
+        </div>
+      </div>
+      <div class="card mb-6 card-lg">
+        <!-- card body -->
+        <div class="card-body p-6">
+          <h4 class="mb-5 h5">Product Images </h4>
+          <div class=" product_image_formset table-responsive">
+            <span class="text-danger mb-2"> The recommended size is 800x600 pixels.</span>
+            <table class="table" >
+              <tbody>
+                {{ product_image_formset.management_form }}
+                {% for form in product_image_formset %}
+                {{form.id}}
+                <tr class=" form_set_row ">
+                  <td>
+                    <div class="mb-4 d-flex">
+                      <div class="position-relative" >
+                        {% if is_edit %}
+                          {% if form.instance.image %}
+                          <img class="image  icon-shape icon-xxxl bg-light rounded-4" src="{{ form.instance.image.url }}" alt="Image">
+                          {% else %}
+                          <img class="image  icon-shape icon-xxxl bg-light rounded-4" src="{% static 'app/images/assets/upload.png' %}" alt="Image">
+                          {% endif %}
+                        {% else %}
+                          <img class="image  icon-shape icon-xxxl bg-light rounded-4" src="{% static 'app/images/assets/upload.png' %}" alt="Image">
+                        {% endif %}
+                        <div class="file-upload position-absolute end-0 top-0 mt-n2 me-n1 check_empty">
+                          {{form.image}}
+                          <span class="icon-shape icon-sm rounded-circle bg-white">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-pencil-fill text-muted" viewBox="0 0 16 16">
+                              <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                            </svg>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    </td>
+                  <td style="vertical-align: middle;"></td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="row">
+    <div class="col-md-12">
+      <div class="card mb-6 card-lg">
+        <div class="card-body p-6 ">
+          <h4 class="mb-3 h5">Product Features & Spec</h4>
+          <div class=" feature_spec_formset table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th width="">Feature</th>
+                  <th width="">Specification Name</th>
+                  <th width="">Specification Value</th>
+                  <th width=""></th>
+                </tr>
+              </thead>
+              <tbody>
+                {{ feature_spec_formset.management_form }}
+                {% for form in feature_spec_formset %}
+                {{form.id}}
+                <tr class=" form_set_row ">
+                  <td  style="vertical-align: middle; padding: 5px 10px;">{{form.feature}}</td>
+                  <td  style="vertical-align: middle; padding: 5px 10px;">{{form.specification_name}}</td>
+                  <td  style="vertical-align: middle; padding: 5px 10px;"><span class="check_empty">{{form.specification_value}}</span></td>
+                  <td style="vertical-align: middle;"></td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+  
+  
+  <div class="col-md-5">
+    <button style="width:60%" type="submit" class="btn btn-primary">Submit</button>
+ </div>
+</form>
+
+{{form.media}}
+{{product_image_formset.media}}
+{{feature_spec_formset.media}}
+{% endblock content %}
+
+{% block css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
+<style>
+  .btn-icon {
+    border-radius: 50%;
+    width: 40px;
+    line-height: 40px !important;
+    height: 40px;
+    padding: 0;
+    text-align: center;
+    display: inline-block;
+  }
+  .waves-effect {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+    overflow: hidden;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16), 0 2px 10px rgba(0, 0, 0, 0.12);
+}
+.dynamic-formset1-add td {
+    text-align: center;
+}
+</style>
+{% endblock%}
+
+{% block js_plugins %}
+<script src="{% static 'app/js/formset.js' %}"></script>
+{% include 'web/includes/form-ajax.html' %}
+<!-- <script src="https://cdn.tiny.cloud/1/9cvvdpu7uhs90es7skaryob9mtmcmv22t1n4x2y4ze4j3bbw/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<script>tinymce.init({selector:'#id_details'});</script> -->
+
+<script>
+  $(document).ready(function () {
+    // Function to update the slug based on the name
+    function updateSlug() {
+        var name = $('#id_varient_name').val();
+        var slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+        $('#id_slug').val(slug);
+    }
+
+    // Attach the function to the change event of the name field
+    $('#id_varient_name').on('input', updateSlug);
+});
+</script>
+<script>
+  $(document).ready(function () {
+    $('.product_image_formset table tr.form_set_row').formset({
+      prefix:'{{product_image_formset.prefix}}',
+      formCssClass: 'dynamic-formset1',
+      'added' : function (row) {
+      }
+    })
+    $('.feature_spec_formset table tr.form_set_row').formset({
+      prefix:'{{feature_spec_formset.prefix}}',
+      formCssClass: 'dynamic-formset1',
+      'added' : function (row) {
+      }
+    })
+    
+
+    
+    
+
+    $('.product_image_formset .icon-trash').click(function(){
+      var formsetPrefix = 'product_image_formset';  // Update with your actual formset prefix
+      var totalFormsInput = $('#id_' + formsetPrefix + '-TOTAL_FORMS');
+      var currentTotalForms = parseInt(totalFormsInput.val());
+      
+      // Remove the row
+      $(this).closest('tr').remove();
+      
+      // Update the total forms count in the management form
+      totalFormsInput.val(currentTotalForms - 1);
+    });
+
+    $('.feature_spec_formset .icon-trash').click(function(){
+      var formsetPrefix1 = 'feature_spec_formset';  // Update with your actual formset prefix
+      var totalFormsInput1 = $('#id_' + formsetPrefix1 + '-TOTAL_FORMS');
+      var currentTotalForms1 = parseInt(totalFormsInput1.val());
+      
+      // Remove the row
+      $(this).closest('tr').remove();
+      
+      // Update the total forms count in the management form
+      totalFormsInput1.val(currentTotalForms1 - 1);
+    });
+
+   
+  });
+</script>
+
+
+{% endblock %}
+

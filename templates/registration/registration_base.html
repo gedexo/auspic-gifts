@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Primary Meta Tags -->
+    <title>{% block title %} {% endblock %} auspic</title>
+    <meta name="title" content="">
+    <meta name="description" content="">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="">
+    <meta property="og:title" content="">
+    <meta property="og:description" content="">
+    <meta property="og:image" content="">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="">
+    <meta property="twitter:title" content="">
+    <meta property="twitter:description" content="">
+    <meta property="twitter:image" content="">
+
+    <!-- Favicon icon-->
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'app/images/logo/auspiclogo_fav.png' %}">
+
+    <!-- Libs CSS -->
+    <link href="{% static 'app/libs/bootstrap-icons/font/bootstrap-icons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'app/libs/feather-webfont/dist/feather-icons.css' %}" rel="stylesheet">
+    <link href="{% static 'app/libs/simplebar/dist/simplebar.min.css' %}" rel="stylesheet">
+
+    <!-- Theme CSS -->
+    <link rel="stylesheet" href="{% static 'app/css/theme.min.css' %}">
+
+
+</head>
+
+<body>
+
+    <!-- navigation -->
+    <div class="border-bottom shadow-sm">
+        <nav class="navbar navbar-light py-2">
+        <div class="container justify-content-center justify-content-lg-between">
+            <a class="navbar-brand" href="{% url 'web:index' %}">
+                  {% comment %} <h4 class="text-danger">auspic</h4> {% endcomment %}
+
+            <img src="{% static 'web/images/logo/logo.png' %}" alt="" height="60" class="nav-logo d-inline-block align-text-top">
+            </a>
+            {% block reg_nav %}{% endblock reg_nav %}
+        </div>
+        </nav>
+    </div>
+
+    <main>
+        {% block content %} {% endblock content %}
+    </main>
+      <!-- Libs JS -->
+    <script src="{% static 'app/libs/jquery/dist/jquery.min.js' %}"></script>
+    <script src="{% static 'app/libs/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'app/libs/simplebar/dist/simplebar.min.js' %}"></script>
+
+    <!-- Theme JS -->
+    <script src="{% static 'app/js/theme.min.js' %}"></script>
+
+</body>
+
+</html>

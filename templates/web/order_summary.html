@@ -1,0 +1,132 @@
+{% extends "web/base.html" %}
+
+{% block content %}
+<style>
+    .order-container {
+        max-width: 900px;
+        margin: 50px auto;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+    }
+
+    .order-header {
+        background:#0C5A67 !important;
+        color: white;
+        padding: 20px;
+        text-align: center;
+        font-size: 16px;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    .order-content {
+        padding: 30px;
+        display: flex;
+        gap: 25px;
+        justify-content: space-between;
+    }
+
+    .order-card {
+        flex: 1;
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.05);
+        transition: 0.3s ease-in-out;
+    }
+
+    .order-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .order-card h3 {
+        font-size: 16px;
+        color: #0C5A67 !important;
+        border-bottom: 2px solid #0C5A67 !important;
+        padding-bottom: 8px;
+        margin-bottom: 15px;
+        text-transform: uppercase;
+    }
+
+    .details-list {
+        list-style: none;
+        padding: 0;
+        font-size: 16px;
+    }
+
+    .details-list li {
+        padding: 10px 0;
+        border-bottom: 1px solid #ddd;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 500;
+    }
+
+    .details-list li:last-child {
+        border-bottom: none;
+    }
+
+    .pay-btn {
+        background:#0C5A67 !important;
+        color: white;
+        padding: 15px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        text-decoration: none;
+        text-align: center;
+        display: block;
+        width: 100%;
+        text-transform: uppercase;
+        transition: 0.3s ease-in-out;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .pay-btn:hover {
+        background:white;
+        transform: translateY(-3px);
+    }
+
+    @media (max-width: 768px) {
+        .order-content {
+            flex-direction: column;
+        }
+    }
+</style>
+
+<div class="order-container">
+    <div class="order-header">Order Summary</div>
+
+    <div class="order-content">
+        <!-- From Address (Seller) -->
+        <div class="order-card">
+            <h3>From</h3>
+            <ul class="details-list">
+                <li><strong>Name:</strong> <span>{{ user_details.username }}</span></li>
+                <li><strong>Email:</strong> <span>{{ user_details.email }}</span></li>
+                <li><strong>Mobile:</strong> <span>{{ user_details.mobile_number }}</span></li>
+            </ul>
+        </div>
+
+        <!-- To Address (Customer) -->
+        <div class="order-card">
+            <h3>To Address</h3>
+            <ul class="details-list">
+                <li><strong>Name:</strong> <span>{{ order.full_name }}</span></li>
+                <li><strong>Email:</strong> <span>{{ order.email }}</span></li>
+                <li><strong>Mobile:</strong> <span>{{ order.mobile_no }}</span></li>
+                <li><strong>Address:</strong> <span>{{ order.address_line_1 }}, {{ order.city }}, {{ order.state }}, {{ order.pin_code }}</span></li>
+            </ul>
+        </div>
+    </div>
+
+    
+    <!-- Payment Button Section -->
+    <a href="{% url 'web:payment' order.pk %}" class="pay-btn">💳 Proceed to Payment</a>
+</div>
+
+{% endblock %}

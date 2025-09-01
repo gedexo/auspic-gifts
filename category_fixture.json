@@ -1,0 +1,477 @@
+[
+{
+    "model": "products.category",
+    "pk": 1,
+    "fields": {
+        "name": "Birthday",
+        "slug": "birthday",
+        "parent": null,
+        "image": "categories/Birthday_Squircle.webp",
+        "order": 1,
+        "discount": "0.00",
+        "is_active": true,
+        "is_list_home": true,
+        "is_cake": false,
+        "lft": 37,
+        "rght": 37,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "products.category",
+    "pk": 2,
+    "fields": {
+        "name": "Anniversary",
+        "slug": "anniversary",
+        "parent": null,
+        "image": "categories/anniversary_Squircle-15-01-25_b2IIx6F.webp",
+        "order": 2,
+        "discount": "0.00",
+        "is_active": true,
+        "is_list_home": true,
+        "is_cake": false,
+        "lft": 37,
+        "rght": 37,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "products.category",
+    "pk": 3,
+    "fields": {
+        "name": "Fashion Gifts",
+        "slug": "fashion-gifts",
+        "parent": null,
+        "image": "categories/Fashion_Squircle-20-02-2025.webp",
+        "order": 3,
+        "discount": "0.00",
+        "is_active": true,
+        "is_list_home": true,
+        "is_cake": false,
+        "lft": 37,
+        "rght": 37,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "products.category",
+    "pk": 4,
+    "fields": {
+        "name": "Wedding",
+        "slug": "wedding",
+        "parent": null,
+        "image": "categories/wedding_Squircle-13-02-2025.webp",
+        "order": 4,
+        "discount": "0.00",
+        "is_active": true,
+        "is_list_home": true,
+        "is_cake": false,
+        "lft": 37,
+        "rght": 37,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "products.category",
+    "pk": 5,
+    "fields": {
+        "name": "Flowers",
+        "slug": "flowers",
+        "parent": null,
+        "image": "categories/Flowers_Desk_11_02.webp",
+        "order": 5,
+        "discount": "0.00",
+        "is_active": true,
+        "is_list_home": true,
+        "is_cake": false,
+        "lft": 37,
+        "rght": 37,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "products.category",
+    "pk": 6,
+    "fields": {
+        "name": "Cakes",
+        "slug": "cakes",
+        "parent": null,
+        "image": "categories/Cakes-desk-Icon-12-02-2025.webp",
+        "order": 6,
+        "discount": "0.00",
+        "is_active": true,
+        "is_list_home": true,
+        "is_cake": false,
+        "lft": 37,
+        "rght": 37,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "products.category",
+    "pk": 7,
+    "fields": {
+        "name": "Personalised Gifts",
+        "slug": "personalised-gifts",
+        "parent": null,
+        "image": "categories/Personalised_desk-13-02-2025.webp",
+        "order": 8,
+        "discount": "0.00",
+        "is_active": true,
+        "is_list_home": true,
+        "is_cake": false,
+        "lft": 37,
+        "rght": 37,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "products.category",
+    "pk": 8,
+    "fields": {
+        "name": "Birthday Specials",
+        "slug": "birthday-specials",
+        "parent": 1,
+        "image": "",
+        "order": 1,
+        "discount": "90.00",
+        "is_active": true,
+        "is_list_home": false,
+        "is_cake": false,
+        "lft": 1,
+        "rght": 18,
+        "tree_id": 1,
+        "level": 2
+    }
+},
+{
+    "model": "products.category",
+    "pk": 9,
+    "fields": {
+        "name": "All Cakes",
+        "slug": "all-cakes",
+        "parent": 8,
+        "image": "",
+        "order": 1,
+        "discount": "0.00",
+        "is_active": true,
+        "is_list_home": false,
+        "is_cake": true,
+        "lft": 8,
+        "rght": 9,
+        "tree_id": 1,
+        "level": 3
+    }
+},
+{
+    "model": "products.category",
+    "pk": 10,
+    "fields": {
+        "name": "Flowers",
+        "slug": "birthday-flowers",
+        "parent": 8,
+        "image": "",
+        "order": 2,
+        "discount": "0.00",
+        "is_active": true,
+        "is_list_home": false,
+        "is_cake": false,
+        "lft": 16,
+        "rght": 17,
+        "tree_id": 1,
+        "level": 3
+    }
+},
+{
+    "model": "products.category",
+    "pk": 11,
+    "fields": {
+        "name": "Chocolates",
+        "slug": "chocolates",
+        "parent": 8,
+        "image": "",
+        "order": 3,
+        "discount": "0.00",
+        "is_active": true,
+        "is_list_home": false,
+        "is_cake": false,
+        "lft": 10,
+        "rght": 11,
+        "tree_id": 1,
+        "level": 3
+    }
+},
+{
+    "model": "products.category",
+    "pk": 12,
+    "fields": {
+        "name": "Flowers & Cakes",
+        "slug": "flowers-cakes",
+        "parent": 8,
+        "image": "",
+        "order": 4,
+        "discount": "0.00",
+        "is_active": true,
+        "is_list_home": false,
+        "is_cake": false,
+        "lft": 14,
+        "rght": 15,
+        "tree_id": 1,
+        "level": 3
+    }
+},
+{
+    "model": "products.category",
+    "pk": 13,
+    "fields": {
+        "name": "Flowers & Chocolates",
+        "slug": "flowers-chocolates",
+        "parent": 8,
+        "image": "",
+        "order": 5,
+        "discount": "0.00",
+        "is_active": true,
+        "is_list_home": false,
+        "is_cake": false,
+        "lft": 12,
+        "rght": 13,
+        "tree_id": 1,
+        "level": 3
+    }
+},
+{
+    "model": "products.category",
+    "pk": 14,
+    "fields": {
+        "name": "Cakes & Plants",
+        "slug": "cakes-plants",
+        "parent": 8,
+        "image": "",
+        "order": 6,
+        "discount": "0.00",
+        "is_active": true,
+        "is_list_home": false,
+        "is_cake": false,
+        "lft": 16,
+        "rght": 17,
+        "tree_id": 1,
+        "level": 3
+    }
+},
+{
+    "model": "products.category",
+    "pk": 15,
+    "fields": {
+        "name": "Plants",
+        "slug": "plants",
+        "parent": 8,
+        "image": "",
+        "order": 7,
+        "discount": "0.00",
+        "is_active": true,
+        "is_list_home": false,
+        "is_cake": false,
+        "lft": 14,
+        "rght": 15,
+        "tree_id": 1,
+        "level": 3
+    }
+},
+{
+    "model": "products.category",
+    "pk": 16,
+    "fields": {
+        "name": "Personalised Gifts",
+        "slug": "birthday-personalised-gifts",
+        "parent": 8,
+        "image": "",
+        "order": 8,
+        "discount": "0.00",
+        "is_active": true,
+        "is_list_home": false,
+        "is_cake": false,
+        "lft": 16,
+        "rght": 17,
+        "tree_id": 1,
+        "level": 3
+    }
+},
+{
+    "model": "products.category",
+    "pk": 17,
+    "fields": {
+        "name": "Birthday Gifts For",
+        "slug": "birthday-gifts-for",
+        "parent": 1,
+        "image": "",
+        "order": null,
+        "discount": "0.00",
+        "is_active": true,
+        "is_list_home": false,
+        "is_cake": false,
+        "lft": 19,
+        "rght": 36,
+        "tree_id": 1,
+        "level": 2
+    }
+},
+{
+    "model": "products.category",
+    "pk": 18,
+    "fields": {
+        "name": "Him",
+        "slug": "him",
+        "parent": 17,
+        "image": "",
+        "order": null,
+        "discount": "0.00",
+        "is_active": true,
+        "is_list_home": false,
+        "is_cake": false,
+        "lft": 20,
+        "rght": 21,
+        "tree_id": 1,
+        "level": 3
+    }
+},
+{
+    "model": "products.category",
+    "pk": 19,
+    "fields": {
+        "name": "Her",
+        "slug": "her",
+        "parent": 17,
+        "image": "",
+        "order": null,
+        "discount": "0.00",
+        "is_active": true,
+        "is_list_home": false,
+        "is_cake": false,
+        "lft": 22,
+        "rght": 23,
+        "tree_id": 1,
+        "level": 3
+    }
+},
+{
+    "model": "products.category",
+    "pk": 20,
+    "fields": {
+        "name": "Husband",
+        "slug": "husband",
+        "parent": 17,
+        "image": "",
+        "order": null,
+        "discount": "0.00",
+        "is_active": true,
+        "is_list_home": false,
+        "is_cake": false,
+        "lft": 24,
+        "rght": 25,
+        "tree_id": 1,
+        "level": 3
+    }
+},
+{
+    "model": "products.category",
+    "pk": 21,
+    "fields": {
+        "name": "Wife",
+        "slug": "wife",
+        "parent": 17,
+        "image": "",
+        "order": null,
+        "discount": "0.00",
+        "is_active": true,
+        "is_list_home": false,
+        "is_cake": false,
+        "lft": 26,
+        "rght": 27,
+        "tree_id": 1,
+        "level": 3
+    }
+},
+{
+    "model": "products.category",
+    "pk": 22,
+    "fields": {
+        "name": "Friend",
+        "slug": "friend",
+        "parent": 17,
+        "image": "",
+        "order": null,
+        "discount": "0.00",
+        "is_active": true,
+        "is_list_home": false,
+        "is_cake": false,
+        "lft": 28,
+        "rght": 29,
+        "tree_id": 1,
+        "level": 3
+    }
+},
+{
+    "model": "products.category",
+    "pk": 23,
+    "fields": {
+        "name": "Brother",
+        "slug": "brother",
+        "parent": 17,
+        "image": "",
+        "order": null,
+        "discount": "0.00",
+        "is_active": true,
+        "is_list_home": false,
+        "is_cake": false,
+        "lft": 30,
+        "rght": 31,
+        "tree_id": 1,
+        "level": 3
+    }
+},
+{
+    "model": "products.category",
+    "pk": 24,
+    "fields": {
+        "name": "Boy friend",
+        "slug": "boy-friend",
+        "parent": 17,
+        "image": "",
+        "order": null,
+        "discount": "0.00",
+        "is_active": true,
+        "is_list_home": false,
+        "is_cake": false,
+        "lft": 32,
+        "rght": 33,
+        "tree_id": 1,
+        "level": 3
+    }
+},
+{
+    "model": "products.category",
+    "pk": 25,
+    "fields": {
+        "name": "Girl friend",
+        "slug": "girl-friend",
+        "parent": 17,
+        "image": "",
+        "order": null,
+        "discount": "0.00",
+        "is_active": true,
+        "is_list_home": false,
+        "is_cake": false,
+        "lft": 34,
+        "rght": 35,
+        "tree_id": 1,
+        "level": 3
+    }
+}
+]

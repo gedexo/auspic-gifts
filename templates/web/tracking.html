@@ -1,0 +1,266 @@
+{% extends 'web/base.html' %}
+{% load static %}
+{% block content %}
+<link href="{% static 'web/css/tracking.css' %}" rel="stylesheet">
+<!-- main-area -->
+<main>
+
+    <!-- tracking-area -->
+    <div class="tracking-area pt-95 pb-115 pad-mb">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-8 col-lg-10">
+                    <div class="tracking-id-info text-center">
+                        
+                        {% if error_message %}
+                        <img class="no-data" src="{% static 'img/extra/No Data Found.png' %}" alt="">
+                        <p>{{ error_message }}</p>
+                        {% endif %}
+
+                        
+                        {% if tracking_id %}
+                        <div class="tracking-list">
+                            <ul class='track-ul'>
+                                {% if procedure == 'Departed' %}
+                                <li class="active">
+                                    <div class="tracking-list-icon">
+                                        <i class="fa-solid fa-warehouse"></i>
+                                    </div>
+                                    <div class="tracking-list-content">
+                                        <p>Departed From</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="tracking-list-icon">
+                                        <i class="fa-solid fa-box"></i>
+                                    </div>
+                                    <div class="tracking-list-content">
+                                        <p>Dispatched</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="tracking-list-icon">
+                                        <i class="fa-solid fa-location-dot"></i>
+                                    </div>
+                                    <div class="tracking-list-content">
+                                        <p>At Destination</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="tracking-list-icon">
+                                       <i class="fa-solid fa-square-check"></i>
+                                    </div>
+                                    <div class="tracking-list-content">
+                                        <p>Delivered</p>
+                                    </div>
+                                </li>
+                                {% endif %}
+                                {% if procedure == 'Dispatch' %}
+                                <li class="active">
+                                    <div class="tracking-list-icon">
+                                        <i class="flaticon-warehouse"></i>
+                                    </div>
+                                    <div class="tracking-list-content">
+                                        <p>Departed From</p>
+                                    </div>
+                                </li>
+                                <li class="active">
+                                    <div class="tracking-list-icon">
+                                        <i class="fa-solid fa-box"></i>
+                                    </div>
+                                    <div class="tracking-list-content">
+                                        <p>Dispatched</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="tracking-list-icon">
+                                        <i class="fa-solid fa-location-dot"></i>
+                                    </div>
+                                    <div class="tracking-list-content">
+                                        <p>At Destination</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="tracking-list-icon">
+                                       <i class="fa-solid fa-square-check"></i>
+                                    </div>
+                                    <div class="tracking-list-content">
+                                        <p>Delivered</p>
+                                    </div>
+                                </li>
+                                {% endif %}
+                                {% if procedure == 'Destination' %}
+                                <li class="active">
+                                    <div class="tracking-list-icon">
+                                        <i class="flaticon-warehouse"></i>
+                                    </div>
+                                    <div class="tracking-list-content">
+                                        <p>Departed From</p>
+                                    </div>
+                                </li>
+
+                                <li class="active">
+                                    <div class="tracking-list-icon">
+                                        <i class="fa-solid fa-box"></i>
+                                    </div>
+                                    <div class="tracking-list-content">
+                                        <p>Dispatched</p>
+                                    </div>
+                                </li>
+                                <li class="active">
+                                    <div class="tracking-list-icon">
+                                        <i class="fa-solid fa-location-dot"></i>
+                                    </div>
+                                    <div class="tracking-list-content">
+                                        <p>At Destination</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="tracking-list-icon">
+                                       <i class="fa-solid fa-square-check"></i>
+                                    </div>
+                                    <div class="tracking-list-content">
+                                        <p>Delivered</p>
+                                    </div>
+                                </li>
+                                {% endif %}
+
+                                {% if procedure == 'Deliverd' %}
+                                <li class="active">
+                                    <div class="tracking-list-icon">
+                                        <i class="flaticon-warehouse"></i>
+                                    </div>
+                                    <div class="tracking-list-content">
+                                        <p>Departed From</p>
+                                    </div>
+                                </li>
+                                <li class="active">
+                                    <div class="tracking-list-icon">
+                                        <i class="fa-solid fa-box"></i>
+                                    </div>
+                                    <div class="tracking-list-content">
+                                        <p>Dispatched</p>
+                                    </div>
+                                </li>
+                                <li class="active">
+                                    <div class="tracking-list-icon">
+                                        <i class="fa-solid fa-location-dot"></i>
+                                    </div>
+                                    <div class="tracking-list-content">
+                                        <p>reached Destination</p>
+                                    </div>
+                                </li>
+                                <li class="active">
+                                    <div class="tracking-list-icon">
+                                       <i class="fa-solid fa-square-check"></i>
+                                    </div>
+                                    <div class="tracking-list-content">
+                                        <p>Delivered</p>
+                                    </div>
+                                </li>
+                                {% endif %}
+
+                                {% if procedure == 'Pending' %}
+                                <li class="active">
+                                    <div class="tracking-list-icon">
+                                       <i class="fa-solid fa-warehouse"></i>
+                                    </div>
+                                    <div class="tracking-list-content">
+                                        <p>Departed From</p>
+                                    </div>
+                                </li>
+                                <li class="active">
+                                    <div class="tracking-list-icon">
+                                        <i class="fa-solid fa-box"></i>
+                                    </div>
+                                    <div class="tracking-list-content">
+                                        <p>Dispatched</p>
+                                    </div>
+                                </li>
+                                <li class="active">
+                                    <div class="tracking-list-icon">
+                                        <i class="fa-solid fa-location-dot"></i>
+                                    </div>
+                                    <div class="tracking-list-content">
+                                        <p>Destination</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="tracking-list-icon">
+                                       <i class="fa-solid fa-square-check"></i>
+                                    </div>
+                                    <div class="tracking-list-content">
+                                        <p>Delivered</p>
+                                    </div>
+                                </li>
+                                {% endif %}
+                            </ul>
+                            <div class="status">
+                                <ul>
+                                    {% if tracking_object.destination_place %}<li>
+                                        <p>Departed From <span>- {{tracking_object.destination_place}}</span>
+                                        </p>
+                                    </li>
+                                    {% endif %}
+
+                                    {% for additional in additional %}
+                                    <li>
+                                        <p>{{additional.title}}</p>
+                                    </li>
+                                    {% endfor %}
+
+                                    {% if procedure == 'Destination' or procedure == 'Deliverd' and tracking_object.destination_city %}
+                                    <li>
+                                        <p>Reached At <span>- {{ tracking_object.destination_city }}</span><span></span></p>
+                                    </li>
+                                    {% endif %}
+
+                                    {% if procedure == 'Deliverd' and tracking_object.destination_address %}
+                                    <li>
+                                        <p>Delivered To <span>- {{ tracking_object.destination_address }}</span> <span></span></p>
+                                    </li>
+                                    {% endif %}
+
+                                    {% if procedure == 'Pending' %} {% if tracking_object.pending_reason %}<li>
+                                        <p>Pending <span>- {{tracking_object.pending_reason}}</span></p>
+                                    </li>{% endif %}{% endif %}
+
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="tracking-help d-flex justify-content-between">
+                            <p><a href="{% url 'web:tracking' %}">TRACK ANOTHER ORDER</a></p>
+                            <p>NEED TO TRACK MULTIPLE ORDERS ? <a href="{% url 'web:contact' %}">GET HELP</a></p>
+                        </div>
+
+                        {% else %}
+
+
+                        <p>Enter Your Baggage Tracking Order Number.</p>
+
+                        <form method="GET" action="" class="tracking-id-form">
+                            {{ form.tracking_id }}
+                            <button type="submit" class="btn red-btn">{{button}}</button>
+                        </form>
+
+                        <div class="tracking-help">
+                            <p>NEED TO TRACK MULTIPLE ORDERS ? <a href="{% url 'web:contact' %}">GET HELP</a></p>
+                        </div>
+
+                        {% endif %}
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- tracking-area-end -->
+
+</main>
+<!-- main-area-end -->
+
+
+{% endblock %}

@@ -1,0 +1,102 @@
+<!-- {% load thumbnail %}
+{% load i18n %}
+
+
+<div class="product-card h-100 border border-gray-100 hover-border-main-600 position-relative transition-2">
+  {% comment %} <span class="product-card__badge bg-danger-600 px-8 py-4 text-sm text-white {% if product.status == 'In Stock' %} bg-success {% else %} bg-danger {% endif %}">{{product.status}} </span> {% endcomment %}
+
+  <a href="{{ product.get_detail_url }}" class="product-card__thumb flex-center">
+      <img src="{{product.thumbnail_image.url}}" class="product-img" alt="{{ product.varient_name }}">
+  </a>
+  <span class="product-card__badge px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0 {% if product.status == 'In Stock' %} bg-main-600 {% else %} bg-danger {% endif %}">{% trans product.status %} </span>
+  <div class="product-card__content p-sm-2 w-100">
+      <h6 class="title text-lg fw-semibold mt-12 mb-8">
+          <a href="{{ product.get_detail_url }}" class="link text-line-2">{{ product }}</a>
+      </h6>   
+
+      <div class="product-card__content mt-5">
+          <div class="product-card__price mb-5">
+              <span class="text-heading text-md fw-semibold ">&#x20b9; {{ product.product_price|floatformat:0 }} </span>
+              <span class="text-gray-400 text-md fw-semibold text-decoration-line-through"> &#x20b9; {{ product.actual_price|floatformat:0 }}</span>
+          </div>
+          <div class="flex-align gap-6">
+            {% comment %} <small class="text-warning">
+              {% for star in "12345" %}
+                  {% if star|add:0 <= product.average_rating|default:5 %}
+                  <i class="ph-fill ph-star"></i>
+                  {% else %}
+                  <i class="bi bi-star"></i>
+                  {% endif %}
+              {% endfor %}
+            </small> {% endcomment %}
+            
+              {% comment %} <span class="text-xs fw-bold text-gray-600 d-none d-sm-block">({{ product.num_of_reviews|default:1 }} Reviews)</span> {% endcomment %}
+          </div>
+          {% if product.status == 'In Stock'%}
+        {% comment %} <a href="javascript:void(0)" class="cart-add-btn product-card__cart btn hover-main-50 text-light bg-main-600 hover-text-white py-11 px-24  flex-align gap-8 mt-10 w-100 justify-content-center" data-product-id="{{product.pk}}">
+              {% trans "Add To Cart" %} <i class="ph ph-shopping-cart"></i> 
+          </a>  {% endcomment %}
+          
+        <a href="#" class="cart-add-btn product-card__cart btn hover-main-50 text-light bg-main-600 hover-text-white py-11 px-24  flex-align gap-8 mt-10 w-100 justify-content-center" 
+          data-product-id="{{ product.pk }}" 
+         
+          data-product="{{product.id}}">
+          {% trans "Add To Bag" %} <i class="bi bi-bag"></i> 
+       </a> 
+          {% else %}
+          <a href="javascript:void(0)" class="product-card__cart btn bg-main-50 text-main-600 hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-align gap-8 mt-10 w-100 justify-content-center btn-action-wishlist" data-product-id = "{{product.pk}}">
+            {% trans "Add to Wishlist" %} <i class="ph ph-heart"></i> 
+        </a>
+        {% endif %}
+      </div>
+  </div>
+</div>
+
+ -->
+
+
+
+ {% load thumbnail %}
+{% load i18n %}
+<div class="product-card h-100 border border-gray-100 hover-border-main-600 position-relative transition-2">
+  <a href="{{ product.get_detail_url }}" class="product-card__thumb flex-center">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect width='200' height='200' fill='%23f0f0f0'/%3E%3C/svg%3E" 
+           data-src="{{product.thumbnail_image.url}}" 
+           class="product-img lazy-load" 
+           alt="{{ product.varient_name }}"
+           loading="lazy">
+  </a>
+  
+  <span class="product-card__badge px-8 py-4 text-sm text-white position-absolute inset-inline-start-0 inset-block-start-0 {% if product.status == 'In Stock' %} bg-main-600 {% else %} bg-danger {% endif %}">
+    {% trans product.status %}
+  </span>
+  
+  <div class="product-card__content p-sm-2 w-100">
+      <h6 class="title text-lg fw-semibold mt-12 mb-8">
+          <a href="{{ product.get_detail_url }}" class="link text-line-2">{{ product }}</a>
+      </h6>   
+      
+      <div class="product-card__content mt-5">
+          <div class="product-card__price mb-5">
+              <span class="text-heading text-md fw-semibold ">&#x20b9; {{ product.product_price|floatformat:0 }} </span>
+              <span class="text-gray-400 text-md fw-semibold text-decoration-line-through"> &#x20b9; {{ product.actual_price|floatformat:0 }}</span>
+          </div>
+          
+          {% if product.status == 'In Stock'%}
+            <a href="#" class="cart-add-btn product-card__cart btn hover-main-50 text-light bg-main-600 hover-text-white py-11 px-24  flex-align gap-8 mt-10 w-100 justify-content-center" 
+              data-product-id="{{ product.pk }}" 
+              data-product="{{product.id}}">
+              {% trans "Add To Bag" %} <i class="bi bi-bag"></i> 
+            </a> 
+          {% else %}
+            {% comment %} <a href="#" class="product-card__cart btn bg-main-50 text-main-600 hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-align gap-8 mt-10 w-100 justify-content-center btn-action-wishlist" data-product-id = "{{product.pk}}"   data-product="{{product.id}}">
+              {% trans "Add to Wishlist" %} <i class="ph ph-heart"></i> 
+            </a> {% endcomment %}
+            <a href="#" class="product-card__cart btn bg-main-50 text-main-600 hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-align gap-8 mt-10 w-100 justify-content-center btn-action-wishlist" data-product-id="{{product.pk}}">
+              {% trans "Add to Wishlist" %} <i class="ph ph-heart"></i> 
+          </a>
+          {% endif %}
+      </div>
+  </div>
+</div>
+

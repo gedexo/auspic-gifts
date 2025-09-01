@@ -1,0 +1,51 @@
+{% extends 'web/base.html' %}
+{% block title %}Complete Order{% endblock%}
+{% load static  %}
+{% load i18n %}
+{% block content %}
+<!-- ======== Top Breadcrubms ========= -->
+
+
+
+<section class="middle middle pb-60 pt-60 mb-5">
+	<div class="container">
+
+		<div class="row justify-content-center">
+
+			{% if object.is_ordered %}
+			<div class="col-12 col-md-10 col-lg-8 col-xl-6 text-center">
+				<div class="text-success mx-auto mb-4">
+					<i class="bi bi-check2-circle text-success fs-1"></i>
+				</div>
+				<h2 class="mb-2 ft-bold ft-20">{% trans "Your Order is Completed!" %}</h2>
+				<p class="ft-regular fs-md mb-5">
+					{% trans "Your order" %}
+					<span class="text-bold text-dark"> {{object.order_id}}  </span>
+					{% trans "has been completed." %}
+				</p>
+				<a class="btn btn-dark mt-2" href="{% url 'web:index' %}">{% trans "Go back to Home" %}</a>
+				<a class="btn btn-dark mt-2" href="{{object.get_user_absolute_url}}">{% trans "Order Detail" %}</a>
+			</div>
+
+			{% else %}
+
+			<div class="col-12 col-md-10 col-lg-8 col-xl-6 text-center">
+				<div class="text-success mx-auto mb-4">
+					<i class="bi bi-x-circle-fill text-danger fs-1"></i>
+				</div>
+				<h2 class="mb-2 ft-bold">{% trans "Your Order is Not Completed!" %}</h2>
+				<p class="ft-regular fs-md mb-5">
+					{% trans "Your order" %}
+					<span class="text-bold text-dark">{{object.order_id}} </span>
+					{% trans "has not been completed." %}
+				</p>
+				<a class="btn btn-dark" href="{% url 'web:payment_callback' object.id  %}">{% trans "Go back to Payment" %}</a>
+			</div>
+
+			{% endif %}
+
+		</div>
+
+	</div>
+</section>
+{% endblock %}

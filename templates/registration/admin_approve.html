@@ -1,0 +1,41 @@
+{% extends "registration/registration_base.html" %}
+{% load i18n crispy_forms_tags %}
+{% block reg_nav%}
+<span class="navbar-text">
+    Already have an account? <a href=" {% url 'auth_login' %}">Sign in</a>
+</span>
+{% endblock%}
+{% block title %}{% trans "Approval Failure" %}{% endblock %}
+
+{% block content %}
+<section class="my-lg-14 my-8">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row justify-content-center align-items-center">
+            <div class="col-12 col-md-6 col-lg-4 order-lg-1 order-2">
+                <!-- img -->
+                <img src="{% static 'app/images/svg-graphics/signup-g.svg' %}" alt="" class="img-fluid">
+            </div>
+            <!-- col -->
+            <div class="col-12 col-md-6 offset-lg-1 col-lg-4 order-lg-2 order-1">
+                <div class="mb-lg-9 mb-5">
+                    <h1 class="mb-1 h2 fw-bold">Get Start Shopping</h1>
+                    <p>Welcome to auspic! Enter your email to get started.</p>
+                </div>
+                <p>{% trans "Account Approval failed." %}</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+
+{% comment %}
+**registration/admin_approve.html**
+
+Used if account activation fails. With the default setup, has the following context:
+
+``activation_key``
+The activation key used during the activation attempt.
+{% endcomment %}

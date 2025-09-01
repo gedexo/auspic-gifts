@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <meta content="auspic" name="author">
+        <title>{% block title %}{% endblock %} | auspic</title>
+        
+        <!-- Favicon icon-->
+        <link rel="shortcut icon" type="image/x-icon" href="{% static 'app/images/logo/auspiclogo_fav.png' %}">
+
+         <!-- Libs CSS -->
+        <link href="{% static 'app//libs/bootstrap-icons/font/bootstrap-icons.min.css' %}" rel="stylesheet">
+        <link href="{% static 'app//libs/feather-webfont/dist/feather-icons.css' %}" rel="stylesheet">
+        <link href="{% static 'app//libs/simplebar/dist/simplebar.min.css' %}" rel="stylesheet">
+        <!-- Theme CSS -->
+        <link rel="stylesheet" href="{% static 'app/css/theme.min.css' %}" />
+        {% block css_plugins %}{% endblock %}
+        {% block css %}{% endblock %}
+
+        
+    </head>
+    <body>
+        {% include 'web/includes/header.html' %}
+        <main>
+            <section>
+                <div class="container">
+                  <!-- row -->
+                  <div class="row">
+                    {% include 'account/includes/sidebar.html' %}
+                    <div class="col-lg-9 col-md-8 col-12">
+                        <div class="py-5 p-md-6 p-lg-6">
+                        {% block content %}{% endblock %} 
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </section>
+        </main>
+        {% comment %} {% include 'account/includes/account_modal.html' %} {% endcomment %}
+        {% include 'web/includes/footer.html' %}
+        <!-- Libs JS -->
+        <script src="{% static 'app/libs/jquery/dist/jquery.min.js' %}"></script>
+        <script src="{% static 'app/libs/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+        <script src="{% static 'app/libs/simplebar/dist/simplebar.min.js' %}"></script>
+        <!-- Theme JS -->
+        <script src="{% static 'app/js/theme.min.js' %}"></script>
+        {% block js_plugins %}{% endblock %}
+        {% block js %}{% endblock %}
+    </body>
+</html>

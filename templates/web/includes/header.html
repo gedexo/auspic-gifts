@@ -1,0 +1,353 @@
+{% load static %} {% load i18n %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<div class="overlay"></div>
+
+<div class="side-overlay"></div>
+
+<div class="progress-wrap">
+    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
+    </svg>
+</div>
+
+{% comment %} <form action="#" class="search-box" >
+    <button type="button"
+        class="search-box__close position-absolute inset-block-start-0 inset-inline-end-0 m-16 w-48 h-48 border border-gray-100 rounded-circle flex-center text-white hover-text-gray-800 hover-bg-white text-2xl transition-1">
+        <i class="ph ph-x"></i>
+    </button>
+    <div class="container">
+        <div class="position-relative">
+            <input type="text" name="q" class="form-control py-16 px-24 text-xl rounded-pill
+pe-64" placeholder="{% trans 'Search for a product' %}" value="{{ query }}">
+            <button type="submit"
+                class="w-48 h-48 bg-main-600 rounded-circle flex-center text-xl text-white position-absolute top-50 translate-middle-y inset-inline-end-0 me-8">
+                <i class="ph ph-magnifying-glass"></i>
+            </button>
+        </div>
+    </div>
+</form> {% endcomment %}
+<!-- ==================== Search Box End Here ==================== -->
+
+{% include 'web/partials/mobile_nav.html' %}
+
+<!-- ======================= Middle Top Start ========================= -->
+<div class="header-top bg-main-700 flex-between">
+    <div class="container container-lg">
+        <div class="flex-between flex-wrap gap-8">
+            <ul class="flex-align flex-wrap d-none d-md-flex">
+                <li class="border-right-item">
+                    <a href="{% url 'web:shop' %}" class="text-white text-sm hover-text-decoration-underline">Shop the perfect gifts for every occasion!</a>
+                </li>
+            </ul>
+            <ul class="header-top__right flex-align flex-wrap">
+                <li class="border-right-item">
+                    <a href="#0" class="text-white text-sm py-8 flex-align gap-6">
+                        <span class="icon text-md d-flex">
+                            <i class="fa-brands fa-instagram"></i>
+                        </span>
+                    </a>
+                </li>
+                <li class="border-right-item">
+                    <a href="#0" class="text-white text-sm py-8 flex-align gap-6">
+                        <span class="icon text-md d-flex">
+                            <i class="fa-brands fa-facebook"></i></span>
+                    </a>
+                </li>
+
+                <li class="border-right-item">
+                    <a href="#0" class="text-white text-sm py-8 flex-align gap-6">
+                        <span class="icon text-md d-flex"><i class="fa-brands fa-whatsapp"></i></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- ======================= Middle Top End ========================= -->
+
+<!-- ======================= Middle Header Start ========================= -->
+
+<!-- Navbar Header -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light px-4 py-2">
+    <div class="container-fluid">
+        <!-- Logo Section -->
+        <a class="navbar-brand" href="{% url 'web:index' %}">
+            <img src="{% static 'web/images/logo/logo.png' %}" alt="gift in qatar" class="logo"> <!-- Your logo path -->
+        </a>
+
+        <!-- Search Form -->
+        <form class="d-none d-lg-flex me-auto search-form">
+            <input class="form-control" type="search" placeholder="Search..." aria-label="Search">
+            <button class="btn btn-outline-dark search-btn" type="submit"><i class="fa fa-search"></i></button>
+        </form>
+        
+        <!-- Toggler for Mobile -->
+        <button class="navbar-toggler category__button navbar-toggler collapsed" type="button">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar Links & Tracking Section -->
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                <!-- Country Selection Dropdown -->
+              
+                <!-- Order Tracking Form -->
+                <button class="delivery-btn" data-bs-toggle="modal" data-bs-target="#deliveryModal">
+                    <img src="/static/web/images/svg-graphics/Flag_of_India.svg" alt="India Flag">
+                    <span>Deliver To ?</span>
+                    <i class="bi bi-pencil"></i>
+                </button>
+
+                <!-- Account, Occasions, Cart Links -->
+                {% if user.is_superuser %}
+                <li class="nav-item ms-5">
+                    <a class="nav-link" href="{% url 'main:index' %}"><i class="fa-regular fa-user"></i>Dashboard</a>
+                </li>
+                {% endif %}
+                {% if user.is_authenticated %}
+                <li class="nav-item ms-5">
+                    <form id="logout-form" method="POST" action="{% url 'auth_logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="nav-link border-0 bg-transparent text-danger">
+                            <i class="fa-solid fa-sign-out-alt"></i> Logout
+                        </button>
+                    </form>
+                </li>
+            {% else %}
+                <li class="nav-item ms-5">
+                    <a class="nav-link" href="{% url 'auth_login' %}">
+                        <i class="fa-regular fa-user"></i> Login
+                    </a>
+                </li>
+            {% endif %}
+
+                <li class="nav-item ms-5">
+                    <a class="nav-link" href="{% url 'order:wishlist' %}"><i class="fa-regular fa-heart"></i>Wishlist</a>
+                   
+                </li>
+                <li class="nav-item">
+                  <span class="text-2xl text-gray-700 d-flex position-relative me-6 mt-6 item-hover__text">
+                      <span class="w-16 h-16 flex-center rounded-circle bg-main-600 text-white text-xs position-absolute top-n6 header_cart_count cart-count">{{ cart_count }}</span>
+
+                      <a class="nav-link" href="{% url 'web:cart' %}"><i class="ph ph-shopping-cart-simple"></i>Cart</a>
+                  </span>
+                    {% comment %} {% endcomment %}
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<!-- ======================= Middle Header End ========================= -->
+
+<!-- ==================== Header Start Here ==================== -->
+<header class="header bg-white border-bottom border-gray-100 bg-main-600">
+    <div class="container container-lg">
+        <nav class="header-inner d-flex justify-content-between gap-8">
+            <div class="flex-align menu-category-wrapper">
+                <!-- Category Dropdown Start -->
+                <div class="category on-hover-item ">
+                    <button type="button"
+                        class="d-lg-none category__button flex-align gap-8 fw-medium p-16 border-end border-start border-gray-100 text-light">
+                        <span class="icon text-2xl d-xs-flex d-none"><i class="ph ph-dots-nine"></i></span>
+                        <span class="d-sm-flex d-none">All</span> Categories
+                        <span class="arrow-icon text-xl d-flex"><i class="ph ph-caret-down"></i></span>
+                    </button>
+
+                    <div
+                        class="responsive-dropdown on-hover-dropdown  common-dropdown nav-submenu p-0 submenus-submenu-wrapper">
+                        <button type="button"
+                            class="close-responsive-dropdown rounded-circle text-xl position-absolute inset-inline-end-0 inset-block-start-0 mt-4 me-8 d-lg-none d-flex">
+                            <i class="ph ph-x"></i>
+                        </button>
+
+                        <!-- Logo Start -->
+                        <div class="logo px-16 d-lg-none d-block">
+                            <a href="{% url 'web:index' %}" class="link">
+                                <img src="{% static 'web/images/logo/logo.png' %}" alt="Logo" />
+                            </a>
+                        </div>
+                        <!-- Logo End -->
+
+                        <ul class="scroll-sm p-0 py-8 w-300 max-h-400 overflow-y-auto">
+                            <li class="has-submenus-submenu">
+                                <a href="/" class="text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0">
+                                    <span class="text-xl d-flex"></span>
+                                    <span>Home</span>
+                                </a>
+                            </li>
+                            {% for category in all_categories %}
+                                <li class="has-submenus-submenu">
+                                    <a href="javascript:void(0)" class="text-gray-500 text-15 py-12 px-16 flex-align gap-8 rounded-0">
+                                        <span class="text-xl d-flex"></span>
+                                        <span>{{ category.name }}</span>
+                                        <span class="icon text-md d-flex ms-auto"><i class="ph ph-caret-right"></i></span>
+                                    </a>
+                        
+                                    {% if category.get_children %}
+                                        <div class="submenus-submenu py-16">
+                                            <h6 class="text-lg px-16 submenus-submenu__title">{{ category.name }}</h6>
+                                            <ul class="submenus-submenu__list max-h-300 overflow-y-auto scroll-sm">
+                                                {% for sub_category in category.get_children %}
+                                                    <li class="has-submenus-submenu">
+                                                        <b>
+                                                        <a href="{% url 'web:shop' %}?category={{ sub_category.slug }}">{{ sub_category }}</a>
+                                                        </b>
+                                                        {% if sub_category.get_children %}
+                                                            <ul class="submenus-submenu__list max-h-300 overflow-y-auto scroll-sm">
+                                                                {% for child in sub_category.get_children %}
+                                                                    <li>
+                                                                        <a href="{% url 'web:shop' %}?category={{ child.slug }}">{{ child }}</a>
+                                                                    </li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                        {% endif %}
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        
+                    </div>
+                </div>
+
+                <!-- Category Dropdown End  -->
+
+                <!-- Menu Start  -->
+                <!-- Menu Start -->
+                <div class="header-menu d-lg-block d-none">
+                    <ul class="nav-menu flex-align">
+                        <li class="on-hover-item nav-menu__item ">
+                                <a href="/" class="nav-menu__link">Home</a>
+                        </li>
+                        {% for category in all_categories %}
+                            <li class="on-hover-item nav-menu__item has-submenu">
+                                {% if category.children.all %}
+                                    <a href="#" class="nav-menu__link">{{ category.name }}</a>
+                                    {% with category.children.all as subcategories %}
+                                    <div class="megamenu on-hover-dropdown {% if subcategories|length > 1 %}megamenu-drop{% endif %} common-dropdown">
+                                        <div class="megamenu-content">
+                                            <div class="megamenu-grid">
+                                                {% for subcategory in category.children.all %}
+                                                    <div class="megamenu-column">
+                                                        <h4 class="megamenu-title">{{ subcategory.name }}</h4>
+                                                        {% if subcategory.children.all %}
+                                                            <ul class="megamenu-list">
+                                                                {% for child in subcategory.children.all %}
+                                                                    <li><a href="{% url 'web:shop' %}?category={{ child.slug }}" class="megamenu-link">{{ child.name }}</a></li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                        {% endif %}
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endwith %}
+                                {% else %}
+                                    <a href="#" class="nav-menu__link">{{ category.name }}</a>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                
+            <!-- Menu End -->
+
+                <!-- Menu End  -->
+            </div>
+
+            <!-- Header Right start -->
+            <div class="header-right flex-align">
+                <div class="me-16 d-lg-none d-block">
+                    <div class="flex-align flex-wrap gap-12">
+                        {% comment %} <button type="button" class="search-icon flex-align d-lg-none d-flex gap-4 item-hover">
+                            <span class="text-2xl text-light d-flex position-relative item-hover__text">
+                                <i class="ph ph-magnifying-glass"></i>
+                            </span>
+                        </button> {% endcomment %}
+                        {% if request.user.is_superuser%}
+                        <a href="{% url 'main:index' %}" class="flex-align gap-4 item-hover">
+                            <span class="text-2xl text-light d-flex position-relative me-6 mt-6 item-hover__text">
+                                <i class="ph ph-dots-nine"></i>
+                            </span>
+                            <span class="text-md text-gray-500 item-hover__text d-none d-lg-flex">Dashboard</span>
+                        </a>
+                        {% endif %}
+                        {% comment %} <a href="{% url 'order:wishlist' %}" class="flex-align gap-4 item-hover">
+                            <span class="text-2xl text-light d-flex position-relative me-6 mt-6 item-hover__text">
+                                <i class="ph ph-heart"></i>
+                                {% if request.user.is_authenticated %}
+                                <span
+                                    class="w-16 h-16 flex-center rounded-circle bg-dark text-white text-xs position-absolute top-n6 end-n4 header_cart_count"
+                                    id="header_wishlist_count">
+                                    {{ wishlist_count }}</span>
+                                {% endif %}
+                            </span>
+                            <span class="text-md text-gray-500 item-hover__text d-none d-lg-flex">{% trans 'Wishlist' %}</span>
+                        </a> {% endcomment %}
+                        <a href="{% url 'web:cart' %}" class="flex-align gap-4 item-hover">
+                            <span class="text-2xl text-light d-flex position-relative me-6 mt-6 item-hover__text">
+                                <i class="bi bi-bag"></i>
+                                <span
+                                    class="w-16 h-16 flex-center rounded-circle bg-dark text-white text-xs position-absolute top-n6 end-n4 header_cart_count">{{cart_count }}</span>
+                            </span>
+                            <span class="text-md text-gray-500 item-hover__text d-none d-lg-flex">Cart"%}</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- Header Right End  -->
+        </nav>
+    </div>
+</header>
+<!-- ==================== Header End Here ==================== -->
+<header class=" bg-white mobile-delivery">
+
+<button class="delivery-btn mobile-delivery" data-bs-toggle="modal" data-bs-target="#deliveryModal">
+    <img src="/static/web/images/svg-graphics/Flag_of_India.svg" alt="India Flag">
+    <span>Deliver To ?</span>
+    <i class="bi bi-pencil"></i>
+</button>
+</header>
+
+<!-- ==================== Delivery Modal Start Here ==================== -->
+
+<div class="modal fade pincode-modal-start" id="deliveryModal" tabindex="-1" aria-labelledby="deliveryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered pincode-modal">
+        <div class="modal-content pincode-modal-content">
+            <div class="modal-header pincode-modal-header">
+                <p class="main-heading">
+                    Enter delivery location 
+                    <span>30-min delivery now live in some areas</span>
+                </p>
+                <img class="city-pincode-location-img" src="https://imgcdn.floweraura.com/ssr-build/static/media/locationNew.9268a0ae.svg" alt="Location">
+            </div>
+            <div class="modal-body pincode-modal-body">
+                <form id="pincodeForm">
+                    {% csrf_token %}
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">
+                            <img src="/static/web/images/svg-graphics/Flag_of_India.svg" width="20">
+                        </span>
+                        <input type="text" id="pincodeInput" name="pincode" class="form-control" placeholder="Enter Pincode" required>
+                        <button class="btn btn-outline-secondary bg-black" type="submit">Check</button>
+                    </div>
+                </form>
+                <div id="pincodeResult"></div>
+                <div class="geoCurrentLocation">
+                    <span id="useCurrentLocation">Use Current Location</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

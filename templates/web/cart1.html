@@ -1,0 +1,153 @@
+{% extends 'web/base.html' %} {% load static %} {% block title %}Cart{% endblock%} {% load i18n %}
+{% load i18n %}
+{% block content %}
+
+
+    <!-- ========================= Breadcrumb Start =============================== -->
+    <div class="breadcrumb py-26 bg-main-two-50">
+      <div class="container container-lg">
+          <div class="breadcrumb-wrapper flex-between flex-wrap gap-16">
+              <h6 class="mb-0">Cart</h6>
+              <ul class="flex-align gap-8 flex-wrap">
+                  <li class="text-sm">
+                      <a href="{% url 'web:index' %}" class="text-gray-900 flex-align gap-8 hover-text-main-600">
+                          <i class="ph ph-house"></i>
+                          {% trans "Home" %}
+                      </a>
+                  </li>
+                  <li class="flex-align">
+                      <i class="ph ph-caret-right"></i>
+                  </li>
+                  <li class="text-sm text-main-600"> {% trans "Cart" %} </li>
+              </ul>
+          </div>
+      </div>
+  </div>
+  <!-- ========================= Breadcrumb End =============================== -->
+  
+      <!-- ================================ Cart Section Start ================================ -->
+   <section class="cart py-50">
+      <div class="container container-lg">
+          <div class="row gy-4">
+            {% if cart_items %}
+              <div class="col-xl-9 col-lg-8">
+                  <div class="cart-table border border-gray-100 rounded-8 px-40 py-48">
+                    
+                      <div class="overflow-x-auto scroll-sm scroll-sm-horizontal">
+                          <table class="table style-three">
+                               <thead>
+                                  {% comment %} <tr>
+                                      <th class="h6 mb-0 text-lg fw-bold">{% trans "Delete" %}</th>
+                                      <th class="h6 mb-0 text-lg fw-bold">{% trans "Product Name" %}</th>
+                                      <th class="h6 mb-0 text-lg fw-bold">{% trans "Price" %}</th>
+                                      <th class="h6 mb-0 text-lg fw-bold">{% trans "Quantity" %}</th>
+                                      <th class="h6 mb-0 text-lg fw-bold">{% trans "Subtotal" %}</th>
+                                  </tr> {% endcomment %}
+                              </thead> 
+                              <tbody>
+                               
+                                {% for item in cart_items %}
+                                
+                                  <tr class="d-flex flex-column flex-md-row align-items-center text-center text-md-start" >
+                                    
+                                    {% include 'web/partials/cart_item.html' %}
+                                  </tr>
+                                  {% endfor %}
+                               
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-xl-3 col-lg-4">
+                  <div class="cart-sidebar border border-gray-100 rounded-8 px-24 py-40">
+                      <h6 class="text-xl mb-32">{% trans "Cart Totals" %}</h6>
+                      <div class="bg-color-three rounded-8 p-24">
+                          <div class="mb-32 flex-between gap-8">
+                              <span class="text-gray-900 font-heading-two">{% trans "Subtotal" %}</span>
+                              <span class="text-gray-900 fw-semibold" id="cart_total">{{cart_total|floatformat:2}}</span>
+                          </div>
+                          <div class="mb-32 flex-between gap-8">
+                              <span class="text-gray-900 font-heading-two">{% trans "Service Fee" %}</span>
+                              <span class="text-gray-900 fw-semibold" id="service_fee"> 0.00</span>
+                          </div>
+                      </div>  
+                      <div class="bg-color-three rounded-8 p-24 mt-24">
+                          <div class="flex-between gap-8">
+                              <span class="text-gray-900 text-xl fw-semibold">{% trans "Total" %}</span>
+                              <span class="text-gray-900 text-xl fw-semibold" id="sub_total">
+                              {{ cart_total|floatformat:2 }}
+                            </span>
+                            
+                          </div>
+                      </div>  
+                      <a href="{% url 'web:checkout' %}" class="btn btn-main mt-40 py-18 w-100 rounded-8">{% trans "Proceed to checkout" %}</a>
+                  </div>
+              </div>
+              {% else %}
+              <div class="py-3">
+                <div class="text-center">
+                  <img src="{% static 'app/images/assets/cart.png' %}" alt="" class="img-responsive img-fluid">
+                  <h3>{% trans "Your cart is empty" %}</h3>
+                  <div class="text-center">
+                    <a href="{% url 'web:shop' %}" class="btn btn-primary">{% trans "Continue Shopping" %}</a>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+          </div>
+      </div>
+   </section>
+  <!-- ================================ Cart Section End ================================ -->
+  
+      <!-- ========================== Shipping Section Start ============================ -->
+      <section class="shipping mb-24" id="shipping">
+        <div class="container container-lg">
+            <div class="row gy-4">
+                <div class="col-xxl-3 col-sm-6">
+                    <div class="shipping-item flex-align gap-16 rounded-16 bg-main-50 hover-bg-main-100 transition-2">
+                        <span class="w-56 h-56 flex-center rounded-circle bg-main-600 text-white text-32 flex-shrink-0"><i class="ph-fill ph-car-profile"></i></span>
+                        <div class="">
+                            <h6 class="mb-0">{% trans "Fast Delivery" %}</h6>
+                            <span class="text-sm text-heading">{% trans "Quick and reliable shipping." %}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-3 col-sm-6">
+                    <div class="shipping-item flex-align gap-16 rounded-16 bg-main-50 hover-bg-main-100 transition-2">
+                        <span class="w-56 h-56 flex-center rounded-circle bg-main-600 text-white text-32 flex-shrink-0"><i class="ph-fill ph-hand-heart"></i></span>
+                        <div class="">
+                            <h6 class="mb-0"> {% trans "100% Satisfaction" %}</h6>
+                            <span class="text-sm text-heading">{% trans "Your satisfaction is guaranteed." %}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-3 col-sm-6">
+                    <div class="shipping-item flex-align gap-16 rounded-16 bg-main-50 hover-bg-main-100 transition-2">
+                        <span class="w-56 h-56 flex-center rounded-circle bg-main-600 text-white text-32 flex-shrink-0"><i class="ph-fill ph-credit-card"></i></span>
+                        <div class="">
+                            <h6 class="mb-0"> {% trans "Secure Payments" %}</h6>
+                            <span class="text-sm text-heading">{% trans "Safe and secure transactions." %}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-3 col-sm-6">
+                    <div class="shipping-item flex-align gap-16 rounded-16 bg-main-50 hover-bg-main-100 transition-2">
+                        <span class="w-56 h-56 flex-center rounded-circle bg-main-600 text-white text-32 flex-shrink-0"><i class="ph-fill ph-chats"></i></span>
+                        <div class="">
+                            <h6 class="mb-0"> {% trans "24/7 Support" %}</h6>
+                            <span class="text-sm text-heading">{% trans "Assistance anytime, every day." %}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+     </section>
+  <!-- ========================== Shipping Section End ============================ -->
+      
+
+{% endblock content %}
+
+{% block js %}
+<script src="{% static 'web/js/cart.js' %}"></script>
+{% endblock %}

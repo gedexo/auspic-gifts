@@ -1,0 +1,225 @@
+<!-- Shopping Cart Modal -->
+{% load i18n %}
+{% load static %}
+
+<div class="modal fullRight fade modal-shopping-cart" id="shoppingCart" tabindex="-1" aria-labelledby="shoppingCartLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="header">
+          <div class="title fw-5">Shopping Cart</div>
+          <span class="icon-close icon-close-popup" data-bs-dismiss="modal"></span>
+        </div>
+        <div class="wrap">
+          <div class="tf-mini-cart-wrap">
+            <div class="tf-mini-cart-main">
+              <div class="tf-mini-cart-sroll">
+                <div class="tf-mini-cart-items">
+                  {% for item in cart_items %}
+                  <div class="tf-mini-cart-item">
+                    <div class="tf-mini-cart-image">
+                      <a href="{{ item.variant.get_detail_url }}">
+                        <img src="{{ item.variant.thumbnail_image.url }}" alt="{{ item.variant }}">
+                      </a>
+                    </div>
+                    <div class="tf-mini-cart-info">
+                      <a class="title link" href="{{ item.variant.get_detail_url }}">{{ item.variant }}</a>
+                      <div class="price fw-6"> {{ item.variant.product_price|floatformat:2 }}</div>
+                      <div class="meta-variant">{{ item.variant.unit }}</div>
+                      <div class="tf-mini-cart-btns">
+                        <div class="wg-quantity small">
+                          <span class="btn-quantity minus-btn cart-minus-btn" data-product_id="{{ item.variant.id }}">-</span>
+                          <input type="text" name="number" value="{{ item.quantity }}" data-product_id="{{ item.variant.id }}" id="quantity-{{ item.variant.id }}">
+                          <span class="btn-quantity plus-btn cart-plus-btn" data-product_id="{{ item.variant.id }}">+</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <script>
+    $(document).on("click", ".cart-add-btn", function (e) {
+      e.preventDefault();
+  
+      let product_id = $(this).data("product-id");
+      let quantity = $("#quantity").val() || 1;
+  
+      $.ajax({
+          url: "{% url 'web:add_cart' %}",  // Update with the correct URL name
+          data: {
+              product_id: product_id,
+              quantity: quantity,
+          },
+          dataType: "json",
+          success: function (response) {
+              // Update cart count in navbar
+              $(".cart-count").text(response.cart_count);
+  
+              // Replace cart modal content
+              $(".tf-mini-cart-items").html($(response.cart_modal_html).find(".tf-mini-cart-items").html());
+  
+              // Show the cart modal
+              $("#shoppingCart").modal("show");
+          },
+          error: function () {
+              alert("Error adding to cart. Please try again.");
+          },
+      });
+  });
+  </script> -->
+
+
+
+  <script>
+    // Optimized Shopping Cart Script
+$(document).on("click", ".cart-add-btn", function (e) {
+    e.preventDefault();
+    
+    let $btn = $(this);
+    let product_id = $btn.data("product-id");
+    let quantity = $("#quantity").val() || 1;
+    
+    // Add loading state
+    $btn.addClass('loading').prop('disabled', true);
+    $btn.html('<span class="spinner-border spinner-border-sm me-2"></span>Adding...');
+    
+    $.ajax({
+        url: "{% url 'web:add_cart' %}",
+        data: {
+            product_id: product_id,
+            quantity: quantity,
+        },
+        dataType: "json",
+        success: function (response) {
+            // Update cart count efficiently
+            $(".cart-count").text(response.cart_count);
+            
+            // Update cart modal content more efficiently
+            updateCartModal(response.cart_modal_html);
+            
+            // Show modal with slight delay to prevent animation conflicts
+            setTimeout(() => {
+                $("#shoppingCart").modal("show");
+            }, 100);
+            
+            // Show success feedback
+            showSuccessMessage("Item added to cart!");
+        },
+        error: function (xhr, status, error) {
+            console.error("Cart error:", error);
+            showErrorMessage("Error adding to cart. Please try again.");
+        },
+        complete: function() {
+            // Reset button state
+            $btn.removeClass('loading').prop('disabled', false);
+            $btn.html('Add To Bag <i class="bi bi-bag"></i>');
+        }
+    });
+});
+
+// Efficient cart modal update function
+function updateCartModal(newHtml) {
+    let $newContent = $(newHtml).find(".tf-mini-cart-items");
+    let $currentContent = $(".tf-mini-cart-items");
+    
+    // Use fadeOut/fadeIn for smoother transition
+    $currentContent.fadeOut(150, function() {
+        $(this).html($newContent.html()).fadeIn(150);
+        
+        // Reinitialize lazy loading for new images
+        initializeLazyLoading();
+    });
+}
+
+// Initialize lazy loading for dynamically added images
+function initializeLazyLoading() {
+    $('.tf-mini-cart-items img[data-src]').each(function() {
+        let $img = $(this);
+        $img.attr('src', $img.data('src')).removeAttr('data-src');
+    });
+}
+
+// Success message function
+function showSuccessMessage(message) {
+    // Create or update success toast
+    let toast = `
+        <div class="toast-container position-fixed top-0 end-0 p-3">
+            <div class="toast show" role="alert">
+                <div class="toast-header bg-success text-white">
+                    <i class="bi bi-check-circle-fill me-2"></i>
+                    <strong class="me-auto">Success</strong>
+                </div>
+                <div class="toast-body">${message}</div>
+            </div>
+        </div>
+    `;
+    
+    $('body').append(toast);
+    setTimeout(() => $('.toast-container').remove(), 3000);
+}
+
+// Error message function
+function showErrorMessage(message) {
+    let toast = `
+        <div class="toast-container position-fixed top-0 end-0 p-3">
+            <div class="toast show" role="alert">
+                <div class="toast-header bg-danger text-white">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    <strong class="me-auto">Error</strong>
+                </div>
+                <div class="toast-body">${message}</div>
+            </div>
+        </div>
+    `;
+    
+    $('body').append(toast);
+    setTimeout(() => $('.toast-container').remove(), 5000);
+}
+
+// Optimize quantity change handlers
+$(document).on("click", ".cart-plus-btn, .cart-minus-btn", function(e) {
+    e.preventDefault();
+    
+    let $btn = $(this);
+    let product_id = $btn.data("product_id");
+    let $quantityInput = $(`#quantity-${product_id}`);
+    let currentQty = parseInt($quantityInput.val());
+    let newQty = $btn.hasClass('cart-plus-btn') ? currentQty + 1 : Math.max(1, currentQty - 1);
+    
+    // Debounce rapid clicks
+    clearTimeout($btn.data('timeout'));
+    $btn.data('timeout', setTimeout(() => {
+        updateCartQuantity(product_id, newQty);
+    }, 300));
+    
+    // Update input immediately for better UX
+    $quantityInput.val(newQty);
+});
+
+// Debounced quantity update function
+function updateCartQuantity(product_id, quantity) {
+    $.ajax({
+        url: "{% url 'web:update_cart_quantity' %}", // You'll need this endpoint
+        data: {
+            product_id: product_id,
+            quantity: quantity,
+        },
+        dataType: "json",
+        success: function(response) {
+            $(".cart-count").text(response.cart_count);
+            // Update only the specific item's total if needed
+            $(`#item-total-${product_id}`).text(response.item_total);
+        },
+        error: function() {
+            showErrorMessage("Failed to update quantity");
+        }
+    });
+}
+  </script>

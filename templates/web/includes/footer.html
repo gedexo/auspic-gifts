@@ -1,0 +1,156 @@
+{% load static %}
+{% load i18n %}
+<!-- ==================== Footer Start Here ==================== -->
+
+<footer class="footer footer-mobile">
+    <div class="container container-lg">
+      <div class="footer-item-wrapper">
+        
+        <!-- Footer Logo and Contact Info -->
+        <div class="footer-item">
+          <div class="footer-item__logo">
+            <a href="{% url 'web:index' %}"><img src="{% static 'web/images/logo/logo.png' %}" alt=""></a>
+          </div>
+          <p class="mb-24">{% trans "The Perfect Gift Solution" %}</p>
+          <div class="flex-align gap-16 mb-16">
+            <span class="w-32 h-32 flex-center rounded-circle bg-main-600 text-white text-md flex-shrink-0"><i class="ph-fill ph-map-pin"></i></span>
+            <span class="text-md text-gray-900">{% trans "17/1034, Emarald Mall 2nd Floor, Mavoor Road, Kozhikode (Calicut), India 673004" %}</span>
+          </div>
+          <div class="flex-align gap-16 mb-16">
+            <span class="w-32 h-32 flex-center rounded-circle bg-main-600 text-white text-md flex-shrink-0"><i class="ph-fill ph-phone-call"></i></span>
+            <a href="tel:9048990051" class="text-md text-gray-900 hover-text-main-600">{% trans "9048990051" %}</a>
+          </div>
+          <div class="flex-align gap-16 mb-16">
+            <span class="w-32 h-32 flex-center rounded-circle bg-main-600 text-white text-md flex-shrink-0"><i class="ph-fill ph-envelope"></i></span>
+            <a href="mailto:contact@auspicgifts.com" class="text-md text-gray-900 hover-text-main-600">contact@auspicgifts.com</a>
+          </div>
+        </div>
+  
+        <!-- Quick Links - Collapsible on Mobile -->
+        <div class="footer-item">
+          <h6 class="footer-item__title d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#quickLinks">
+            {% trans "Quick Links" %}
+            <span class="toggle-icon">+</span>
+          </h6>
+          <ul id="quickLinks" class="footer-menu main-font collapse">
+            <li class="mb-16"><a href="{% url 'web:index' %}" class="text-gray-600 hover-text-main-600">{% trans "Home" %}</a></li>
+            <li class="mb-16"><a href="{% url 'web:shop' %}" class="text-gray-600 hover-text-main-600">{% trans "Shop" %}</a></li>
+            <li class="mb-16"><a href="{% url 'web:contact' %}" class="text-gray-600 hover-text-main-600">{% trans "Contact" %}</a></li>
+          </ul>
+        </div>
+  
+        <!-- Categories - Collapsible on Mobile -->
+        <div class="footer-item">
+          <h6 class="footer-item__title d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#categories">
+            {% trans "Categories" %}
+            <span class="toggle-icon">+</span>
+          </h6>
+          <ul id="categories" class="footer-menu main-font collapse">
+            {% for category in all_categories|slice:":6" %}
+            <li class="mb-16"><a href="{% url 'web:shop' %}?product__sub_category__category={{category.id}}" class="text-gray-600 hover-text-main-600">{{category.name}}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+  
+        <!-- Consumer Policies - Collapsible on Mobile -->
+        <div class="footer-item">
+          <h6 class="footer-item__title d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#consumers">
+            {% trans "For Consumers" %}
+            <span class="toggle-icon">+</span>
+          </h6>
+          <ul id="consumers" class="footer-menu main-font collapse">
+            <li class="mb-16"><a href="{% url 'web:privacy_policy' %}" class="text-gray-600 hover-text-main-600">{% trans "Privacy Policy" %}</a></li>
+            <li class="mb-16"><a href=" {% url 'web:refund_policy' %}" class="text-gray-600 hover-text-main-600">{% trans "Refund Policy" %}</a></li>
+            <li class="mb-16"><a href="{% url 'web:terms_conditions' %}" class="text-gray-600 hover-text-main-600">{% trans "Terms & Conditions" %}</a></li>
+          
+        </div>
+  
+      </div>
+    </div>
+  </footer>
+
+
+  <footer class="footer footer-desktop">
+    {% comment %} <img src="{% static 'web/images/bg/body-bottom-bg.png' %}" alt="BG" class="body-bottom-bg"> {% endcomment %}
+    <div class="container container-lg">
+        <div class="footer-item-wrapper d-flex align-items-start flex-wrap">
+            <div class="footer-item">
+                <div class="footer-item__logo">
+                    <a href="{% url 'web:index' %}"> <img src="{% static 'web/images/logo/logo.png' %}" alt=""></a>
+                </div>
+                <p class="mb-24">{% trans "The Perfect Gift Solution" %}</p>
+                <div class="flex-align gap-16 mb-16">
+                    <span class="w-32 h-32 flex-center rounded-circle bg-main-600 text-white text-md flex-shrink-0"><i class="ph-fill ph-map-pin"></i></span>
+                    <span class="text-md text-gray-900 ">{% trans "17/1034, Emarald Mall 2nd Floor, Mavoor Road,<br> Kozhikode (Calicut), India 673004" %}</span>
+                </div>
+                <div class="flex-align gap-16 mb-16">
+                    <span class="w-32 h-32 flex-center rounded-circle bg-main-600 text-white text-md flex-shrink-0"><i class="ph-fill ph-phone-call"></i></span>
+                    <div class="flex-align gap-16 flex-wrap">
+                        <a href="tel:9048990051" class="text-md text-gray-900 hover-text-main-600">{% trans "9048990051" %}</a>
+                        
+                    </div>
+                </div>
+                <div class="flex-align gap-16 mb-16">
+                    <span class="w-32 h-32 flex-center rounded-circle bg-main-600 text-white text-md flex-shrink-0"><i class="ph-fill ph-envelope"></i></span>
+                    <a href="mailto:contact@auspicgifts.com" class="text-md text-gray-900 hover-text-main-600">contact@auspicgifts.com</a>
+                </div>
+            </div>
+            
+            <div class="footer-item">
+                <h6 class="footer-item__title">{% trans "Quick Links" %}</h6>
+                <ul class="footer-menu main-font">
+                    <li class="mb-16">
+                        <a href="{% url 'web:index' %}" class="text-gray-600 hover-text-main-600">{% trans "Home" %}</a>
+                    </li>
+                    <li class="mb-16">
+                      <a href="{% url 'web:shop' %}" class="text-gray-600 hover-text-main-600">{% trans "Shop" %}</a>
+                  </li>
+                    <li class="mb-16">
+                        <a href="{% url 'web:contact' %}" class="text-gray-600 hover-text-main-600">{% trans "Contact" %}</a>
+                    </li>
+                    
+                </ul>
+            </div>
+  
+            <div class="footer-item ">
+                <h6 class="footer-item__title">{% trans "Categories" %}</h6>
+                <ul class="footer-menu main-font">
+                  {% for category in all_categories|slice:":6" %}
+                    <li class="mb-16">
+                        <a href="{% url 'web:shop' %}?product__sub_category__category={{category.id}}" class="text-gray-600 hover-text-main-600">{{category.name}}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+  
+  
+            <div class="footer-item consumer-footer">
+                <h6 class="footer-item__title">{% trans "For Consumers" %}</h6>
+                <ul class="footer-menu main-font">
+                    <li class="mb-16">
+                        <a href="{% url 'web:privacy_policy' %}" class="text-gray-600 hover-text-main-600">{% trans "Privacy Policy" %}</a>
+                    </li>
+                    <li class="mb-16">
+                        <a href=" {% url 'web:refund_policy' %}" class="text-gray-600 hover-text-main-600">{% trans "Refund Policy" %}</a>
+                    </li>
+                    <li class="mb-16">
+                        <a href="{% url 'web:terms_conditions' %}" class="text-gray-600 hover-text-main-600">{% trans "Terms and Conditions" %}</a>
+                    </li>
+
+                </ul>
+            </div>
+            
+        </div>
+    </div>
+  </footer>
+
+<!-- bottom Footer -->
+<div class="bottom-footer py-8">
+  <div class="container container-lg">
+      <div class="bottom-footer__inner flex-between flex-wrap gap-16 py-16 mobile-footer-text" style=''>
+          <p class="bottom-footer__text ">&copy; {% now 'Y' %} Auspic Gifts - Developed by  <a href="https://gedexo.com/" target="__blank"> Gedexo Technologies</a>.</p>
+         
+      </div>
+  </div>
+</div>
+<!-- ==================== Footer End Here ==================== -->

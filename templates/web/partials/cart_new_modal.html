@@ -1,0 +1,74 @@
+{% load static %}
+
+ <div class="tf-page-cart-item">
+    <form>
+        <table class="tf-table-page-cart">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            {% for item in cart_items %}
+            <tbody>
+                <tr class="tf-cart-item file-delete">
+                    <td class="tf-cart-item_product">
+                        <a href="#" class="img-box">
+                            <img src="{{ item.variant.thumbnail_image.url }}" alt="img-product">
+                        </a>
+                        <div class="cart-info">
+                            <a href="{{ item.variant.get_detail_url }}" class="cart-title link">{{ item.variant|truncatechars:50 }}</a>
+                            <div class="cart-meta-variant">{{item.product.unit}}</div>
+                           <span class="remove-cart link" data-product-id="{{ item.product.id }}"><a href="{% url 'web:clear_cart_item' item.variant.id %}">Remove</span> 
+                        </div>
+                    </td>
+                    <td class="tf-cart-item_price" cart-data-title="Price">
+                        <div class="cart-price">{{ item.variant.product_price|floatformat:0 }}</div>
+                    </td>
+                    <td class="tf-cart-item_quantity" cart-data-title="Quantity">
+                        <div class="cart-quantity">
+                            <div class="wg-quantity">
+                                <span class="quantity__minus btn-quantity cart-minus-btn"   data-product-id="{{ item.variant.id }}">
+                                    <svg class="d-inline-block" width="9" height="1" viewBox="0 0 9 1" fill="currentColor"><path d="M9 1H5.14286H3.85714H0V1.50201e-05H3.85714L5.14286 0L9 1.50201e-05V1Z"></path></svg>
+                                </span>
+                                <input type="text" name="number" value="{{ item.quantity }}" 	data-product-id="{{ item.variant.id }}" id="quantity-{{ item.variant.id }}" readonly>
+                                <span class="quantity__plus  btn-quantity cart-plus-btn cart-add-btn" data-product-id="{{ item.variant.id }}" >
+                                    <svg class="d-inline-block" width="9" height="9" viewBox="0 0 9 9" fill="currentColor"><path d="M9 5.14286H5.14286V9H3.85714V5.14286H0V3.85714H3.85714V0H5.14286V3.85714H9V5.14286Z"></path></svg>
+                                </span> 
+                            </div>
+                        </div>
+                    </td>
+                    <td class="tf-cart-item_total" cart-data-title="Total">
+                        <div class="cart-total"   id="total-{{ item.variant.id }}">{{item.total_price|floatformat:0}}</div>
+                    </td>
+                </tr>
+            
+            </tbody>
+            {% endfor %}
+        </table>
+     
+    </form>
+</div>
+
+<div class="tf-page-cart-footer">
+    <div class="tf-cart-footer-inner">
+    
+        <div class="tf-page-cart-checkout">
+           
+            <div class="tf-cart-totals-discounts">
+                <h3>Subtotal</h3>
+                <span class="total-value" id='cart_total'>{{cart_total|floatformat:2}}</span>
+            </div>
+       
+            <div class="cart-checkout-btn">
+                <a href="{% url 'web:checkout' %}" class="tf-btn w-100 btn-fill animate-hover-btn radius-3 justify-content-center text-light" style='background:#0C5A67'>
+                    <span>Check out</span>
+                </a>
+            </div>
+         
+            
+        </div>
+    </div>
+</div> 

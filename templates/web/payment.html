@@ -1,0 +1,167 @@
+{% extends 'web/base.html' %}
+{% block title %}Payment{% endblock%} 
+{% load i18n %}
+{% load static %}
+
+{% block content %}
+<style>
+    .payment-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+		height: 80vh;
+        background: linear-gradient(135deg, #1d4350, #c34b82);
+        padding: 20px;
+		margin-bottom: 40px;
+    }
+
+    .payment-card {
+        background: #fff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        max-width: 400px;
+        text-align: center;
+        animation: fadeIn 0.8s ease-in-out;
+    }
+
+    .payment-title {
+        font-size: 22px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .payment-details {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .payment-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 0;
+        border-bottom: 1px solid #ddd;
+        font-size: 16px;
+    }
+
+    .payment-item.total {
+        font-weight: bold;
+        color: #0C5A67 !important;
+        font-size: 18px;
+    }
+
+    .pay-btn {
+        background: #0C5A67 !important;
+        color: white;
+        border: none;
+        padding: 12px;
+        width: 100%;
+        font-size: 18px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .pay-btn:hover {
+        background: #0C5A67 !important;
+    }
+
+    .terms-text {
+        font-size: 12px;
+        color: #666;
+        margin-top: 15px;
+    }
+
+    .terms-link {
+        color: #0C5A67 !important;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .terms-link:hover {
+        text-decoration: underline;
+    }
+
+    /* Animation */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .hover-effect {
+        transform: scale(1.05);
+    }
+</style>
+
+<section class="payment-container">
+    <div class="payment-card">
+        <h2 class="payment-title">{% trans "Payment Summary" %}</h2>
+        <ul class="payment-details">
+            <li class="payment-item">
+                <span>{% trans "Item Subtotal" %}</span>
+                <span id="cart_total">₹{{ object.subtotal|floatformat:2 }}</span>
+            </li>
+            <li class="payment-item">
+                <span>{% trans "Service Fee" %}</span>
+                <span id="service_fee">₹{{ object.service_fee|floatformat:2 }}</span>
+            </li>
+            <li class="payment-item">
+                <span>{% trans "Shipping Fee" %}</span>
+                <span id="shipping_fee">₹{{ object.shipping_fee|floatformat:2 }}</span>
+            </li>
+            <li class="payment-item total">
+                <span>{% trans "Total Payable" %}</span>
+                <span id="sub_total">₹{{ object.payable|floatformat:2 }}</span>
+            </li>
+        </ul>
+        <button class="pay-btn" id="payButton">{% trans "Make Secure Payment" %}</button>
+        <p class="terms-text">
+            {% trans "By placing your order, you agree to our" %} 
+            <a href="{% url 'web:terms_conditions' %}" class="terms-link">{% trans "Terms of Service" %}</a> 
+            {% trans "and" %} 
+            <a href="{% url 'web:privacy_policy' %}" class="terms-link">{% trans "Privacy Policy." %}</a>
+        </p>
+    </div>
+</section>
+{% endblock %}
+
+{% block js %}
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var payButton = document.getElementById("payButton");
+
+        var options = {
+            key: "{{ RAZOR_PAY_KEY }}",
+            amount: "{{ amount }}",
+            currency: "INR",
+            name: "auspic",
+            order_id: "{{ razorpay_order_id }}",
+            callback_url: "{{ callback_url }}",
+        };
+
+        var rzp1 = new Razorpay(options);
+        payButton.addEventListener("click", function (e) {
+            rzp1.open();
+            e.preventDefault();
+        });
+
+        // Button hover animation
+        payButton.addEventListener("mouseenter", function () {
+            payButton.classList.add("hover-effect");
+        });
+
+        payButton.addEventListener("mouseleave", function () {
+            payButton.classList.remove("hover-effect");
+        });
+    });
+</script>
+{% endblock %}

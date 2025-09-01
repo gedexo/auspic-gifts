@@ -1,0 +1,696 @@
+{% extends 'web/base.html' %}
+
+ {% load static %} {% block title %}Home{% endblock%}
+
+{% load thumbnail %}
+{% load i18n %}
+
+{% block content %}
+
+    <!-- ============================ Banner Section start =============================== -->
+    <div class="banner">
+        <div class="container container-lg">
+          <div class=" overflow-hidden position-relative arrow-center">
+            <div class="flex-align">
+                
+              <button type="button" id="banner-prev" class="slick-prev slick-arrow flex-center rounded-circle bg-white text-xl hover-bg-main-600 hover-text-white transition-1">
+                <i class="{% if LANGUAGE_CODE == 'ar' %}ph ph-caret-right{% else %}ph ph-caret-left {% endif %}"></i>
+              </button>
+              
+              <button type="button" id="banner-next" class="slick-next slick-arrow flex-center rounded-circle bg-white text-xl hover-bg-main-600 hover-text-white transition-1">
+                <i class="{% if LANGUAGE_CODE == 'ar' %}ph ph-caret-left{% else %}ph ph-caret-right {% endif %}"></i>
+              </button>
+            </div>
+      
+            <div class="banner-slider d-none d-sm-block">
+              {% for banner in main_banners %}
+              <a href="{% url 'web:shop' %}?product__category={{ banner.category.pk }}">
+                <div class="banner-slide"> 
+                  {% comment %} <img src="{{banner.banner_image.url}}" alt="" class=""> {% endcomment %}
+                  <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect width='200' height='200' fill='%23f0f0f0'/%3E%3C/svg%3E" 
+                    data-src="{{banner.banner_image.url}}" 
+                    class="product-img lazy-load" 
+                    alt="{{banner.banner_image.url}}"
+                    loading="lazy">
+                </div>
+            </a>
+              {% endfor %}
+            </div>
+      
+          </div>
+        </div>
+      </div>
+      
+  <!-- ============================ Banner Section End =============================== -->
+  
+      <!-- ============================ Feature Section start =============================== -->
+
+      <!-- Catgeories in System-->
+      <div class="feature d-none d-sm-block" id="featureSection">
+        <div class="container container-lg">
+            <div class="position-relative arrow-center">
+            
+                <div class="feature-item-wrapper">
+                  {% for category in categories %}
+                    <div class="feature-item text-center">
+                        <div class="feature-item__thumb">
+                            <a href="{{ category.get_absolute_url }}" class="w-100 h-100 flex-center category-img">
+                               {% comment %} {% if category.image %}<img src="{{category.image.url}}" alt="">{% endif %}  {% endcomment %}
+                               {% if category.image %}
+                               <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect width='200' height='200' fill='%23f0f0f0'/%3E%3C/svg%3E" 
+                               data-src="{{category.image.url}}" 
+                               class="product-img lazy-load" 
+                               alt="{{category.image.url}}"
+                               loading="lazy">
+                               {% endif %}
+                            </a>
+                        </div>
+                        <div class="feature-item__content mt-2">
+                            <h6 class="text-lg mb-8"><a href="{{category.get_absolute_url}}" class="text-inherit">{{ category }}</a></h6>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Catgeories in Mobile-->
+      <div class="feature d-block d-sm-none" id="featureSection">
+        <div class="container container-lg">
+            <div class="position-relative arrow-center">
+    
+                <!-- Odd Categories Slider -->
+                <div class="feature-item-wrapper">
+                    {% for category in categories %}
+                        {% if forloop.counter|divisibleby:2 == False %} 
+                        <div class="feature-item text-center">
+                            <div class="feature-item__thumb rounded-circle">
+                                <a href="{% url 'web:shop' %}?product__category={{ category.id }}" class="w-100 h-100 flex-center category-img">
+                                    {% comment %} {% if category.image %}<img src="{{category.image.url}}" alt="">{% endif %}  {% endcomment %}
+                                    {% if category.image %}
+                                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect width='200' height='200' fill='%23f0f0f0'/%3E%3C/svg%3E" 
+                                    data-src="{{category.image.url}}" 
+                                    class="product-img lazy-load" 
+                                    alt="{{category.image.url}}"
+                                    loading="lazy">
+                                    {% endif %}
+                                </a>
+                            </div>
+                            <div class="feature-item__content mt-2">
+                                <h6 class="text-lg mb-8">
+                                    <a href="{% url 'web:shop' %}?product__category={{ category.id }}" class="text-inherit">{{ category }}</a>
+                                </h6>
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+    
+                <!-- Even Categories Slider -->
+                <div class="feature-item-wrapper">
+                    {% for category in categories %}
+                        {% if forloop.counter|divisibleby:2 == True %}  
+                        <div class="feature-item text-center">
+                            <div class="feature-item__thumb rounded-circle">
+                                <a href="{% url 'web:shop' %}?product__category={{ category.id }}" class="w-100 h-100 flex-center category-img">
+                                    {% comment %} {% if category.image %}<img src="{{category.image.url}}" alt="">{% endif %}  {% endcomment %}
+                                    {% if category.image %}
+                                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect width='200' height='200' fill='%23f0f0f0'/%3E%3C/svg%3E" 
+                                    data-src="{{category.image.url}}" 
+                                    class="product-img lazy-load" 
+                                    alt="{{category.image.url}}"
+                                    loading="lazy">
+                                    {% endif %}
+                                </a>
+                            </div>
+                            <div class="feature-item__content mt-2">
+                                <h6 class="text-lg mb-8">
+                                    <a href="{% url 'web:shop' %}?product__category={{ category.id }}" class="text-inherit">{{ category }}</a>
+                                </h6>
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+    
+            </div>
+        </div>
+    </div>
+    
+  <!-- ============================ Feature Section End =============================== -->
+<!--mobile banner-->
+<div class="banner">
+    <div class="container container-lg">
+      <div class="overflow-hidden position-relative arrow-center" style='border-radius:4px;'>
+
+        <div class="banner-slider-mobile  d-block d-sm-none">
+            {% for banner in main_banners_mobile %}
+            <a href="{% url 'web:shop' %}?product__category={{ banner.category.pk }}">
+              <div class="banner-slide"> 
+                {% comment %} <img src="{{banner.banner_image.url}}" alt="" class=""> {% endcomment %}
+
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect width='200' height='200' fill='%23f0f0f0'/%3E%3C/svg%3E" 
+                data-src="{{banner.banner_image.url}}" 
+                class="product-img lazy-load" 
+                alt="{{banner.banner_image.url}}"
+                loading="lazy">
+             
+              </div>
+          </a>
+            {% endfor %}
+          </div>
+
+      </div>
+    </div>
+  </div>
+
+  <section class="offer pt-30 pb-50 d-none d-sm-block">
+    <div class="container container-lg">
+        <div class="section-heading">
+            <div class="flex-between flex-wrap gap-8">
+                <h5 class="mb-0  ms-lg-4">{% translate 'Thoughtfully Curated Gifts' %}</h5>
+            </div>
+        </div>  
+        <div class="row gy-4">
+            {% for banner in curated_gifts|slice:"2" %}
+            <div class="col-sm-6">
+              <a href="{% url 'web:shop' %}?product__category={{ banner.category.pk }}">
+                <div class="offer-card position-relative rounded-16 overflow-hidden flex-align gap-16 flex-wrap z-1">
+                  {% comment %} <img src="{{banner.banner_image.url}}" alt="" class="rounded-24 "> {% endcomment %}
+                  <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect width='200' height='200' fill='%23f0f0f0'/%3E%3C/svg%3E" 
+                  data-src="{{banner.banner_image.url}}" 
+                  class="product-img lazy-load rounded-24" 
+                  alt="{{banner.banner_image.url}}"
+                  loading="lazy">
+
+                </div>
+              </a>
+            </div>
+            {% endfor %}
+            {% for banner in curated_gifts|slice:"2:" %}
+            <div class="col-xl-3 col-sm-6 col-xs-6">
+                <a href="{% url 'web:shop' %}?product__category={{ banner.category.pk }}" class="curated-gift">
+                <div class="offer-card position-relative rounded-16 overflow-hidden flex-align gap-16 flex-wrap z-1">
+                  {% comment %} <img src="{{banner.banner_image.url}}" alt="" class="rounded-24 "> {% endcomment %}
+                  <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect width='200' height='200' fill='%23f0f0f0'/%3E%3C/svg%3E" 
+                  data-src="{{banner.banner_image.url}}" 
+                  class="product-img lazy-load rounded-24" 
+                  alt="{{banner.banner_image.url}}"
+                  loading="lazy">
+
+                </div>
+              </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+ </section>
+ <section class="new-arrival pb-50">
+    <div class="container container-lg">
+        <div class="section-heading">
+            <div class="flex-between flex-wrap gap-8">
+                <h5 class="mb-0  ms-lg-2">{% trans "Gifts In Trend" %}</h5>
+                <div class="flex-align gap-16">
+                    <a href="{% url 'web:shop' %}" class="text-sm fw-medium text-gray-700 hover-text-main-600 hover-text-decoration-underline">{% trans "View All Deals" %}</a>
+                   
+                </div>
+            </div>
+        </div>
+
+        <div class="new-arrival__slider arrow-style-two">
+            {% for product in trending_products %}
+            {% include 'web/partials/product_card.html' %}
+            {% endfor %}
+        </div>
+    </div>
+ </section>
+      <!-- ======================== promotional banner Start ============================== -->
+<section class="offer pt-30 pb-50 ">
+        <div class="container container-lg">
+            {% for category_product in category_products|slice:"0:1" %}
+            <div class="section-heading">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-8">
+                    <h5 class="mb-0 ms-lg-2">{{ category_product.title }}</h5>
+                    <a href="{% url 'web:shop' %}?product__category={{ category_product.category.pk }}" class="btn hover-main-50 text-light bg-main-600 hover-text-white py-11 px-24  flex-align gap-8 mt-10   justify-content-center">View All</a>
+                </div>
+            </div>
+            <div class="row  category-product gy-sm-4 ">
+                {% for subcategory in category_product.category.get_sub_categories|slice:"0:4" %}
+                <div class="my-pad col-xl-3 col-sm-6 col-xs-6 col-6 ">
+                  {% comment %} <a href="{% url 'web:shop' %}?product__category={{subcategory.pk}}" class="curated-gift"> {% endcomment %}
+                    <a href="{% url 'web:shop' %}?product__sub_category={{subcategory.pk}}" class="curated-gift">
+                    <div class="offer-card position-relative  overflow-hidden flex-align gap-10 flex-wrap z-1">
+                    
+                      {% if subcategory.image %}
+                      {% comment %} <img src="{{ subcategory.image.url }}" alt="" class="" style='border-radius:4px'> {% endcomment %}
+
+                      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect width='200' height='200' fill='%23f0f0f0'/%3E%3C/svg%3E" 
+                      data-src="{{ subcategory.image.url }}" 
+                      class="product-img lazy-load" 
+                      alt="{{ subcategory.image.url }}"
+                      loading="lazy">
+
+                  {% else %}
+                      <img src="{% static 'web/images/thumbs/gift.jpg' %}" alt="{{ subcategory.name }}" class="" style='border-radius:4px'>
+                  {% endif %}
+                  <figcaption>
+                    <span class="p-name">{{ subcategory.name }}</span>
+                  </figcaption>
+                    </div>
+                  </a>
+                </div>
+                {% endfor %}
+               
+            </div>
+        </div>
+        {% endfor %}
+     </section> 
+    
+    
+     <section class="promotional-banner pt-60 mt-4">
+        <div class="container container-lg">
+            <div class="category-card-slider row gy-4"> 
+                {% for banner in popular_product_block_banners %}
+                        <a href="{% url 'web:shop' %}?product__category={{ banner.category.pk }}">
+                            <div class="promotional-banner-item position-relative overflow-hidden z-1">
+                                {% comment %} <img src="{{banner.banner_image.url}}" alt="" class="position-absolute inset-block-start-0 inset-inline-start-0 w-100 h-100 object-fit-cover z-n1" style='border-radius:4px'> {% endcomment %}
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect width='200' height='200' fill='%23f0f0f0'/%3E%3C/svg%3E" 
+                                data-src="{{banner.banner_image.url}}" 
+                                class="product-img lazy-load position-absolute inset-block-start-0 inset-inline-start-0 w-100 h-100 object-fit-cover z-n1" 
+                                alt="{{banner.banner_image.url}}"
+                                loading="lazy"  style='border-radius:4px'>
+                                
+                            </div>
+                        </a>
+                    
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    
+  <!-- ======================== promotional banner End ============================== -->
+      
+      <!-- ========================= flash sales Start ================================ -->
+  <section class="flash-sales pt-30">
+      <div class="container container-lg">
+          <div class="section-heading">
+              <div class="flex-between flex-wrap gap-8">
+                  <h5 class="mb-0   ms-lg-2">{% trans "Best Selling Products" %}</h5>
+                  <div class="flex-align gap-16">
+                      <a href="{% url 'web:shop' %}" class="text-sm fw-medium text-gray-700 hover-text-main-600 hover-text-decoration-underline">{% trans "View All Deals" %}</a>
+                     
+                  </div>
+              </div>
+          </div>
+          <div class="flash-sales__slider arrow-style-two">
+           {% for banner in best_selling_block_banners %} 
+              <div>
+                <a href="{% url 'web:shop' %}?product__category={{ banner.category.pk }}">
+                  <div class="  overflow-hidden z-1 position-relative flex-align flex-0 justify-content-between gap-8">
+                      {% comment %} <img src="{{banner.banner_image.url}}" alt="" class="" style='border-radius:4px'> {% endcomment %}
+                      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect width='200' height='200' fill='%23f0f0f0'/%3E%3C/svg%3E" 
+                                data-src="{{banner.banner_image.url}}" 
+                                class="product-img lazy-load" 
+                                alt="{{banner.banner_image.url}}"
+                                loading="lazy"  style='border-radius:4px'>
+                   
+                  </div>
+                </a>
+              </div>
+             {% endfor %} 
+          </div>
+      </div>
+  </section>
+  <!-- ========================= flash sales End ================================ -->
+  
+      <div class="product mt-8">
+      <div class="container container-lg">
+          <div class="row gy-4 g-12 product-row">
+            {% for product in best_seller_products %}
+              <div class="my-pad col-xxl-2 col-lg-3 col-sm-4 col-6">
+                {% include 'web/partials/product_card.html' %}
+              </div>
+              {% endfor %}
+          </div>
+      </div>
+  </div>
+  <section class="offer pt-30 pb-50">
+    <div class="container container-lg">
+        {% for category_product in category_products|slice:"1:3" %}
+        <div class="section-heading">
+            <div class="flex-between flex-wrap gap-8">
+                <h5 class="mb-0">{{ category_product.title }}</h5>
+               
+            </div>
+        </div>
+        <div class="row gy-4">
+           
+            {% for subcategory in category_product.category.get_sub_categories %}
+            <div class="col-xl-3 col-xs-6  col-6">
+              <a href="{% url 'web:shop' %}?product__category={{subcategory.pk}}" class="curated-gift">
+                <div class="offer-card position-relative rounded-16 overflow-hidden flex-align gap-16 flex-wrap z-1">
+                
+                  {% if subcategory.image %}
+                  {% comment %} <img src="{{ subcategory.image.url }}" alt="" class="rounded-24 "> {% endcomment %}
+                  <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect width='200' height='200' fill='%23f0f0f0'/%3E%3C/svg%3E" 
+                  data-src="{{ subcategory.image.url }}" 
+                  class="product-img lazy-load rounded-24" 
+                  alt="{{ subcategory.image.url }}"
+                  loading="lazy">
+
+              {% else %}
+                  <img src="{% static 'web/images/thumbs/gift.jpg' %}" alt="{{ subcategory.name }}" class="rounded-24">
+              {% endif %}
+              <figcaption>
+                <span class="p-name">{{ subcategory.name }}</span>
+              </figcaption>
+                </div>
+              </a>
+            </div>
+            {% endfor %}
+           
+        </div>
+    </div>
+    {% endfor %}
+ </section> 
+      <!-- =========================== Offer Section Start =============================== -->
+   <section class="offer pt-30 pb-50">
+      <div class="container container-lg">
+          <div class="row gy-4">
+            {% for banner in new_arrival_block_banners %}
+              <div class="col-sm-6">
+                <a href="{% url 'web:shop' %}?product__category={{ banner.category.pk }}">
+                  <div class="offer-card position-relative overflow-hidden flex-align gap-16 flex-wrap z-1">
+                    {% comment %} <img src="{{banner.banner_image.url}}" alt="" class="rounded-24 "> {% endcomment %}
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect width='200' height='200' fill='%23f0f0f0'/%3E%3C/svg%3E" 
+                    data-src="{{banner.banner_image.url}}" 
+                    class="product-img lazy-load rounded-24 " 
+                    alt="{{banner.banner_image.url}}"
+                    loading="lazy">
+
+                  </div>
+                </a>
+              </div>
+              {% endfor %}
+              
+          </div>
+      </div>
+   </section>
+  <!-- =========================== Offer Section End =============================== -->
+      <!-- ========================== New Arrival Section Start ============================= -->
+      <section class="new-arrival pb-50">
+        <div class="container container-lg">
+            <div class="section-heading">
+                <div class="flex-between flex-wrap gap-8">
+                    <h5 class="mb-0   ms-lg-2">{% trans "Popular Products" %}</h5>
+                    
+                </div>
+            </div>
+    
+            <div class="new-arrival__slider arrow-style-two">
+                {% for product in popular_products %}
+                {% include 'web/partials/product_card.html' %}
+                {% endfor %}
+            </div>
+        </div>
+     </section>
+    <!-- ========================== New Arrival Section End ============================= -->
+    
+      <!-- ========================= hot-deals Start ================================ -->
+  <section class="hot-deals pt-30">
+      <div class="container container-lg">
+          <div class="section-heading">
+              <div class="flex-between flex-wrap gap-8">
+                  <h5 class="mb-0   ms-lg-2">{% trans "New Arrival" %}</h5>
+                 
+              </div>
+          </div>
+          
+          <div class="row g-12">
+              <div class="col-md-4">
+                  <div class="hot-deals position-relative rounded-16 overflow-hidden p-28 z-1 text-center">
+                      <div class="hot-deals__thumb">
+                        <a href="{% url 'web:shop' %}?product__category={{ banner.category.pk }}">
+                          <img src="{{new_arrival_block_left_image.banner_image.url}}" alt="" class="rounded-24">
+                        </a>
+                      </div>
+
+                  </div>
+              </div>
+              <div class="col-md-8">
+                  <div class="hot-deals-slider arrow-style-two">
+                    {% for product in new_arrival_products %}
+                    {% include 'web/partials/product_card.html' %}
+                      {% endfor %}
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+  <!-- ========================= hot-deals End ================================ -->
+  
+          <!-- ========================= best sells Start ================================ -->
+  <section class="best sells py-20 d-none d-sm-block">
+      <div class="container container-lg">
+          <div class="section-heading">
+              <div class="flex-between flex-wrap gap-8">
+                  <h5 class="mb-0  ms-lg-1">{% trans "Offer Products" %}</h5>
+              </div>
+          </div>
+  
+          <div class="row g-12">
+              <div class="col-xxl-12">
+                  <div class="row gy-4">
+                    {% for product in is_offer %}
+                      <div class="col-lg-4 col-md-6">
+                          <div class="product-card style-two h-100 p-8 border border-gray-100 hover-border-main-600  position-relative transition-2 flex-align gap-16">
+                              <div class="">
+                                  <span class="product-card__badge  bg-main-600 px-8 py-4 text-sm text-white">{{product.status}} </span>
+                                  <a href="{{ product.get_detail_url }}" class="product-card-offer product-card__thumb flex-center">
+                                      <img src="{{product.thumbnail_image.url}}" alt="">
+                                  </a>
+                              </div>
+                              <div class="product-card__content mt-40">
+                                  <div class="product-card__price mb-16">
+                                      <span class="text-gray-400 text-md fw-semibold text-decoration-line-through">&#x20b9;{{ product.actual_price|floatformat:0 }}</span>
+                                      <span class="text-heading text-md fw-semibold ">&#x20b9;{{ product.product_price|floatformat:0 }}  </span>
+                                  </div>
+                                  
+                                  <h6 class="title text-lg fw-semibold mt-12 mb-8">
+                                      <a href="{{ product.get_detail_url }}" class="link text-line-2">{{ product }}</a>
+                                  </h6>
+                                 
+                                  {% if product.status == 'In Stock'%}
+                                <a href="javascript:void(0)" class="cart-add-btn product-card__cart btn bg-main-50 bg-main-600 hover-bg-main-600 hover-text-white py-11 px-24  flex-align gap-8 mt-8 w-100 justify-content-center" data-product-id="{{product.pk}}">
+                                    {% trans "Add To Bag" %} <i class="bi bi-bag"></i> 
+                                </a>
+                                {% else %}
+                                <a href="javascript:void(0)" class="product-card__cart btn bg-main-50 text-main-600 hover-bg-main-600 hover-text-white py-11 px-24 rounded-pill flex-align gap-8 mt-8 w-100 justify-content-center btn-action-wishlist" data-product-id = "{{product.pk}}">
+                                    {% trans "Add to Wishlist" %} <i class="ph ph-heart"></i> 
+                                </a>
+                                {% endif %}
+                              </div>
+                          </div>
+                      </div>
+                      {% endfor %}
+                  </div>
+              </div>
+  
+          </div>
+      </div>
+  </section>
+  <!-- ========================= best sells End ================================ -->
+  
+  
+      <!-- ========================= Delivery Section Start ================================ -->
+  <div class="delivery-section">
+      <div class="container container-lg">
+          <div class="delivery position-relative bg-main-600 p-16 flex-align gap-16 flex-wrap z-1" style='border-radius:4px'>
+              <img src="{% static 'web/images/bg/delivery-bg.png' %}" alt="" class="position-absolute inset-block-start-0 inset-inline-start-0 z-n1 w-100 h-100">
+              <div class="row align-items-center">
+                  <div class="col-md-3 d-md-block d-none">
+                      <div class="delivery__man text-center">
+                          <img src="{% static 'web/images/thumbs/delivery-man.png' %}" alt="" style='border-radius:4px'>
+                      </div>
+                  </div>
+                  <div class="col-md-5 col-sm-7">
+                      <div class="text-center">
+                          <h4 class="text-white mb-8">{% trans "Bringing Your Gifts to You on Time, Every Time" %}</h4>
+                          <p class="text-white">{% trans "Fast & Reliable Delivery" %}</p>
+                          <a href="{% url 'web:shop' %}" class="mt-16 btn btn-main-two fw-medium d-inline-flex align-items-center  gap-8" tabindex="0">
+                              {% trans "Shop Now" %}
+                              <span class="icon text-xl d-flex"><i class="ph ph-arrow-right"></i></span> 
+                          </a>
+                      </div>
+                  </div>
+                 
+              </div>
+          </div>
+      </div>
+  </div>
+  <!-- ========================= Delivery Section End ================================ -->
+  
+
+ 
+
+  <!-- Shopping Cart Modal -->
+  <div class="modal fade" id="shoppingCart" tabindex="-1" aria-labelledby="shoppingCartLabel" aria-hidden="true" data-cart-styles="{% static 'web/css/cart.css' %}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h5 class="modal-title" id="shoppingCartLabel">{% trans "Shopping Cart" %}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row gy-4">
+                        {% if cart_items %}
+
+
+                         {% include "web/partials/cart_new_modal.html" %}
+                        {% else %}
+                            <!-- Empty Cart Message -->
+                            <div class="text-center">
+                                <img src="{% static 'app/images/assets/cart.png' %}" alt="" class="img-fluid">
+                                <h3>{% trans "Your cart is empty" %}</h3>
+                                <a href="{% url 'web:shop' %}" class="btn btn-primary">{% trans "Continue Shopping" %}</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+  <!-- ========================== Shipping Section End ============================ -->
+{% endblock %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Check if modal element exists
+        const modalElement = document.getElementById('shoppingCart');
+        if (modalElement) {
+            const modal = new bootstrap.Modal(modalElement, {
+                backdrop: true,
+                keyboard: true,
+                focus: true
+            });
+            
+            // Test if modal can be shown
+            document.querySelectorAll('.cart-add-btn').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    modal.show();
+                });
+            });
+        } else {
+            console.log('Modal element not found');
+        }
+    });
+</script>
+
+
+{% block js %}
+{% comment %} <script src="{% static 'web/js/shop.js' %}"></script> {% endcomment %}
+
+<script>
+    $(document).ready(function() {
+        // Get URL parameters
+        var urlParams = new URLSearchParams(window.location.search);
+        var showModal = urlParams.get('show_modal'); // Get the 'show_modal' value
+    
+        console.log("show_modal value:", showModal); // Debugging: Check what value is retrieved
+    
+        // Only show modal if show_modal is NOT 'false' (string comparison)
+        if (showModal !== 'false' && showModal !== null) {
+            $('#shoppingCart').modal('show');
+        } else {
+            $('#shoppingCart').modal('hide'); // Ensure it stays hidden if explicitly set to false
+        }
+    
+        // Cart add button click event
+        $('.cart-add-btn').click(function(e) {
+            e.preventDefault();
+            var product_id = $(this).data('product-id');
+            var quantity = 1;  // Modify if you want to dynamically change the quantity
+            
+            // Redirect to the same page with a query parameter to trigger the modal
+            window.location.href = '{% url "web:add_cart" %}?product_id=' + product_id + '&quantity=' + quantity + '&show_modal=true';
+        });
+        $('.cart-minus-btn').click(function(e) {
+            e.preventDefault();
+            var product_id = $(this).data('product-id');
+            window.location.href = '{% url "web:remove_cart" %}?product_id=' + product_id + '&show_modal=true';
+        });
+
+        {% comment %} wishlist {% endcomment %}
+
+        $(".btn-action-wishlist").click(function (e) {
+            console.log("Wishlist button clicked!"); // Debug line
+            e.preventDefault();
+            var product_Id = $(this).data("product-id");
+            var url = "/wishlist/shop/wishlist/add/?product_id=" + product_Id;
+            
+            
+            $.ajax({
+                type: "GET",
+                url: url,
+              
+                success: function (data) {
+                   
+                    $('#header_wishlist_count').html(data.wishlist_count);
+                    Swal.fire({
+                        title: "Success",
+                        icon: "success",
+                        text: data.message,
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                },
+                error: function (xhr) {
+                    console.log("AJAX error:", xhr.status, xhr.responseText); // Debug line
+                    if (xhr.status == 401) {
+                        window.location.href = '/accounts/login/';
+                    } else {
+                        Swal.fire({
+                            title: "Error",
+                            icon: "error",
+                            text: xhr.responseJSON?.message || "An error occurred while adding to wishlist."
+                        });
+                    }
+                }
+            });
+        });
+    });
+    
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const shoppingCart = document.getElementById('shoppingCart');
+        let styleSheet = null;
+    
+        shoppingCart.addEventListener('show.bs.modal', function () {
+            // Create and append stylesheet when modal opens
+            const styleLink = document.createElement('link');
+            styleLink.rel = 'stylesheet';
+            styleLink.href = this.dataset.cartStyles;
+            styleLink.id = 'cartModalStyles';
+            document.head.appendChild(styleLink);
+            styleSheet = styleLink;
+        });
+    
+        shoppingCart.addEventListener('hidden.bs.modal', function () {
+            // Remove stylesheet when modal closes
+            if (styleSheet) {
+                styleSheet.remove();
+            }
+        });
+    });
+</script>
+
+
+
+{% endblock %}
