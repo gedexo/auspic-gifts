@@ -719,3 +719,133 @@ body[dir="rtl"] .common-check .form-check-input::after {
   object-fit: cover;
 }
 
+/* Skeleton loading styles */
+.skeleton-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: white;
+    z-index: 9999;
+    overflow-y: auto;
+    transition: opacity 0.3s ease-out;
+}
+
+.skeleton-container.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+    border-radius: 4px;
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+.skeleton-header {
+    height: 70px;
+    margin-bottom: 20px;
+}
+
+.skeleton-banner {
+    height: 400px;
+    margin-bottom: 30px;
+    border-radius: 8px;
+}
+
+.skeleton-feature {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+
+.skeleton-feature-item {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.skeleton-section-title {
+    height: 30px;
+    width: 250px;
+    margin-bottom: 20px;
+}
+
+.skeleton-product-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.skeleton-product-card {
+    height: 250px;
+    border-radius: 8px;
+}
+
+.skeleton-promo {
+    height: 200px;
+    margin-bottom: 30px;
+    border-radius: 8px;
+}
+
+.skeleton-footer {
+    height: 300px;
+    margin-top: 40px;
+}
+
+/* Responsive adjustments */
+@media (min-width: 576px) {
+    .skeleton-product-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 768px) {
+    .skeleton-product-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (min-width: 992px) {
+    .skeleton-product-grid {
+        grid-template-columns: repeat(5, 1fr);
+    }
+    
+    .skeleton-feature {
+        justify-content: center;
+        overflow-x: visible;
+    }
+    
+    .skeleton-feature-item {
+        margin: 0 10px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .skeleton-product-grid {
+        grid-template-columns: repeat(6, 1fr);
+    }
+}
+
+/* For RTL languages */
+[dir="rtl"] .skeleton-feature-item {
+    margin-right: 0;
+    margin-left: 15px;
+}
+

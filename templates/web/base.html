@@ -76,11 +76,44 @@
 
 </head> 
 <body dir="{% if LANGUAGE_CODE == 'ar' %}rtl{% else %}ltr{% endif %}">
-  
 
+    <!-- Skeleton loading screen -->
+    <div id="skeletonLoader" class="skeleton-container">
+        <div class="container container-lg">
+            <div class="skeleton skeleton-header"></div>
+            <div class="skeleton skeleton-banner"></div>
+            
+            <div class="skeleton-feature">
+                {% for i in "12345678" %}
+                <div class="skeleton skeleton-feature-item"></div>
+                {% endfor %}
+            </div>
+            
+            <div class="skeleton skeleton-section-title"></div>
+            <div class="skeleton-product-grid">
+                {% for i in "123456" %}
+                <div class="skeleton skeleton-product-card"></div>
+                {% endfor %}
+            </div>
+            
+            <div class="skeleton skeleton-promo"></div>
+            
+            <div class="skeleton skeleton-section-title"></div>
+            <div class="skeleton-product-grid">
+                {% for i in "123456" %}
+                <div class="skeleton skeleton-product-card"></div>
+                {% endfor %}
+            </div>
+            
+            <div class="skeleton skeleton-footer"></div>
+        </div>
+    </div>
+
+    <div id="mainContent">
         {% include 'web/includes/header.html' %}
-            {% block content %}{% endblock %} 
+        {% block content %}{% endblock %} 
         {% include 'web/includes/footer.html' %}
+    </div>
 
 
   
@@ -165,7 +198,7 @@
     
         $(document).ready(function () {
             $(".langSelectorOption").click(function () {
-                var lang = $(this).data("lang");
+            var lang = $(this).data("lang");
                 var active_lang = "{{LANGUAGE_CODE}}";
                 var url = "{{request.get_full_path}}";
                 var new_url = is_lang_active(url, active_lang) ? url.replace(active_lang, lang) : url + lang + "/";
@@ -235,9 +268,28 @@
           });
         });
         </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Hide skeleton and show content when page is fully loaded
+                window.addEventListener('load', function() {
+                    setTimeout(function() {
+                        const skeleton = document.getElementById('skeletonLoader');
+                        const content = document.getElementById('mainContent');
+                        
+                        if (skeleton) {
+                            skeleton.classList.add('hidden');
+                        }
+                        
+                        if (content) {
+                            content.style.opacity = '1';
+                            content.style.transition = 'opacity 0.3s ease-in';
+                        }
+                    }, 500);
+                });
+            });
+        </script>
+        
   
     </body>
 </html> 
-
-
-

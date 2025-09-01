@@ -10,7 +10,7 @@ SECRET_KEY = config(
     "SECRET_KEY", default="*4cd27_pf(=$okakifzkcl8sq(xtawv&$p-2(5e(zboaem#3i!"
 )
 
-DEBUG = config("DEBUG", default=False, cast=bool)
+DEBUG = config("DEBUG", default=True, cast=bool)
 
 ALLOWED_HOSTS = ["*"]
 

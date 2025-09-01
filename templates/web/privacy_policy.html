@@ -2,30 +2,140 @@
 {% block content %}
 
 <link rel="stylesheet" href="{% static 'web/css/cart.css' %}">
-      
-        <!-- /page-title -->
-        <!-- main-page -->
-        <section class="flat-spacing-25">
-            <div class="container">
-                <div class="tf-main-area-page">
-                    <h4>Privacy Policy of auspic</h4>
-                    <p>auspic Private Limited, along with its respective subsidiaries, parent, and affiliated companies, operates this website (“we” or “us”). We understand that you care about how your information is used and shared, and we are committed to safeguarding your privacy. This Privacy Policy informs you about the types of information we collect on our website, how we use it, and the choices you have regarding its collection and use. Please read this Privacy Policy carefully. By using this website, you acknowledge that you have read and accepted our privacy practices as outlined in this Privacy Policy.</p>
-                    <p>The practices described in this Privacy Policy apply to information collected by us or our subsidiaries, affiliates, or agents through:
-                        (i) This website,
-                        (ii) Our customer service department in relation to this website,
-                        (iii) Information provided to us through our physical retail stores, and
-                        (iv) Information collected through marketing promotions and sweepstakes.</p>
-                    <p>We reserve the right to modify, update, add to, remove, or otherwise change any part of this Privacy Policy at any time, at our sole discretion. When we make changes to this Privacy Policy, we will revise the "last updated" date at the top of this page.</p>
-                    <p>We reserve the right, in our sole discretion, to modify, update, add to, discontinue, remove or otherwise change any portion of this Privacy Policy, in whole or in part, at any time. When we amend this Privacy Policy, we will revise the “last updated” date located at the top of this Privacy Policy.</p>
-                    <p>If you continue to provide information to us or use the website in any way after this Privacy Policy has been updated, you will be deemed to have unconditionally consented and agreed to such changes. The most current version of this Privacy Policy will be available on the website and will supersede all previous versions.</p>
-                    <p>If you have any questions regarding this Privacy Policy, please contact our Customer Service Department via email at 
-                       auspic@gmail.com.</p>
-                </div>
-            </div>
-        </section>
-        <!-- /main-page -->
-     
 
+<style>
+    /* Completely disable base skeleton functionality */
+    #skeletonLoader {
+        display: none !important;
+    }
+    
+    #mainContent {
+        opacity: 1 !important;
+        display: block !important;
+    }
+    
+    /* Skeleton loader styles for privacy policy page */
+    .policy-skeleton {
+        display: block;
+        padding: 40px 0;
+    }
+    
+    .skeleton-line {
+        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+        animation: loading 1.5s infinite;
+        border-radius: 4px;
+        margin-bottom: 16px;
+        height: 20px;
+    }
+    
+    .skeleton-title {
+        height: 32px;
+        margin-bottom: 24px;
+        width: 60%;
+    }
+    
+    @keyframes loading {
+        0% {
+            background-position: 200% 0;
+        }
+        100% {
+            background-position: -200% 0;
+        }
+    }
+    
+    /* Initially show skeleton, hide real content until page loads */
+    #policy-content {
+        display: none;
+    }
+</style>
+
+<!-- Skeleton loader -->
+<div id="policy-skeleton" class="policy-skeleton">
+    <div class="container">
+        <div class="skeleton-title"></div>
+        {% for i in "123456789101112131415" %}
+        <div class="skeleton-line" style="width: {% cycle '100%' '95%' '90%' '98%' '92%' '100%' '97%' '93%' '100%' '96%' '94%' '99%' '100%' '95%' '98%' %}"></div>
+        {% endfor %}
     </div>
+</div>
+
+<!-- Actual content -->
+<div id="policy-content">
+    <!-- /page-title -->
+    <!-- main-page -->
+    <section class="flat-spacing-25">
+        <div class="container">
+            <div class="tf-main-area-page">
+                <h4>Privacy Policy of auspic</h4>
+                <p>auspic Private Limited, along with its respective subsidiaries, parent, and affiliated companies, operates this website (“we” or “us”). We understand that you care about how your information is used and shared, and we are committed to safeguarding your privacy. This Privacy Policy informs you about the types of information we collect on our website, how we use it, and the choices you have regarding its collection and use. Please read this Privacy Policy carefully. By using this website, you acknowledge that you have read and accepted our privacy practices as outlined in this Privacy Policy.</p>
+                <p>The practices described in this Privacy Policy apply to information collected by us or our subsidiaries, affiliates, or agents through:
+                    (i) This website,
+                    (ii) Our customer service department in relation to this website,
+                    (iii) Information provided to us through our physical retail stores, and
+                    (iv) Information collected through marketing promotions and sweepstakes.</p>
+                <p>We reserve the right to modify, update, add to, remove, or otherwise change any part of this Privacy Policy at any time, at our sole discretion. When we make changes to this Privacy Policy, we will revise the "last updated" date at the top of this page.</p>
+                <p>We reserve the right, in our sole discretion, to modify, update, add to, discontinue, remove or otherwise change any portion of this Privacy Policy, in whole or in part, at any time. When we amend this Privacy Policy, we will revise the "last updated" date located at the top of this Privacy Policy.</p>
+                <p>If you continue to provide information to us or use the website in any way after this Privacy Policy has been updated, you will be deemed to have unconditionally consented and agreed to such changes. The most current version of this Privacy Policy will be available on the website and will supersede all previous versions.</p>
+                <p>If you have any questions regarding this Privacy Policy, please contact our Customer Service Department via email at 
+                   auspic@gmail.com.</p>
+            </div>
+        </div>
+    </section>
+    <!-- /main-page -->
+</div>
+
+<script>
+    // Immediately hide base skeleton and show policy skeleton
+    document.addEventListener('DOMContentLoaded', function() {
+        // Hide base template skeleton with more aggressive approach
+        const baseSkeleton = document.getElementById('skeletonLoader');
+        if (baseSkeleton) {
+            baseSkeleton.style.display = 'none';
+            baseSkeleton.style.visibility = 'hidden';
+            baseSkeleton.style.opacity = '0';
+            baseSkeleton.remove();
+        }
+        
+        // Remove any base skeleton related scripts
+        const baseSkeletonScripts = document.querySelectorAll('script');
+        baseSkeletonScripts.forEach(script => {
+            if (script.textContent.includes('skeletonLoader') || 
+                script.textContent.includes('skeleton-container')) {
+                script.remove();
+            }
+        });
+        
+        // Ensure main content is visible
+        const mainContent = document.getElementById('mainContent');
+        if (mainContent) {
+            mainContent.style.opacity = '1';
+            mainContent.style.display = 'block';
+            mainContent.style.visibility = 'visible';
+        }
+        
+        // Show policy skeleton immediately
+        const policySkeleton = document.getElementById('policy-skeleton');
+        if (policySkeleton) {
+            policySkeleton.style.display = 'block';
+        }
+        
+        // Hide actual policy content initially
+        const policyContent = document.getElementById('policy-content');
+        if (policyContent) {
+            policyContent.style.display = 'none';
+        }
+        
+        // Simulate loading delay, then show content
+        setTimeout(function() {
+            if (policySkeleton) {
+                policySkeleton.style.display = 'none';
+            }
+            if (policyContent) {
+                policyContent.style.display = 'block';
+            }
+        }, 800); // Show after 0.8 seconds
+    });
+</script>
 
 {% endblock %}

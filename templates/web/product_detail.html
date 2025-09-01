@@ -1,51 +1,145 @@
-{% extends 'web/base.html' %} {% load static %} {% block title %}Shop{% endblock%} {% block content %}{% load i18n %}
-
+{% extends 'web/base.html' %} 
+{% load static %} 
+{% block title %}Shop{% endblock%} 
+{% block content %}{% load i18n %}
 {% load thumbnail %}
 
+<!-- Skeleton loader for product detail page -->
+<div id="productSkeletonLoader" class="skeleton-container" style="opacity:1; transition:opacity 0.3s ease-out;">
+    <div class="container container-lg">
+        <div class="row gy-4">
+            <div class="col-xl-9">
+                <div class="row gy-4">
+                    <div class="col-xl-6">
+                        <!-- Image skeleton -->
+                        <div class="product-details__left">
+                            <div class="skeleton skeleton-image-large rounded-16 mb-24" style="height: 400px;"></div>
+                            <div class="skeleton-images-slider d-flex gap-16 mt-24">
+                                {% for i in "1234" %}
+                                <div class="skeleton skeleton-image-thumb rounded-16" style="width: 80px; height: 80px;"></div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6">
+                        <!-- Info skeleton -->
+                        <div class="product-details__content">
+                            <div class="skeleton skeleton-title mb-12" style="height: 32px; width: 70%;"></div>
+                            <div class="skeleton skeleton-text mb-8" style="height: 16px; width: 40%;"></div>
+                            <div class="skeleton skeleton-text mb-8 w-75" style="height: 16px;"></div>
+                            <div class="skeleton-divider my-25"></div>
+                            <div class="skeleton skeleton-text mb-16"></div>
+                            <div class="skeleton skeleton-text mb-16 w-90"></div>
+                            <div class="skeleton skeleton-text mb-16 w-50"></div>
+                            <div class="my-20 flex-align gap-16 flex-wrap">
+                                <div class="skeleton skeleton-price-large"></div>
+                                <div class="skeleton skeleton-price-regular"></div>
+                            </div>
+                            <div class="mt-3">
+                                <div class="skeleton skeleton-text mb-8 w-25"></div>
+                                <div class="d-flex gap-8">
+                                    {% for i in "123" %}
+                                    <div class="skeleton skeleton-size-option"></div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="mt-10">
+                                <div class="skeleton skeleton-text mb-8 w-50"></div>
+                                <div class="skeleton skeleton-gateway"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar skeleton -->
+            <div class="col-xl-3">
+                <div class="product-details__sidebar py-10 px-32 border border-gray-100 rounded-16">
+                    <div class="skeleton skeleton-text mb-8 w-75"></div>
+                    <div class="skeleton skeleton-quantity mb-12"></div>
+                    <div class="skeleton skeleton-button mb-32"></div>
+                    <div class="skeleton skeleton-social-section"></div>
+                    <div class="skeleton skeleton-cake-message mt-32"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs skeleton -->
+        <div class="pt-20">
+            <div class="product-dContent border rounded-24">
+                <div class="product-dContent__header border-bottom border-gray-100 flex-between flex-wrap gap-16">
+                    <div class="d-flex gap-16">
+                        {% for i in "1234" %}
+                        <div class="skeleton skeleton-tab"></div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="product-dContent__box p-24">
+                    <div class="skeleton skeleton-text mb-16 w-40"></div>
+                    <div class="skeleton skeleton-text mb-8"></div>
+                    <div class="skeleton skeleton-text mb-8 w-90"></div>
+                    <div class="skeleton skeleton-text mb-8 w-75"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related skeleton -->
+        <section class="new-arrival pb-80">
+            <div class="skeleton skeleton-section-title mb-24"></div>
+            <div class="d-flex gap-16">
+                {% for i in "1234" %}
+                <div class="skeleton skeleton-product-card"></div>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+</div>
+
     <!-- ========================== Product Details Two Start =========================== -->
-    <section class="product-details py-20">
+    <section id="productDetailContent" class="product-details py-20" style="display:none; opacity:0; transition:opacity 0.3s ease-in;">
         <div class="container container-lg">
             <div class="row gy-4">
                 <div class="col-xl-9">
                     <div class="row gy-4">
                         <div class="col-xl-6">
-                            <div class="product-details__left">
-    
-                                <div class="product-details__thumb-slider border border-gray-100 rounded-16">
-                                    {% if product.thumbnail_image.url %}
-                                        <div class="">
-                                            <div class="product-details__thumb flex-center h-100">
-                                                <img src="{{product.thumbnail_image.url}}" alt="">
-                                            </div>
-                                        </div>
+                            <div class="product-image-card position-relative">
+                                <div class="main-image-container rounded-16 overflow-hidden" style="height: 400px; position: relative;">
+                                    {% if product.thumbnail_image %}
+                                        <img id="mainProductImage" src="{{product.thumbnail_image.url}}" alt="{{ product.name }}" class="img-fluid w-100 h-100 pb-5 mb-3" style="object-fit: cover;">
                                     {% else %}
-                                        {% for image in product.get_product_images %}
-                                        <div class="">
-                                            <div class="product-details__thumb flex-center h-100">
-                                                <img src="{{image.image.url}}" alt="">
-                                            </div>
-                                        </div>
-                                        {% endfor %} 
+                                        <img id="mainProductImage" src="{{ product.get_product_images.0.image.url }}" alt="{{ product.name }}" class="img-fluid w-100 h-100 pb-5 mb-3" style="object-fit: cover;">
                                     {% endif %}
+                                    
+                                    <!-- Navigation arrows -->
+                                    <button class="slider-nav-btn bg-white rounded-circle p-2 border-0 shadow-sm position-absolute top-50 start-0 translate-middle-y ms-3" id="prevImage" style="z-index: 10;">
+                                        <i class="ph ph-caret-left"></i>
+                                    </button>
+                                    <button class="slider-nav-btn bg-white rounded-circle p-2 border-0 shadow-sm position-absolute top-50 end-0 translate-middle-y me-3" id="nextImage" style="z-index: 10;">
+                                        <i class="ph ph-caret-right"></i>
+                                    </button>
                                 </div>
-    
-                                <div class="mt-24">
-                                    <div class="product-details__images-slider">
-                                      
-                                        {% for image in product.get_product_images %}
-                                        <div>
-                                 
-                                            <div
-                                                class="max-w-120 max-h-120 h-100 flex-center border border-gray-100 rounded-16">
-                                                <img src="{{image.image.url}}" alt="">
-                                            </div>
-                                          
+
+                                {% if product.get_product_images %}
+                                <div class="product-slider-img-section mt-3">
+                                    <div class="product-slider-images d-flex gap-2 overflow-auto pb-2" id="thumbnailSlider">
+                                        {% for product_image in product.get_product_images %}
+                                        <div class="thumbnail-container flex-shrink-0 position-relative">
+                                            <img src="{{product_image.image.url}}" alt="{{ product.name }} - Image {{ forloop.counter }}" 
+                                                class="thumbnail-img rounded-8 cursor-pointer" 
+                                                data-image-src="{{product_image.image.url}}"
+                                                data-index="{{ forloop.counter0 }}">
+                                            {% if forloop.first %}
+                                            <div class="thumbnail-overlay position-absolute top-0 start-0 w-100 h-100 border border-1 rounded-5"></div>
+                                            {% endif %}
                                         </div>
                                         {% endfor %}
                                     </div>
                                 </div>
+                                {% endif %}
+                                
                             </div>
                         </div>
+
                         <div class="col-xl-6">
                             <div class="product-details__content">
                                 <h5 class="mb-12">{{ product }}</h5>
@@ -200,7 +294,6 @@
                     {% endif %}
                     </div>
                 </div>
-            </div>
             </div>
     
             <div class="pt-20">
@@ -377,7 +470,7 @@
    
   <!-- ========================== Shipping Section End ============================ -->
 
-  <div class="product-buttons-sticky d-block d-sm-none">
+<div class="product-buttons-sticky d-block d-sm-none">
     {% if product.status == 'In Stock'%}
         <a href="javascript:void(0)" class="btn btn-main flex-center gap-8 rounded-8 py-16 fw-normal cart-add-btn sticky-btn" data-product-id="{{product.pk}}">
             <i class="bi bi-bag text-lg"></i>
@@ -392,7 +485,6 @@
     <a href="#" class="btn btn-outline-main rounded-8 py-16 fw-normal add-buynow-btn sticky-btn" data-product-id="{{product.pk}}">
         {% trans "Buy Now" %}
     </a>
-    
 </div>
 
 
@@ -428,60 +520,173 @@
         </div>
     </div>
 </div>
-
 {% endblock content %}
 
-{% block js %}
-{% comment %} <script src="{% static 'web/js/product_detail.js' %}"></script> {% endcomment %}
-<script>
-    var stars = document.querySelectorAll('.star');
-    var ratingInput = document.getElementById('rating');
-  
-    // Function to update the hidden input field
-    function updateRating(value) {
-      ratingInput.value = value;
-      console.log('Updated rating value:', value);
-      
-      // Highlight the selected stars
-      stars.forEach(function(star, index) {
-        if (index < value) {
-          star.classList.add('selected');
-        } else {
-          star.classList.remove('selected');
-        }
-      });
-    }
-  
-    // Event listener for each star
-    stars.forEach(function(star) {
-      star.addEventListener('click', function() {
-        var ratingValue = this.getAttribute('data-value');
-        updateRating(ratingValue);
-      });
-  
-      // Optional: Handle mouseover to highlight stars temporarily
-      star.addEventListener('mouseenter', function() {
-        var hoverValue = this.getAttribute('data-value');
-        stars.forEach(function(star, index) {
-          if (index < hoverValue) {
-            star.classList.add('hovered');
-          } else {
-            star.classList.remove('hovered');
-          }
-        });
-      });
-  
-      star.addEventListener('mouseleave', function() {
-        stars.forEach(function(star) {
-          star.classList.remove('hovered');
-        });
-      });
-    });
-  </script>
-{% endblock %}
 
 {% block js_plugins %}
+
+{% block js %}
+
+<script>
+function hideProductSkeletons() {
+    const skeletonEl = document.getElementById('productSkeletonLoader');
+    const productContent = document.getElementById('productDetailContent');
+
+    if (skeletonEl) {
+        skeletonEl.style.opacity = '0';
+        setTimeout(() => {
+            skeletonEl.style.display = 'none';
+        }, 300);
+    }
+
+    if (productContent) {
+        productContent.style.display = 'block';
+        requestAnimationFrame(() => {
+            productContent.style.opacity = '1';
+        });
+    }
+}
+
+// Hide loader when page fully loaded
+window.addEventListener('load', () => setTimeout(hideProductSkeletons, 200));
+
+// Fallback after 3s
+setTimeout(hideProductSkeletons, 3000);
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const stars = document.querySelectorAll('.star');
+    const ratingInput = document.getElementById('rating');
+
+    stars.forEach(star => {
+        star.addEventListener('click', () => {
+            const value = star.dataset.value;
+            ratingInput.value = value;
+
+            stars.forEach(s => {
+                if (s.dataset.value <= value) {
+                    s.classList.add('selected');
+                } else {
+                    s.classList.remove('selected');
+                }
+            });
+        });
+    });
+});
+</script>
+{% endblock %}
+
 {% include 'web/includes/form-ajax.html' %}
+
+<script>
+// Improved Image slider functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const mainImage = document.getElementById('mainProductImage');
+    const thumbnails = document.querySelectorAll('.thumbnail-img');
+    const prevBtn = document.getElementById('prevImage');
+    const nextBtn = document.getElementById('nextImage');
+    const thumbnailOverlays = document.querySelectorAll('.thumbnail-overlay');
+    
+    let currentIndex = 0;
+    const totalImages = thumbnails.length;
+    
+    // Function to change main image
+    function changeMainImage(index) {
+        if (thumbnails.length > 0 && index >= 0 && index < totalImages) {
+            mainImage.src = thumbnails[index].getAttribute('data-image-src');
+            mainImage.alt = thumbnails[index].alt;
+            
+            // Update active thumbnail indicator
+            thumbnailOverlays.forEach(overlay => overlay.style.display = 'none');
+            if (thumbnailOverlays[index]) {
+                thumbnailOverlays[index].style.display = 'block';
+            }
+            
+            // Update active class for thumbnails
+            thumbnails.forEach(thumb => thumb.classList.remove('active'));
+            thumbnails[index].classList.add('active');
+            
+            // Scroll thumbnail into view if needed
+            const thumbnailContainer = document.getElementById('thumbnailSlider');
+            const activeThumb = thumbnails[index];
+            const containerWidth = thumbnailContainer.offsetWidth;
+            const thumbOffsetLeft = activeThumb.offsetLeft;
+            const thumbWidth = activeThumb.offsetWidth;
+            
+            if (thumbOffsetLeft + thumbWidth > containerWidth) {
+                thumbnailContainer.scrollLeft = thumbOffsetLeft - (containerWidth - thumbWidth) / 2;
+            } else if (thumbOffsetLeft < thumbnailContainer.scrollLeft) {
+                thumbnailContainer.scrollLeft = thumbOffsetLeft - (containerWidth - thumbWidth) / 2;
+            }
+            
+            currentIndex = index;
+        }
+    }
+    
+    // Add click event to thumbnails
+    thumbnails.forEach((thumb, index) => {
+        thumb.addEventListener('click', () => {
+            changeMainImage(index);
+        });
+    });
+    
+    // Navigation for next/prev buttons
+    if (prevBtn && nextBtn) {
+        prevBtn.addEventListener('click', () => {
+            let newIndex = currentIndex - 1;
+            if (newIndex < 0) newIndex = totalImages - 1;
+            changeMainImage(newIndex);
+        });
+        
+        nextBtn.addEventListener('click', () => {
+            let newIndex = currentIndex + 1;
+            if (newIndex >= totalImages) newIndex = 0;
+            changeMainImage(newIndex);
+        });
+    }
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') {
+            let newIndex = currentIndex - 1;
+            if (newIndex < 0) newIndex = totalImages - 1;
+            changeMainImage(newIndex);
+        } else if (e.key === 'ArrowRight') {
+            let newIndex = currentIndex + 1;
+            if (newIndex >= totalImages) newIndex = 0;
+            changeMainImage(newIndex);
+        }
+    });
+    
+    // Initialize the first thumbnail as active if there are thumbnails
+    if (thumbnails.length > 0) {
+        changeMainImage(0);
+    }
+    
+    // Hide loader when page fully loaded
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            const skeletonEl = document.getElementById('productSkeletonLoader');
+            const productContent = document.getElementById('productDetailContent');
+            
+            if (skeletonEl) {
+                skeletonEl.style.opacity = '0';
+                setTimeout(() => {
+                    skeletonEl.style.display = 'none';
+                }, 300);
+            }
+            
+            if (productContent) {
+                productContent.style.display = 'block';
+                requestAnimationFrame(() => {
+                    productContent.style.opacity = '1';
+                });
+            }
+        }, 200);
+    });
+});
+</script>
 <script>
     $(document).ready(function() {
         // Check if 'show_modal' query parameter exists in the URL
@@ -629,6 +834,116 @@
 
 {% block css %}
 <style>
+    .product-image-card {
+        position: relative;
+    }
+    
+    .main-image-container {
+        position: relative;
+    }
+
+    .slider-nav-btn {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+        opacity: 0.8;
+        transition: opacity 0.3s ease;
+    }
+    
+    .slider-nav-btn:hover {
+        opacity: 1;
+    }
+
+    .thumbnail-container {
+        position: relative;
+        transition: transform 0.2s ease;
+    }
+
+    .thumbnail-container:hover {
+        transform: scale(1.05);
+    }
+
+    .thumbnail-img {
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
+    
+    .thumbnail-overlay {
+        display: none;
+        pointer-events: none;
+        z-index: 5;
+    }
+
+    /* Custom scrollbar for thumbnail slider */
+    .product-slider-images::-webkit-scrollbar {
+        height: 4px;
+    }
+
+    .product-slider-images::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+
+    .product-slider-images::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 10px;
+    }
+
+    .product-slider-images::-webkit-scrollbar-thumb:hover {
+        background: #a8a8a8;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1200px) {
+        .main-image-container {
+            height: 350px !important;
+        }
+    }
+
+    @media (max-width: 992px) {
+        .main-image-container {
+            height: 300px !important;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .main-image-container {
+            height: 250px !important;
+        }
+        
+        .thumbnail-img {
+            width: 70px !important;
+            height: 70px !important;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .main-image-container {
+            height: 220px !important;
+        }
+        
+        .thumbnail-img {
+            width: 60px !important;
+            height: 60px !important;
+        }
+        
+        .slider-nav-btn {
+            width: 35px;
+            height: 35px;
+        }
+    }
+    .product-slider-img-section .product-slider-images img{
+        height: 95px;
+        width: 95px;
+        object-fit: cover;
+        padding: 3px;
+    }
+    .product-details__thumb img{
+        border-radius: 10px;
+    }
     .cake-message-container {
         display: flex;
         flex-direction: column;

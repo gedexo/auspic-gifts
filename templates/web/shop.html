@@ -1,7 +1,106 @@
-{% extends 'web/base.html' %} {% load static %} {% block title %}Shop{% endblock%}{% load i18n %}
+{% extends 'web/base.html' %} 
+{% load static %} 
+{% block title %}Shop{% endblock %}
+{% load i18n %}
+
+{% block css %}
+<style> 
+    /* Skeleton loader styles */
+.skeleton-shop-container {
+    display: block;
+}
+
+.skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+    border-radius: 4px;
+}
+
+.skeleton-title {
+    height: 24px;
+    width: 70%;
+    margin-bottom: 24px;
+}
+
+.skeleton-category {
+    height: 16px;
+    width: 85%;
+    margin-bottom: 16px;
+}
+
+.skeleton-ad {
+    height: 250px;
+    width: 100%;
+}
+
+.skeleton-text {
+    height: 20px;
+    width: 200px;
+}
+
+.skeleton-filter {
+    height: 40px;
+    width: 150px;
+}
+
+.skeleton-filter-btn {
+    height: 44px;
+    width: 44px;
+}
+
+.skeleton-product-image {
+    height: 200px;
+    width: 100%;
+    border-radius: 8px;
+}
+
+.skeleton-product-title {
+    height: 16px;
+    width: 80%;
+}
+
+.skeleton-product-price {
+    height: 20px;
+    width: 60%;
+}
+
+.skeleton-product-btn {
+    height: 40px;
+    width: 100%;
+    border-radius: 6px;
+}
+
+.skeleton-pagination-item {
+    height: 48px;
+    width: 48px;
+    margin: 0 8px;
+    border-radius: 8px;
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* Hide skeleton when content is loaded */
+.skeleton-shop-container.hidden {
+    display: none;
+}
+
+/* Hide the base skeleton on shop page */
+#skeletonLoader {
+    display: none !important;
+}
+</style>
+
+{% endblock %}
 
 {% block content %}
-
     <!-- ========================= Breadcrumb Start =============================== -->
     <div class="breadcrumb py-26 bg-main-two-50">
         <div class="container container-lg">
@@ -9,7 +108,7 @@
                 <h6 class="mb-0">{% trans "Shop" %}</h6>
                 <ul class="flex-align gap-8 flex-wrap">
                     <li class="text-sm">
-                        <a href="{% url 'web:index' %}" class   ="text-gray-900 flex-align gap-8 hover-text-main-600">
+                        <a href="{% url 'web:index' %}" class="text-gray-900 flex-align gap-8 hover-text-main-600">
                             <i class="ph ph-house"></i>
                             {% trans "Home" %}
                         </a>
@@ -23,152 +122,234 @@
         </div>
     </div>
     <!-- ========================= Breadcrumb End =============================== -->
-    
-        <!-- =============================== Shop Section Start ======================================== -->
-     <section class="shop py-50">
+
+    <!-- Skeleton loader for shop page -->
+    <div id="shopSkeletonLoader" class="skeleton-shop-container">
         <div class="container container-lg">
             <div class="row">
-    
-                <!-- Sidebar Start -->
-                <div class="col-lg-3">
-                    <div class="shop-sidebar">
-                        <button type="button" class="shop-sidebar__close d-lg-none d-flex w-32 h-32 flex-center border border-gray-100 rounded-circle hover-bg-main-600 position-absolute inset-inline-end-0 me-10 mt-8 hover-text-white hover-border-main-600">
-                            <i class="ph ph-x"></i>
-                        </button>
-                        <div class="shop-sidebar__box border border-gray-100 rounded-8 p-32 mb-32">
-                            <h6 class="text-xl border-bottom border-gray-100 pb-24 mb-24">{% trans "Product Category" %}</h6>
-                            <ul class="max-h-540 overflow-y-auto scroll-sm">
-                                {% for category in categories %}
-                                <li class="mb-24">
-                                    <a href="{% url 'web:shop' %}?product__category={{category.id}}" class="text-gray-900 hover-text-main-600"><span class="main-font">{{ category }}</span> ({{category.get_products.count}})</a>
-                                </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                        {% comment %} <div class="shop-sidebar__box rounded-8">
-                            <img src="{% static 'web/images/thumbs/advertise-img1.png' %}" alt="">
-                        </div> {% endcomment %}
-                    </div>
-                </div>
-                <!-- Sidebar End -->
-    
-                <!-- Content Start -->
-                <div class="col-lg-9">
-                    <!-- Top Start -->
-                    <div class="flex-between gap-16 flex-wrap mb-40 ">
-                        <span class="text-gray-900"><span class="main-font">{% trans "Showing" %}</span> {{ page_obj.start_index }}–{{ page_obj.end_index }} <span class"main-font">{% trans "of" %}</span> {{ page_obj.paginator.count }} <span ="main-font">{% trans "results" %}</span></span>
-                        <div class="position-relative flex-align gap-16 flex-wrap">
-                            <div class="position-relative text-gray-500 flex-align gap-4 text-14 shop-filter">
-                                <label for="sorting" class="text-inherit flex-shrink-0">{% trans "Sort by:" %}</label>
-                                <form method="get" action="">
-                                    <!-- Preserve the selected category in the form -->
-                                    <input type="hidden" name="product__category" value="{{ request.GET.product__category }}">
-                                    <select name="sort_by" class="form-select" onchange="this.form.submit()">
-                                        <option value="all_products" {% if request.GET.sort_by == 'all_products' %}selected{% endif %}>{% trans "Sort by: All Products" %}</option>
-                                        <option value="low_to_high" {% if request.GET.sort_by == 'low_to_high' %}selected{% endif %}>{% trans "Price: Low to High" %}</option>
-                                        <option value="high_to_low" {% if request.GET.sort_by == 'high_to_low' %}selected{% endif %}>{% trans "Price: High to Low" %}</option>
-                                        <option value="rating" {% if request.GET.sort_by == 'rating' %}selected{% endif %}>{% trans "Rate: High to Low" %}</option>
-                                    </select>
-                                </form>
-                            </div>
-                            <button type="button" class="w-44 h-44 d-lg-none d-flex flex-center border border-gray-100 rounded-6 text-2xl sidebar-btn"><i class="ph-bold ph-funnel"></i></button>
-                        </div>
-                    </div>
-                    <!-- Top End -->
-                    <div class="product mt-8">
-                        <div class="container container-lg">
-                            <div class="row gy-4 g-12">
-                                {% for product in products %}
-                                <div class="col-xxl-3 col-lg-3 col-sm-4 col-6">
-                                  {% include 'web/partials/product_card.html' %}
-                                </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                
-    
-                    <!-- Pagination Start -->
-                    <ul class="pagination flex-center flex-wrap gap-16">
-                        <!-- Previous Page -->
-                        <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
-                            <a class="page-link h-48 w-48 flex-center text-xxl rounded-8 fw-medium text-neutral-600 border border-gray-100" href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% if request.GET.product__sub_category %}&product__sub_category={{ request.GET.product__sub_category }}{% endif %}{% if selected_brands %}&product__brand={{ selected_brands|join:'&product__brand=' }}{% endif %}{% if request.GET.sort_by %}&sort_by={{request.GET.sort_by}}{% endif %}{% if request.GET.selling_price__range %}&selling_price__range={{request.GET.selling_price__range}}{% endif %}{% else %}#{% endif %}">
-                                <i class="ph-bold ph-arrow-left"></i>
-                            </a>
-                        </li>
-                    
-                        <!-- Pages -->
-                        {% for page_num in page_obj.paginator.page_range %}
-                            {% if page_num == page_obj.number %}
-                            <!-- Active Page -->
-                            <li class="page-item active">
-                                <a class="page-link h-48 w-48 flex-center text-md rounded-8 fw-medium text-neutral-600 border border-gray-100" href="?page={{ page_num }}{% if request.GET.product__sub_category %}&product__sub_category={{ request.GET.product__sub_category }}{% endif %}{% if selected_brands %}&product__brand={{ selected_brands|join:'&product__brand=' }}{% endif %}{% if request.GET.sort_by %}&sort_by={{request.GET.sort_by}}{% endif %}{% if request.GET.selling_price__range %}&selling_price__range={{request.GET.selling_price__range}}{% endif %}">{{ page_num }}</a>
-                            </li>
-                            {% else %}
-                            <!-- Non-active Page -->
-                            <li class="page-item">
-                                <a class="page-link h-48 w-48 flex-center text-md rounded-8 fw-medium text-neutral-600 border border-gray-100" href="?page={{ page_num }}{% if request.GET.product__sub_category %}&product__sub_category={{ request.GET.product__sub_category }}{% endif %}{% if selected_brands %}&product__brand={{ selected_brands|join:'&product__brand=' }}{% endif %}{% if request.GET.sort_by %}&sort_by={{request.GET.sort_by}}{% endif %}{% if request.GET.selling_price__range %}&selling_price__range={{request.GET.selling_price__range}}{% endif %}">{{ page_num }}</a>
-                            </li>
-                            {% endif %}
+                <!-- Sidebar skeleton -->
+                <div class="col-lg-3 d-none d-lg-block">
+                    <div class="skeleton-sidebar mb-32">
+                        <div class="skeleton skeleton-title mb-24"></div>
+                        {% for i in "12345" %}
+                        <div class="skeleton skeleton-category mb-16"></div>
                         {% endfor %}
-                    
-                        <!-- Next Page -->
-                        <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
-                            <a class="page-link h-48 w-48 flex-center text-xxl rounded-8 fw-medium text-neutral-600 border border-gray-100" href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}{% if request.GET.product__sub_category %}&product__sub_category={{ request.GET.product__sub_category }}{% endif %}{% if selected_brands %}&product__brand={{ selected_brands|join:'&product__brand=' }}{% endif %}{% if request.GET.sort_by %}&sort_by={{request.GET.sort_by}}{% endif %}{% if request.GET.selling_price__range %}&selling_price__range={{request.GET.selling_price__range}}{% endif %}{% else %}#{% endif %}">
-                                <i class="ph-bold ph-arrow-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                    
-                    <!-- Pagination End -->
+                    </div>
+                    <div class="skeleton skeleton-ad"></div>
                 </div>
-                <!-- Content End -->
-    
-            </div>
-        </div>
-     </section>
-    <!-- =============================== Shop Section End ======================================== -->
-    
-
-     <!-- Shopping Cart Modal -->
-  <div class="modal fade" id="shoppingCart" tabindex="-1" aria-labelledby="shoppingCartLabel" aria-hidden="true" data-cart-styles="{% static 'web/css/cart.css' %}">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h5 class="modal-title" id="shoppingCartLabel">{% trans "Shopping Cart" %}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
-            <!-- Modal Body -->
-            <div class="modal-body">
-                <div class="container">
-                    <div class="row gy-4">
-                        {% if cart_items %}
-
-
-                         {% include "web/partials/cart_new_modal.html" %}
-                        {% else %}
-                            <!-- Empty Cart Message -->
-                            <div class="text-center">
-                                <img src="{% static 'app/images/assets/cart.png' %}" alt="" class="img-fluid">
-                                <h3>{% trans "Your cart is empty" %}</h3>
-                                <a href="{% url 'web:shop' %}" class="btn btn-primary">{% trans "Continue Shopping" %}</a>
+                
+                <!-- Content skeleton -->
+                <div class="col-lg-9">
+                    <!-- Top controls skeleton -->
+                    <div class="flex-between gap-16 flex-wrap mb-40">
+                        <div class="skeleton skeleton-text"></div>
+                        <div class="position-relative flex-align gap-16 flex-wrap">
+                            <div class="skeleton skeleton-filter"></div>
+                            <div class="skeleton skeleton-filter-btn"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product grid skeleton -->
+                    <div class="row gy-4 g-12">
+                        {% for i in "12345678" %}
+                        <div class="col-xxl-3 col-lg-4 col-sm-6 col-6">
+                            <div class="skeleton-product-card mb-24">
+                                <div class="skeleton skeleton-product-image"></div>
+                                <div class="skeleton skeleton-product-title"></div>
+                                <div class="skeleton skeleton-product-price"></div>
+                                <div class="skeleton skeleton-product-btn"></div>
                             </div>
-                        {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <!-- Pagination skeleton -->
+                    <div class="skeleton-pagination flex-center mt-40">
+                        {% for i in "1234" %}
+                        <div class="skeleton skeleton-pagination-item"></div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
-</div>
+
+    <!-- Actual shop content (initially hidden) -->
+    <div id="shopContent" style="display: none;">
+        <!-- =============================== Shop Section Start ======================================== -->
+        <section class="shop py-50">
+            <div class="container container-lg">
+                <div class="row">
+                    <!-- Sidebar Start -->
+                    <div class="col-lg-3">
+                        <div class="shop-sidebar">
+                            <button type="button" class="shop-sidebar__close d-lg-none d-flex w-32 h-32 flex-center border border-gray-100 rounded-circle hover-bg-main-600 position-absolute inset-inline-end-0 me-10 mt-8 hover-text-white hover-border-main-600">
+                                <i class="ph ph-x"></i>
+                            </button>
+                            <div class="shop-sidebar__box border border-gray-100 rounded-8 p-32 mb-32">
+                                <h6 class="text-xl border-bottom border-gray-100 pb-24 mb-24">{% trans "Product Category" %}</h6>
+                                <ul class="max-h-540 overflow-y-auto scroll-sm">
+                                    {% for category in categories %}
+                                    <li class="mb-24">
+                                        <a href="{% url 'web:shop' %}?product__category={{category.id}}" class="text-gray-900 hover-text-main-600"><span class="main-font">{{ category }}</span> ({{category.get_products.count}})</a>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            {% comment %} <div class="shop-sidebar__box rounded-8">
+                                <img src="{% static 'web/images/thumbs/advertise-img1.png' %}" alt="">
+                            </div> {% endcomment %}
+                        </div>
+                    </div>
+                    <!-- Sidebar End -->
+        
+                    <!-- Content Start -->
+                    <div class="col-lg-9">
+                        <!-- Top Start -->
+                        <div class="flex-between gap-16 flex-wrap mb-40 ">
+                            <span class="text-gray-900"><span class="main-font">{% trans "Showing" %}</span> {{ page_obj.start_index }}–{{ page_obj.end_index }} <span class"main-font">{% trans "of" %}</span> {{ page_obj.paginator.count }} <span ="main-font">{% trans "results" %}</span></span>
+                            <div class="position-relative flex-align gap-16 flex-wrap">
+                                <div class="position-relative text-gray-500 flex-align gap-4 text-14 shop-filter">
+                                    <label for="sorting" class="text-inherit flex-shrink-0">{% trans "Sort by:" %}</label>
+                                    <form method="get" action="">
+                                        <!-- Preserve the selected category in the form -->
+                                        <input type="hidden" name="product__category" value="{{ request.GET.product__category }}">
+                                        <select name="sort_by" class="form-select" onchange="this.form.submit()">
+                                            <option value="all_products" {% if request.GET.sort_by == 'all_products' %}selected{% endif %}>{% trans "Sort by: All Products" %}</option>
+                                            <option value="low_to_high" {% if request.GET.sort_by == 'low_to_high' %}selected{% endif %}>{% trans "Price: Low to High" %}</option>
+                                            <option value="high_to_low" {% if request.GET.sort_by == 'high_to_low' %}selected{% endif %}>{% trans "Price: High to Low" %}</option>
+                                            <option value="rating" {% if request.GET.sort_by == 'rating' %}selected{% endif %}>{% trans "Rate: High to Low" %}</option>
+                                        </select>
+                                    </form>
+                                </div>
+                                <button type="button" class="w-44 h-44 d-lg-none d-flex flex-center border border-gray-100 rounded-6 text-2xl sidebar-btn"><i class="ph-bold ph-funnel"></i></button>
+                            </div>
+                        </div>
+                        <!-- Top End -->
+                        <div class="product mt-8">
+                            <div class="container container-lg">
+                                <div class="row gy-4 g-12">
+                                    {% for product in products %}
+                                    <div class="col-xxl-3 col-lg-3 col-sm-4 col-6">
+                                      {% include 'web/partials/product_card.html' %}
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    
+        
+                        <!-- Pagination Start -->
+                        <ul class="pagination flex-center flex-wrap gap-16">
+                            <!-- Previous Page -->
+                            <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
+                                <a class="page-link h-48 w-48 flex-center text-xxl rounded-8 fw-medium text-neutral-600 border border-gray-100" href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% if request.GET.product__sub_category %}&product__sub_category={{ request.GET.product__sub_category }}{% endif %}{% if selected_brands %}&product__brand={{ selected_brands|join:'&product__brand=' }}{% endif %}{% if request.GET.sort_by %}&sort_by={{request.GET.sort_by}}{% endif %}{% if request.GET.selling_price__range %}&selling_price__range={{request.GET.selling_price__range}}{% endif %}{% else %}#{% endif %}">
+                                    <i class="ph-bold ph-arrow-left"></i>
+                                </a>
+                            </li>
+                        
+                            <!-- Pages -->
+                            {% for page_num in page_obj.paginator.page_range %}
+                                {% if page_num == page_obj.number %}
+                                <!-- Active Page -->
+                                <li class="page-item active">
+                                    <a class="page-link h-48 w-48 flex-center text-md rounded-8 fw-medium text-neutral-600 border border-gray-100" href="?page={{ page_num }}{% if request.GET.product__sub_category %}&product__sub_category={{ request.GET.product__sub_category }}{% endif %}{% if selected_brands %}&product__brand={{ selected_brands|join:'&product__brand=' }}{% endif %}{% if request.GET.sort_by %}&sort_by={{request.GET.sort_by}}{% endif %}{% if request.GET.selling_price__range %}&selling_price__range={{request.GET.selling_price__range}}{% endif %}">{{ page_num }}</a>
+                                </li>
+                                {% else %}
+                                <!-- Non-active Page -->
+                                <li class="page-item">
+                                    <a class="page-link h-48 w-48 flex-center text-md rounded-8 fw-medium text-neutral-600 border border-gray-100" href="?page={{ page_num }}{% if request.GET.product__sub_category %}&product__sub_category={{ request.GET.product__sub_category }}{% endif %}{% if selected_brands %}&product__brand={{ selected_brands|join:'&product__brand=' }}{% endif %}{% if request.GET.sort_by %}&sort_by={{request.GET.sort_by}}{% endif %}{% if request.GET.selling_price__range %}&selling_price__range={{request.GET.selling_price__range}}{% endif %}">{{ page_num }}</a>
+                                </li>
+                                {% endif %}
+                            {% endfor %}
+                        
+                            <!-- Next Page -->
+                            <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+                                <a class="page-link h-48 w-48 flex-center text-xxl rounded-8 fw-medium text-neutral-600 border border-gray-100" href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}{% if request.GET.product__sub_category %}&product__sub_category={{ request.GET.product__sub_category }}{% endif %}{% if selected_brands %}&product__brand={{ selected_brands|join:'&product__brand=' }}{% endif %}{% if request.GET.sort_by %}&sort_by={{request.GET.sort_by}}{% endif %}{% if request.GET.selling_price__range %}&selling_price__range={{request.GET.selling_price__range}}{% endif %}{% else %}#{% endif %}">
+                                    <i class="ph-bold ph-arrow-right"></i>
+                                </a>
+                            </li>
+                        </ul>
+                        <!-- Pagination End -->
+                    </div>
+                    <!-- Content End -->
+                </div>
+            </div>
+        </section>
+        <!-- =============================== Shop Section End ======================================== -->
+    </div>
+
+    <!-- Shopping Cart Modal -->
+    <div class="modal fade" id="shoppingCart" tabindex="-1" aria-labelledby="shoppingCartLabel" aria-hidden="true" data-cart-styles="{% static 'web/css/cart.css' %}">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="shoppingCartLabel">{% trans "Shopping Cart" %}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row gy-4">
+                            {% if cart_items %}
+                                {% include "web/partials/cart_new_modal.html" %}
+                            {% else %}
+                                <!-- Empty Cart Message -->
+                                <div class="text-center">
+                                    <img src="{% static 'app/images/assets/cart.png' %}" alt="" class="img-fluid">
+                                    <h3>{% trans "Your cart is empty" %}</h3>
+                                    <a href="{% url 'web:shop' %}" class="btn btn-primary">{% trans "Continue Shopping" %}</a>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- ========================== Shipping Section End ============================ -->
         
 {% endblock content %}
 
 {% block js %}
-{% comment %} <script src="{% static 'web/js/shop.js' %}"></script> {% endcomment %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Hide the base skeleton immediately
+        const baseSkeleton = document.getElementById('skeletonLoader');
+        if (baseSkeleton) {
+            baseSkeleton.style.display = 'none';
+        }
+        
+        // Show shop skeleton initially
+        const skeleton = document.getElementById('shopSkeletonLoader');
+        const content = document.getElementById('shopContent');
+        
+        // Function to hide skeleton and show content
+        function showContent() {
+            if (skeleton) {
+                skeleton.classList.add('hidden');
+            }
+            if (content) {
+                content.style.display = 'block';
+            }
+        }
+        
+        // Check if page is already loaded
+        if (document.readyState === 'complete') {
+            setTimeout(showContent, 500);
+        } else {
+            window.addEventListener('load', function() {
+                setTimeout(showContent, 500);
+            });
+        }
+        
+        // Fallback in case something goes wrong with load event
+        setTimeout(showContent, 3000);
+    });
+</script>
+
 <script>
     $(document).ready(function() {
         // Check if 'show_modal' query parameter exists in the URL

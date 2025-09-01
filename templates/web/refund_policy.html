@@ -3,31 +3,168 @@
 
 <link rel="stylesheet" href="{% static 'web/css/cart.css' %}">
 
-      
-        <!-- /page-title -->
-        <!-- main-page -->
-        <section class="flat-spacing-25">
-            <div class="container">
-                <div class="tf-main-area-page">
-                    <h4>Refund Policy of auspic</h4>
-                    <p>auspic Private Limited, along with its subsidiaries, parent, and affiliated companies, operates this website (“we” or “us”). We are committed to ensuring a smooth and transparent refund process for our customers. This Refund Policy explains the terms and conditions under which refunds are processed. By making a purchase on our website, you acknowledge that you have read and accepted our refund practices as outlined in this policy.</p>
-                    <p>We offer refunds under the following conditions:
-                        (i)Damaged or Defective Products,
-                        (ii)Incorrect Product Received,
-                        (iii)Order Cancellations
-                    </p>
-                    <p>Once your request is reviewed and approved, we will initiate a refund to your original payment method. Refund processing times may vary depending on your payment provider.</p>
-                    <p>We reserve the right, in our sole discretion, to modify, update, add to, discontinue, remove or otherwise change any portion of this Privacy Policy, in whole or in part, at any time. When we amend this Privacy Policy, we will revise the “last updated” date located at the top of this Privacy Policy.</p>
-                  
-                    <p>If you have any questions regarding this Policy, please contact our Customer Service Department via email at 
-                       auspic@gmail.com.</p>
-                </div>
-            </div>
-        </section>
-        <!-- /main-page -->
-     
+<style>
+    /* Completely disable base skeleton functionality */
+    #skeletonLoader {
+        display: none !important;
+    }
+    
+    #mainContent {
+        opacity: 1 !important;
+        display: block !important;
+    }
+    
+    /* Skeleton loader styles for refund policy page */
+    .policy-skeleton {
+        display: block;
+        padding: 40px 0;
+    }
+    
+    .skeleton-line {
+        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+        animation: loading 1.5s infinite;
+        border-radius: 4px;
+        margin-bottom: 16px;
+        height: 20px;
+    }
+    
+    .skeleton-title {
+        height: 32px;
+        margin-bottom: 24px;
+        width: 60%;
+    }
+    
+    .skeleton-list {
+        height: 16px;
+        margin-bottom: 12px;
+        margin-left: 20px;
+        width: 80%;
+    }
+    
+    @keyframes loading {
+        0% {
+            background-position: 200% 0;
+        }
+        100% {
+            background-position: -200% 0;
+        }
+    }
+    
+    /* Initially show skeleton, hide real content until page loads */
+    #policy-content {
+        display: none;
+    }
+</style>
 
+<!-- Skeleton loader -->
+<div id="policy-skeleton" class="policy-skeleton">
+    <div class="container">
+        <div class="skeleton-title"></div>
+        
+        <!-- First paragraph -->
+        <div class="skeleton-line" style="width: 100%"></div>
+        <div class="skeleton-line" style="width: 98%"></div>
+        <div class="skeleton-line" style="width: 95%"></div>
+        <div class="skeleton-line" style="width: 97%"></div>
+        
+        <!-- List section -->
+        <div class="skeleton-line" style="width: 90%; margin-top: 20px;"></div>
+        <div class="skeleton-list" style="width: 75%"></div>
+        <div class="skeleton-list" style="width: 78%"></div>
+        <div class="skeleton-list" style="width: 72%"></div>
+        
+        <!-- Refund processing -->
+        <div class="skeleton-line" style="width: 100%; margin-top: 20px;"></div>
+        <div class="skeleton-line" style="width: 96%"></div>
+        
+        <!-- Policy update -->
+        <div class="skeleton-line" style="width: 100%; margin-top: 20px;"></div>
+        <div class="skeleton-line" style="width: 98%"></div>
+        <div class="skeleton-line" style="width: 95%"></div>
+        
+        <!-- Contact information -->
+        <div class="skeleton-line" style="width: 100%; margin-top: 20px;"></div>
+        <div class="skeleton-line" style="width: 85%"></div>
     </div>
-    <!-- gotop -->
-   
+</div>
+
+<!-- Actual content -->
+<div id="policy-content">
+    <!-- /page-title -->
+    <!-- main-page -->
+    <section class="flat-spacing-25">
+        <div class="container">
+            <div class="tf-main-area-page">
+                <h4>Refund Policy of auspic</h4>
+                <p>auspic Private Limited, along with its subsidiaries, parent, and affiliated companies, operates this website ("we" or "us"). We are committed to ensuring a smooth and transparent refund process for our customers. This Refund Policy explains the terms and conditions under which refunds are processed. By making a purchase on our website, you acknowledge that you have read and accepted our refund practices as outlined in this policy.</p>
+                <p>We offer refunds under the following conditions:
+                    (i)Damaged or Defective Products,
+                    (ii)Incorrect Product Received,
+                    (iii)Order Cancellations
+                </p>
+                <p>Once your request is reviewed and approved, we will initiate a refund to your original payment method. Refund processing times may vary depending on your payment provider.</p>
+                <p>We reserve the right, in our sole discretion, to modify, update, add to, discontinue, remove or otherwise change any portion of this Privacy Policy, in whole or in part, at any time. When we amend this Privacy Policy, we will revise the "last updated" date located at the top of this Privacy Policy.</p>
+              
+                <p>If you have any questions regarding this Policy, please contact our Customer Service Department via email at 
+                   auspic@gmail.com.</p>
+            </div>
+        </div>
+    </section>
+    <!-- /main-page -->
+</div>
+
+<script>
+    // Immediately hide base skeleton and show policy skeleton
+    document.addEventListener('DOMContentLoaded', function() {
+        // Hide base template skeleton with more aggressive approach
+        const baseSkeleton = document.getElementById('skeletonLoader');
+        if (baseSkeleton) {
+            baseSkeleton.style.display = 'none';
+            baseSkeleton.style.visibility = 'hidden';
+            baseSkeleton.style.opacity = '0';
+            baseSkeleton.remove();
+        }
+        
+        // Remove any base skeleton related scripts
+        const baseSkeletonScripts = document.querySelectorAll('script');
+        baseSkeletonScripts.forEach(script => {
+            if (script.textContent.includes('skeletonLoader') || 
+                script.textContent.includes('skeleton-container')) {
+                script.remove();
+            }
+        });
+        
+        // Ensure main content is visible
+        const mainContent = document.getElementById('mainContent');
+        if (mainContent) {
+            mainContent.style.opacity = '1';
+            mainContent.style.display = 'block';
+            mainContent.style.visibility = 'visible';
+        }
+        
+        // Show policy skeleton immediately
+        const policySkeleton = document.getElementById('policy-skeleton');
+        if (policySkeleton) {
+            policySkeleton.style.display = 'block';
+        }
+        
+        // Hide actual policy content initially
+        const policyContent = document.getElementById('policy-content');
+        if (policyContent) {
+            policyContent.style.display = 'none';
+        }
+        
+        // Simulate loading delay, then show content
+        setTimeout(function() {
+            if (policySkeleton) {
+                policySkeleton.style.display = 'none';
+            }
+            if (policyContent) {
+                policyContent.style.display = 'block';
+            }
+        }, 800); // Show after 0.8 seconds
+    });
+</script>
+
 {% endblock %}

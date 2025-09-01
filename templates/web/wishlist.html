@@ -1,8 +1,9 @@
-{% extends 'web/base.html' %} {% load static %} {% block title %}Wishlist{% endblock%} 
+{% extends 'web/base.html' %} 
+{% load static %} 
+{% block title %}Wishlist{% endblock%} 
 {% load i18n %}
 
 {% block content %}
-
 
     <!-- ========================= Breadcrumb Start =============================== -->
     <div class="breadcrumb py-26 bg-main-two-50">
@@ -25,6 +26,7 @@
       </div>
   </div>
   <!-- ========================= Breadcrumb End =============================== -->
+  
   <section class="cart py-50">
     <div class="container container-lg">
         <div class="row gy-4">
@@ -40,7 +42,7 @@
                                     <th class="h6 mb-0 text-lg fw-bold">{% trans "Status" %}</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="wishlist-content">
                               {% for item in wishlist_items %}
                                 <tr>
                                     <td class="remove-btn" data-product_id="{{ item.id }}">
@@ -68,18 +70,35 @@
                                     <td>
                                         <div class="d-flex rounded-4 overflow-hidden">
                                           <button type="submit" class="btn {% if item.product_varients.is_stock %}bg-success{% else %}bg-danger{% endif %} py-18 w-100 rounded-8"> {% if item.product_varients.is_stock %}{% trans "In Stock" %}{% else %}{% trans "Out of Stock" %}{% endif %}</button>
-
                                         </div>
                                     </td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
                         </table>
+                        
+                        <!-- Skeleton loader for wishlist items -->
+                        <div id="wishlist-skeleton">
+                            {% for i in "1234" %}
+                            <div class="skeleton-item mb-24 p-16 d-flex align-items-center justify-content-between" style="border-bottom: 1px solid #f0f0f0;">
+                                <div class="d-flex align-items-center">
+                                    <div class="skeleton-thumb me-16" style="width: 80px; height: 80px; border-radius: 8px;"></div>
+                                    <div>
+                                        <div class="skeleton-line mb-12" style="width: 200px; height: 20px; border-radius: 4px;"></div>
+                                        <div class="skeleton-line" style="width: 150px; height: 16px; border-radius: 4px;"></div>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <div class="skeleton-line me-24" style="width: 80px; height: 20px; border-radius: 4px;"></div>
+                                    <div class="skeleton-line me-24" style="width: 100px; height: 36px; border-radius: 4px;"></div>
+                                    <div class="skeleton-circle" style="width: 36px; height: 36px; border-radius: 50%;"></div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
             </div>
-           
-          
         </div>
     </div>
  </section>
@@ -129,6 +148,73 @@
    
 {% endblock content %}
 
+{% block css %}
+<style>
+    /* Skeleton loader styles */
+    .skeleton-line, .skeleton-thumb, .skeleton-circle {
+        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+        animation: loading 1.5s infinite;
+    }
+    
+    @keyframes loading {
+        0% {
+            background-position: 200% 0;
+        }
+        100% {
+            background-position: -200% 0;
+        }
+    }
+    
+    /* Initially show skeleton, hide real content until page loads */
+    #wishlist-content {
+        display: none;
+    }
+    
+    #wishlist-skeleton {
+        display: block;
+    }
+    
+    /* Hide the base template skeleton on this page */
+    #skeletonLoader {
+        display: none !important;
+    }
+    
+    #mainContent {
+        opacity: 1 !important;
+    }
+</style>
+{% endblock %}
+
 {% block js %}
 <script src="{% static 'app/js/wishlist.js' %}"></script>
+<script>
+    // Hide the base template skeleton immediately for this page
+    document.addEventListener('DOMContentLoaded', function() {
+        const baseSkeleton = document.getElementById('skeletonLoader');
+        if (baseSkeleton) {
+            baseSkeleton.style.display = 'none';
+        }
+        
+        const mainContent = document.getElementById('mainContent');
+        if (mainContent) {
+            mainContent.style.opacity = '1';
+        }
+        
+        // If there are wishlist items, hide skeleton and show content
+        if (document.querySelectorAll('#wishlist-content tr').length > 0) {
+            document.getElementById('wishlist-skeleton').style.display = 'none';
+            document.getElementById('wishlist-content').style.display = 'table-row-group';
+        } else {
+            // If no items, keep skeleton visible for a while to show loading state
+            setTimeout(function() {
+                document.getElementById('wishlist-skeleton').style.display = 'none';
+                // Show empty state message if needed
+                document.getElementById('wishlist-content').innerHTML = 
+                    '<tr><td colspan="4" class="text-center py-40">{% trans "Your wishlist is empty" %}</td></tr>';
+                document.getElementById('wishlist-content').style.display = 'table-row-group';
+            }, 1500);
+        }
+    });
+</script>
 {% endblock %}

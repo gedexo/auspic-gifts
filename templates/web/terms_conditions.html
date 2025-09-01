@@ -1,14 +1,118 @@
-{% extends 'web/base.html' %} {% load static %} {% block title %}Privacy Policy{% endblock%}
+{% extends 'web/base.html' %} {% load static %} {% block title %}Terms and Conditions{% endblock%}
 {% block content %}
 
 <link rel="stylesheet" href="{% static 'web/css/cart.css' %}">
-      
-        <!-- /page-title -->
-        <!-- main-page -->
-        <section class="flat-spacing-25">
-            <div class="container">
-                <div class="tf-main-area-page">
 
+<style>
+    /* Completely disable base skeleton functionality */
+    #skeletonLoader {
+        display: none !important;
+    }
+    
+    #mainContent {
+        opacity: 1 !important;
+        display: block !important;
+    }
+    
+    /* Skeleton loader styles for terms and conditions page */
+    .terms-skeleton {
+        display: block;
+        padding: 40px 0;
+    }
+    
+    .skeleton-line {
+        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+        animation: loading 1.5s infinite;
+        border-radius: 4px;
+        margin-bottom: 16px;
+        height: 20px;
+    }
+    
+    .skeleton-title {
+        height: 32px;
+        margin-bottom: 24px;
+        width: 60%;
+    }
+    
+    .skeleton-subtitle {
+        height: 24px;
+        margin-bottom: 16px;
+        margin-top: 30px;
+        width: 40%;
+    }
+    
+    @keyframes loading {
+        0% {
+            background-position: 200% 0;
+        }
+        100% {
+            background-position: -200% 0;
+        }
+    }
+    
+    /* Initially show skeleton, hide real content until page loads */
+    #terms-content {
+        display: none;
+    }
+</style>
+
+<!-- Skeleton loader -->
+<div id="terms-skeleton" class="terms-skeleton">
+    <div class="container">
+        <div class="skeleton-title"></div>
+        
+        <!-- Section 1 -->
+        <div class="skeleton-subtitle"></div>
+        <div class="skeleton-line" style="width: 100%"></div>
+        <div class="skeleton-line" style="width: 98%"></div>
+        <div class="skeleton-line" style="width: 95%"></div>
+        <div class="skeleton-line" style="width: 97%"></div>
+        
+        <!-- Section 2 -->
+        <div class="skeleton-subtitle"></div>
+        <div class="skeleton-line" style="width: 100%"></div>
+        <div class="skeleton-line" style="width: 96%"></div>
+        <div class="skeleton-line" style="width: 98%"></div>
+        
+        <!-- Section 3 -->
+        <div class="skeleton-subtitle"></div>
+        <div class="skeleton-line" style="width: 100%"></div>
+        <div class="skeleton-line" style="width: 97%"></div>
+        <div class="skeleton-line" style="width: 95%"></div>
+        <div class="skeleton-line" style="width: 98%"></div>
+        <div class="skeleton-line" style="width: 96%"></div>
+        
+        <!-- Section 4 -->
+        <div class="skeleton-subtitle"></div>
+        <div class="skeleton-line" style="width: 100%"></div>
+        <div class="skeleton-line" style="width: 97%"></div>
+        <div class="skeleton-line" style="width: 95%"></div>
+        
+        <!-- Section 5 -->
+        <div class="skeleton-subtitle"></div>
+        <div class="skeleton-line" style="width: 100%"></div>
+        <div class="skeleton-line" style="width: 96%"></div>
+        
+        <!-- Section 6 -->
+        <div class="skeleton-subtitle"></div>
+        <div class="skeleton-line" style="width: 100%"></div>
+        <div class="skeleton-line" style="width: 97%"></div>
+        
+        <!-- Section 7 -->
+        <div class="skeleton-subtitle"></div>
+        <div class="skeleton-line" style="width: 100%"></div>
+        <div class="skeleton-line" style="width: 85%"></div>
+    </div>
+</div>
+
+<!-- Actual content -->
+<div id="terms-content">
+    <!-- /page-title -->
+    <!-- main-page -->
+    <section class="flat-spacing-25">
+        <div class="container">
+            <div class="tf-main-area-page">
                 <div>
                     <h5>1. Use of Website</h5>
                     <p>This website and its content are intended for personal and non-commercial use. You may not modify, distribute, transmit, display, reproduce, publish, license, create derivative works from, transfer, or sell any information or services obtained from this website.</p>
@@ -17,10 +121,10 @@
                     <p>All content on this website, including but not limited to text, graphics, logos, images, and software, is the property of auspic Private Limited or its licensors and is protected by copyright, trademark, and other intellectual property laws.</p>
                     
                     <h5>3. User Conduct</h5>
-                    <p>You agree to use the website only for lawful purposes and in a manner that does not infringe the rights of, restrict, or inhibit anyone else’s use of the website. Prohibited behavior includes, but is not limited to, harassing or causing distress to any individual, transmitting obscene or offensive content, or disrupting the normal flow of dialogue within the website.</p>
+                    <p>You agree to use the website only for lawful purposes and in a manner that does not infringe the rights of, restrict, or inhibit anyone else's use of the website. Prohibited behavior includes, but is not limited to, harassing or causing distress to any individual, transmitting obscene or offensive content, or disrupting the normal flow of dialogue within the website.</p>
                     
                     <h5>4. Changes to Terms</h5>
-                    <p>We reserve the right to modify, update, or discontinue any part of these Terms and Conditions at any time, at our sole discretion. When changes are made, we will revise the “last updated” date at the top of this page. Your continued use of the website after any changes constitutes your acceptance of the new Terms and Conditions.</p>
+                    <p>We reserve the right to modify, update, or discontinue any part of these Terms and Conditions at any time, at our sole discretion. When changes are made, we will revise the "last updated" date at the top of this page. Your continued use of the website after any changes constitutes your acceptance of the new Terms and Conditions.</p>
                     
                     <h5>5. Limitation of Liability</h5>
                     <p>auspic Private Limited shall not be liable for any direct, indirect, incidental, consequential, or punitive damages arising from your use of, or inability to use, this website.</p>
@@ -31,10 +135,63 @@
                     <h5>7. Contact Information</h5>
                     <p>If you have any questions regarding these Terms and Conditions, please contact our Customer Service Department via email at auspic@gmail.com.</p>
                 </div>
-
-                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+    <!-- /main-page -->
+</div>
+
+<script>
+    // Immediately hide base skeleton and show terms skeleton
+    document.addEventListener('DOMContentLoaded', function() {
+        // Hide base template skeleton with more aggressive approach
+        const baseSkeleton = document.getElementById('skeletonLoader');
+        if (baseSkeleton) {
+            baseSkeleton.style.display = 'none';
+            baseSkeleton.style.visibility = 'hidden';
+            baseSkeleton.style.opacity = '0';
+            baseSkeleton.remove();
+        }
+        
+        // Remove any base skeleton related scripts
+        const baseSkeletonScripts = document.querySelectorAll('script');
+        baseSkeletonScripts.forEach(script => {
+            if (script.textContent.includes('skeletonLoader') || 
+                script.textContent.includes('skeleton-container')) {
+                script.remove();
+            }
+        });
+        
+        // Ensure main content is visible
+        const mainContent = document.getElementById('mainContent');
+        if (mainContent) {
+            mainContent.style.opacity = '1';
+            mainContent.style.display = 'block';
+            mainContent.style.visibility = 'visible';
+        }
+        
+        // Show terms skeleton immediately
+        const termsSkeleton = document.getElementById('terms-skeleton');
+        if (termsSkeleton) {
+            termsSkeleton.style.display = 'block';
+        }
+        
+        // Hide actual terms content initially
+        const termsContent = document.getElementById('terms-content');
+        if (termsContent) {
+            termsContent.style.display = 'none';
+        }
+        
+        // Simulate loading delay, then show content
+        setTimeout(function() {
+            if (termsSkeleton) {
+                termsSkeleton.style.display = 'none';
+            }
+            if (termsContent) {
+                termsContent.style.display = 'block';
+            }
+        }, 800); // Show after 0.8 seconds
+    });
+</script>
+
 {% endblock %}
